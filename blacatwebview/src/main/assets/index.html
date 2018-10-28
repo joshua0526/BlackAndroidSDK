@@ -1,0 +1,105 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>BlackCat SDK</title>
+
+    <link rel="stylesheet" href="res/css/panel.css" type="text/css" />
+
+
+    <script src="lib/rollup/aes.js"></script>
+    <script src="lib/component/aes.js"></script>
+    <script src="lib/component/mode-ecb.js"></script>
+    <script src="lib/component/pad-nopadding.js"></script>
+    <script src="lib/scrypt.js"></script>
+    <script src="lib/jsrsasign.js"></script>
+    <script src="lib/neo-ts.js"></script>
+    <script src="lib/qr-code-with-logo.browser.min.js"></script>
+    <script src="lib/code.js"></script>
+
+</head>
+
+<body style="background-color:rgba(255,255,255,0);">
+
+    <script>
+        
+        var returnMessage = function(data){
+            AndroidSDK.callback(data);
+        }
+
+        function BlaCatSDK(method, list){
+            switch(method){
+                case "initSDK"://初始化方法
+                    BlackCat.SDK.init(list[0],list[1], returnMessage,list[2]);
+                break;
+                case "Language"://语言修改
+                    BlackCat.SDK.setLang(list[0]);
+                break;
+                case "LoginSDK"://登陆
+                    BlackCat.SDK.login();
+                break;
+                case "makeRecharge"://发起充值
+                    var params = {count:list[0],extString:list[1]};
+                    BlackCat.SDK.makeRecharge(params);
+                break;
+                case "confirmAppNotify"://确认收到
+                    var params = {txid:list[0]}
+                    BlackCat.SDK.confirmAppNotify(params);
+                break;
+                case "getBalance":
+                    BlackCat.SDK.getBalance();
+                break;
+                case "getUserInfo":
+                    BlackCat.SDK.getUserInfo();
+                break;
+                case "getNetType":
+                    BlackCat.SDK.getNetType();
+                break;
+                case "makeGasTransfer":
+                    var params = {
+                        toaddr:list[0],
+                        count:list[1],
+                        extString:list[2]
+                    }
+                    BlackCat.SDK.makeGasTransfer(params);
+                break;
+                case "makeGasTransferMulti":
+                    var params = [];
+                    for(let i = 0; i < list.length; i++){
+                        var p = {};
+                        p["toaddr"] = list[i][0];
+                        p["count"] = list[i][1];
+                        p["extString"] = list[i][2];
+                    }
+                    BlackCat.SDK.makeGasTransferMulti(params);
+                break;
+                case "invokeScript"://合约预调用
+                    var params = {                        
+                        sbParamJson:list[0],
+                        sbPushString:list[1],
+                        nnc:list[2],
+                        extString:list[3]
+                    }
+                    params.sbParamJson = JSON.parse(params.sbParamJson);
+                    BlackCat.SDK.invokescript(params);
+                break;
+                case "makeRawTransaction":
+                    var params = {
+                        sbParamJson:list[0],
+                        sbPushString:list[1],
+                        nnc:list[2],
+                        extString:list[3]
+                    }
+                    params.sbParamJson = JSON.parse(params.sbParamJson);
+                    BlackCat.SDK.makRawTransaction(params);
+                break;
+                case "setDefaultType":
+                    BlackCat.SDK.setDefaultType(list[0]);
+                break;
+            }
+        }        
+    </script>
+</body>
+
+</html>
