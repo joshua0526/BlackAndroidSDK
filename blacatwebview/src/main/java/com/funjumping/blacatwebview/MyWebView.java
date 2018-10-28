@@ -34,6 +34,7 @@ public class MyWebView extends WebView{
     public Activity mContext = null;
     public WindowManager.LayoutParams params = null;
     private static MyWebView myWebView = null;
+    private AndroidJavaScript androidJavaScript = null;
 
     private MyWebView(Activity context){
         super(context.getApplicationContext());
@@ -139,11 +140,15 @@ public class MyWebView extends WebView{
         myWebView.setBackgroundColor(Color.TRANSPARENT);
         myWebView.requestFocus();
 
-        //myWebView.addJavascriptInterface(new AndroidJavaScript(), "AndroidSDK");
+        myWebView.addJavascriptInterface(androidJavaScript, "AndroidSDK");
 
         params = new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
         mContext.addContentView(myWebView, params);
         myWebView.setVisibility(View.GONE);
+    }
+
+    public void AddResultListener(IResultListener listener){
+        androidJavaScript = new AndroidJavaScript(listener);
     }
 
     private void setWebSettings(){
@@ -158,7 +163,6 @@ public class MyWebView extends WebView{
 //        webSettings.setLoadWithOverviewMode(true); // 缩放至屏幕的大小
 
         webSettings.setDomStorageEnabled(true);//支持HTML5 DOM Storage
-        //webSettings.setAllowFileAccess(true); //设置可以访问文件
         webSettings.setDefaultTextEncodingName("utf-8");//设置编码格式
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
@@ -167,21 +171,10 @@ public class MyWebView extends WebView{
     }
 
     public void Show(){
-        Toast.makeText(mContext,myWebView.getVisibility() + "", Toast.LENGTH_LONG).show();
         if (myWebView.getVisibility() == View.VISIBLE){
             myWebView.setVisibility(View.GONE);
         }else{
             myWebView.setVisibility(View.VISIBLE);
         }
-
-        myWebView.loadUrl("javascript:a(" + 12 + ")");
     }
-
-    IResultListener listener = new IResultListener() {
-        @JavascriptInterface
-        @Override
-        public void getResultString(String json) {
-            Toast.makeText(mContext, json, Toast.LENGTH_LONG).show();
-        }
-    };
 }

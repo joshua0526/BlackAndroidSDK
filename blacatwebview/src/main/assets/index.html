@@ -23,7 +23,10 @@
 <body style="background-color:rgba(255,255,255,0);">
 
     <script>
-        
+        BlaCatSDK("initSDK",[123,2,"cn"]);
+        BlaCatSDK("setDefaultType",[2]);
+        BlaCatSDK("LoginSDK",null);
+
         var returnMessage = function(data){
             AndroidSDK.callback(data);
         }

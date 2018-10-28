@@ -47,7 +47,7 @@ public class DragViewCtr {
     public void InitWebView(IResultListener listener){
         myWebView = MyWebView.getMyWebView(activity);
         myWebView.Init();
-        myWebView.addJavascriptInterface(listener, "AndroidSDK");
+        myWebView.AddResultListener(listener);
     }
     /**
      * 显示可拖动的客服电话图标
@@ -146,7 +146,7 @@ public class DragViewCtr {
     /**
      *
      */
-    public void hideDragCallView() {
+    private void hideDragCallView() {
         this.iv_drag.setVisibility(View.GONE);
     }
     /**

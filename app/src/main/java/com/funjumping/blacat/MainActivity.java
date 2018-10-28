@@ -28,7 +28,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class MainActivity extends AppCompatActivity{
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity implements IResultListener{
 
     WebView myWebView = null;
     WindowManager wm = null;
@@ -47,10 +50,19 @@ public class MainActivity extends AppCompatActivity{
 
         dvc = new DragViewCtr(this);
         dvc.showDragCallView();
-        dvc.InitWebView(listener);
+        dvc.InitWebView(this);
 
-//        BlaCatSDK.getBlaCatSDK().InitSDK("12", "12", listener,"cn");
-
+//        List<String> list = new ArrayList<>();
+//        list.add("123");
+//        list.add("2");
+//        list.add("cn");
+//        BlaCatSDK.getBlaCatSDK().BlaCatSDK("initSDK", list);
+//
+//        List<String> list1 = new ArrayList<>();
+//        list1.add("2");
+//        BlaCatSDK.getBlaCatSDK().BlaCatSDK("setDefault", list1);
+//
+//        BlaCatSDK.getBlaCatSDK().BlaCatSDK("LoginSDK", null);
     }
 
     @Override
@@ -79,76 +91,68 @@ public class MainActivity extends AppCompatActivity{
         return super.onKeyDown(keyCode, event);
     }
 
-    private IResultListener listener = new IResultListener(){
-        @JavascriptInterface
-        @Override
-        public void callback(String json) {
-            try {
-                JSONObject res = new JSONObject(json);
-                switch(res.getString("cmd")){
-                    case "loginRes"://登陆回调
-                        String loginInfo = res.getString("data");
-                        break;
-                    case "invokescriptRes"://合约读取调用
-                        String params = res.getJSONObject("data").getString("params");
-                        JSONObject result = res.getJSONObject("data").getJSONObject("res");
-                        if (result.getBoolean("err") == true){
-                            //执行失败
-                        }else{
-                            //执行成功
-                            String success_data = result.getString("info");
-                        }
-                        break;
-                    case "makeRawTransactionRes"://合约写入请求结果
-                        // 回调数据格式参考invokescriptRes
-                        break;
-                    case "makeRechargeRes"://充值回调
-                        // 回调数据格式参考invokescriptRes
-                        break;
-                    case "makeGasTransferRes": // GAS转账回调
-                        // 回调数据格式参考invokescriptRes
-                        break;
-                    case "confirmAppNotifyRes": // 交易通知接收确认回调
-                        // 回调数据格式参考invokescriptRes
-                        break;
-                    case "getBalanceRes": // 获取余额
-                        JSONObject resultBalance = res.getJSONObject("data");
-                        String sgas = resultBalance.getString("sgas");
-                        String gas = resultBalance.getString("gas");
-                        break;
-                    case "getUserInfoRes": // 获取登录用户信息
-                        String userInfo = res.getString("data");
-                        break;
-                    case "getNetTypeRes": // 获取网络类型
-                        int net_type = res.getInt("data");
-                        if (net_type == 1) {
-                            // 主网
-                        }
-                        else if (net_type == 2) {
-                            // 测试网
-                        }
-                        break;
-                    case "changeNetTypeRes": // 网络切换回调
-                        int change_net_type = res.getInt("data");
-                        if (change_net_type == 1) {
-                            // 主网
-                        }
-                        else if (change_net_type == 2) {
-                            // 测试网
-                        }
-                        break;
-                    case "getAppNotifysRes": // 交易成功回调
-                        JSONArray data = res.getJSONArray("data");
-                        for (int i=0; i< data.length(); i++ ){
-                            JSONObject txResult = (JSONObject) data.get(i);
-                            String txid = txResult.getString("txid");
-                            //BlackCat.SDK.confirmAppNotify({txid: txid})
-                        }
-                        break;
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-    };
+    @Override
+    public void getLoginRes(JSONObject data) {
+
+    }
+
+    @Override
+    public void getLogoutRes(JSONObject data) {
+
+    }
+
+    @Override
+    public void getMakeRechargeRes(JSONObject data) {
+
+    }
+
+    @Override
+    public void getAppNotifysRes(JSONArray data) {
+
+    }
+
+    @Override
+    public void getConfirmAppNotifyRes(JSONObject data) {
+
+    }
+
+    @Override
+    public void getBalanceRes(JSONObject data) {
+
+    }
+
+    @Override
+    public void getUserInfoRes(JSONObject data) {
+
+    }
+
+    @Override
+    public void getNetTypeRes(int data) {
+
+    }
+
+    @Override
+    public void getInvokescriptRes(JSONObject data) {
+
+    }
+
+    @Override
+    public void getMakeRawTransactionRes(JSONObject data) {
+
+    }
+
+    @Override
+    public void getMakeGasTransferRes(JSONObject data) {
+
+    }
+
+    @Override
+    public void getMakeGasTransferMultiRes(JSONObject data) {
+
+    }
+
+    @Override
+    public void getChangeNetTypeRes(JSONObject data) {
+
+    }
 }

@@ -20,16 +20,22 @@ public class BlaCatSDK{
         return  blaCatSDK;
     }
 
+    /**
+     * 调用H5 SDK
+     * @param method
+     * @param list
+     */
     public void BlaCatSDK(String method, List<String> list){
+        String params = list==null?"":list.toString();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            MyWebView.getMyWebView().evaluateJavascript("javascript:BlaCatSDK(" + method + "," + list.toString() + ")", new ValueCallback<String>() {
+            MyWebView.getMyWebView().evaluateJavascript("javascript:BlaCatSDK(" + method + "," + params + ")", new ValueCallback<String>() {
                 @Override
                 public void onReceiveValue(String value) {
 
                 }
             });
         }else {
-            MyWebView.getMyWebView().loadUrl("javascript:BlaCatSDK(" + method + "," + list.toString() + ")");
+            MyWebView.getMyWebView().loadUrl("javascript:BlaCatSDK(" + method + "," + params + ")");
         }
     }
 

@@ -17,10 +17,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name="com.funjumping.blacatwebview.MyWebView"
-            android:screenOrientation="portrait" >
-        </activity>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET"/>
