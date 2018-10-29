@@ -123,6 +123,7 @@ public class MyWebView extends WebView{
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
+                webViewListener.WebViewComplite();
             }
 
             @Override
@@ -147,8 +148,10 @@ public class MyWebView extends WebView{
         myWebView.setVisibility(View.GONE);
     }
 
-    public void AddResultListener(IResultListener listener){
+    WebViewListener webViewListener = null;
+    public void AddResultListener(IResultListener listener, WebViewListener wListener){
         androidJavaScript = new AndroidJavaScript(listener);
+        webViewListener = wListener;
     }
 
     private void setWebSettings(){

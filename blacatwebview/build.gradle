@@ -31,11 +31,11 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }
 
-task makeJar(type:Copy){
+task makeJar1(type:Copy){
     delete 'build/libs/BlaCatSDK.jar'
     from('build/intermediates/bundles/release/')
     into('build/libs/')
     include('classes.jar')
     rename('classes.jar','BlaCatSDK.jar')
 }
-makeJar.dependsOn(build)
+makeJar1.dependsOn(build)

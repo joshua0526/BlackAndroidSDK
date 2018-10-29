@@ -44,10 +44,10 @@ public class DragViewCtr {
         this.sp = activity.getSharedPreferences("config", Context.MODE_PRIVATE);
     }
 
-    public void InitWebView(IResultListener listener){
+    public void InitWebView(IResultListener listener, WebViewListener wlistener){
         myWebView = MyWebView.getMyWebView(activity);
+        myWebView.AddResultListener(listener, wlistener);
         myWebView.Init();
-        myWebView.AddResultListener(listener);
     }
     /**
      * 显示可拖动的客服电话图标

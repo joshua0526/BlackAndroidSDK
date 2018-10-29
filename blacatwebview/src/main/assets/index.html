@@ -23,10 +23,6 @@
 <body style="background-color:rgba(255,255,255,0);">
 
     <script>
-        BlaCatSDK("initSDK",[123,2,"cn"]);
-        BlaCatSDK("setDefaultType",[2]);
-        BlaCatSDK("LoginSDK",null);
-
         var returnMessage = function(data){
             AndroidSDK.callback(data);
         }
@@ -35,6 +31,7 @@
             switch(method){
                 case "initSDK"://初始化方法
                     BlackCat.SDK.init(list[0],list[1], returnMessage,list[2]);
+                    BlackCat.SDK.showMain()
                 break;
                 case "Language"://语言修改
                     BlackCat.SDK.setLang(list[0]);
@@ -97,8 +94,11 @@
                     params.sbParamJson = JSON.parse(params.sbParamJson);
                     BlackCat.SDK.makRawTransaction(params);
                 break;
-                case "setDefaultType":
-                    BlackCat.SDK.setDefaultType(list[0]);
+                case "setDefaultNetType":
+                    BlackCat.SDK.setDefaultNetType(list[0]);
+                break;
+                default:
+                    BlackCat.SDK.showMain()
                 break;
             }
         }        

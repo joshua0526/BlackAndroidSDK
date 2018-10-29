@@ -23,6 +23,7 @@ import com.funjumping.blacatwebview.BlaCatSDK;
 import com.funjumping.blacatwebview.DragViewCtr;
 import com.funjumping.blacatwebview.IResultListener;
 import com.funjumping.blacatwebview.MyWebView;
+import com.funjumping.blacatwebview.WebViewListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,7 +32,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements IResultListener{
+public class MainActivity extends AppCompatActivity implements IResultListener,WebViewListener {
 
     WebView myWebView = null;
     WindowManager wm = null;
@@ -50,19 +51,7 @@ public class MainActivity extends AppCompatActivity implements IResultListener{
 
         dvc = new DragViewCtr(this);
         dvc.showDragCallView();
-        dvc.InitWebView(this);
-
-//        List<String> list = new ArrayList<>();
-//        list.add("123");
-//        list.add("2");
-//        list.add("cn");
-//        BlaCatSDK.getBlaCatSDK().BlaCatSDK("initSDK", list);
-//
-//        List<String> list1 = new ArrayList<>();
-//        list1.add("2");
-//        BlaCatSDK.getBlaCatSDK().BlaCatSDK("setDefault", list1);
-//
-//        BlaCatSDK.getBlaCatSDK().BlaCatSDK("LoginSDK", null);
+        dvc.InitWebView(this, this);
     }
 
     @Override
@@ -154,5 +143,21 @@ public class MainActivity extends AppCompatActivity implements IResultListener{
     @Override
     public void getChangeNetTypeRes(JSONObject data) {
 
+    }
+
+    @Override
+    public void WebViewComplite() {
+        List<String> list = new ArrayList<>();
+        list.add("2");
+        list.add("");
+        list.add("cn");
+        BlaCatSDK.getBlaCatSDK().BlaCatSDK("initSDK", list);
+
+        List<String> list1 = new ArrayList<>();
+        list1.add("2");
+        BlaCatSDK.getBlaCatSDK().BlaCatSDK("setDefaultNetType", list1);
+
+        List<String> list2 = new ArrayList<>();
+        BlaCatSDK.getBlaCatSDK().BlaCatSDK("LoginSDK", list2);
     }
 }
