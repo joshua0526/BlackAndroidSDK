@@ -157,7 +157,6 @@ public class MainActivity extends AppCompatActivity implements IResultListener,W
         list1.add("2");
         BlaCatSDK.getBlaCatSDK().BlaCatSDK("setDefaultNetType", list1);
 
-        List<String> list2 = new ArrayList<>();
-        BlaCatSDK.getBlaCatSDK().BlaCatSDK("LoginSDK", list2);
+        BlaCatSDK.getBlaCatSDK().BlaCatSDK("LoginSDK");
     }
 }

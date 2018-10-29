@@ -71,6 +71,7 @@
                         p["toaddr"] = list[i][0];
                         p["count"] = list[i][1];
                         p["extString"] = list[i][2];
+                        params.add(p);
                     }
                     BlackCat.SDK.makeGasTransferMulti(params);
                 break;

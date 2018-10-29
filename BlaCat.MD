@@ -1,32 +1,32 @@
-* [<strong>BlaCatSDK使用文档</strong>](https://github.com/FunJumping/NeoGameSDK_TS/blob/master/BlaCat.md#blacatsdk使用文档)
+* [<strong>BlaCatSDK使用文档</strong>](https://github.com/joshua0526/BlackAndroidSDK/blob/master/BlaCat.MD#blacatsdk使用文档)
 * [<strong>BlaCatSDK Usage Documentation</strong>](https://github.com/FunJumping/NeoGameSDK_TS/blob/master/BlaCat_en.md#blacatsdk-usage-documentation)
-	* [一、BlaCat简介](https://github.com/FunJumping/NeoGameSDK_TS/blob/master/BlaCat.md#一blacat简介)
-	* [二、基础应用](https://github.com/FunJumping/NeoGameSDK_TS/blob/master/BlaCat.md#二基础应用)
-		* [1、引入SDK](https://github.com/FunJumping/NeoGameSDK_TS/blob/master/BlaCat.md#1引入sdk)
-		* [2、初始化SDK（init）](https://github.com/FunJumping/NeoGameSDK_TS/blob/master/BlaCat.md#2初始化sdkinit)
-		* [3、登录（login）](https://github.com/FunJumping/NeoGameSDK_TS/blob/master/BlaCat.md#3登录login)
-		* [4、充值](https://github.com/FunJumping/NeoGameSDK_TS/blob/master/BlaCat.md#4充值)
-			* [1）、发起充值（makeRecharge）](https://github.com/FunJumping/NeoGameSDK_TS/blob/master/BlaCat.md#1发起充值makerecharge)
-			* [2）、确认充值（前端）](https://github.com/FunJumping/NeoGameSDK_TS/blob/master/BlaCat.md#2确认充值前端)
-				* [1））、交易链上处理完成回调（getAppNotifysRes）](https://github.com/FunJumping/NeoGameSDK_TS/blob/master/BlaCat.md#1交易链上处理完成回调getappnotifysres)
-				* [2））、确认收到（confirmAppNotify）](https://github.com/FunJumping/NeoGameSDK_TS/blob/master/BlaCat.md#2确认收到confirmappnotify)
-			* [3）、确认充值（后端）](https://github.com/FunJumping/NeoGameSDK_TS/blob/master/BlaCat.md#3确认充值后端)
-				* [1））、接口说明](https://github.com/FunJumping/NeoGameSDK_TS/blob/master/BlaCat.md#1接口说明)
-				* [2））、sign签名算法](https://github.com/FunJumping/NeoGameSDK_TS/blob/master/BlaCat.md#2sign签名算法)
-				* [3））、sign签名算法（PHP）](https://github.com/FunJumping/NeoGameSDK_TS/blob/master/BlaCat.md#3sign签名算法php)
-		* [5、获取余额（getBalance）](https://github.com/FunJumping/NeoGameSDK_TS/blob/master/BlaCat.md#5获取余额getbalance)
-		* [6、获取用户信息（getUserInfo）](https://github.com/FunJumping/NeoGameSDK_TS/blob/master/BlaCat.md#6获取用户信息getuserinfo)
-		* [7、获取当前网络类型（getNetType）](https://github.com/FunJumping/NeoGameSDK_TS/blob/master/BlaCat.md#7获取当前网络类型getnettype)
-		* [8、GAS转账（makeGasTransfer）](https://github.com/FunJumping/NeoGameSDK_TS/blob/master/BlaCat.md#8gas转账makegastransfer)
-		* [9、GAS批量转账（makeGasTransferMulti）](https://github.com/FunJumping/NeoGameSDK_TS/blob/master/BlaCat.md#9gas批量转账makegastransfermulti)
-	* [三、进阶应用](https://github.com/FunJumping/NeoGameSDK_TS/blob/master/BlaCat.md#三进阶应用)
-		* [1、智能合约调用方式](https://github.com/FunJumping/NeoGameSDK_TS/blob/master/BlaCat.md#1智能合约调用方式)
-		* [2、合约读取（invokescript）](https://github.com/FunJumping/NeoGameSDK_TS/blob/master/BlaCat.md#2合约读取invokescript)
-		* [3、合约写入（makeRawTransaction）](https://github.com/FunJumping/NeoGameSDK_TS/blob/master/BlaCat.md#3合约写入makerawtransaction)
-	* [四、辅助功能](https://github.com/FunJumping/NeoGameSDK_TS/blob/master/BlaCat.md#四辅助功能)
-		* [1、设置SDK语言（setLang）](https://github.com/FunJumping/NeoGameSDK_TS/blob/master/BlaCat.md#1设置sdk语言setlang)
-		* [2、设置初始默认网络（setDefaultType）](https://github.com/FunJumping/NeoGameSDK_TS/blob/master/BlaCat.md#2设置初始默认网络setdefaulttype)
-		* [3、展开/缩略SDK（showMain/showIcon）](https://github.com/FunJumping/NeoGameSDK_TS/blob/master/BlaCat.md#3展开缩略sdkshowmainshowicon)
+	* [一、BlaCat简介](https://github.com/joshua0526/BlackAndroidSDK/blob/master/BlaCat.MD#一blacat简介)
+	* [二、基础应用](https://github.com/joshua0526/BlackAndroidSDK/blob/master/BlaCat.MD#二基础应用)
+		* [1、引入SDK](https://github.com/joshua0526/BlackAndroidSDK/blob/master/BlaCat.MD#1引入sdk)
+		* [2、初始化SDK（init）](https://github.com/joshua0526/BlackAndroidSDK/blob/master/BlaCat.MD#2初始化sdkinit)
+		* [3、登录（login）](https://github.com/joshua0526/BlackAndroidSDK/blob/master/BlaCat.MD#3登录login)
+		* [4、充值](https://github.com/joshua0526/BlackAndroidSDK/blob/master/BlaCat.MD#4充值)
+			* [1）、发起充值（makeRecharge）](https://github.com/joshua0526/BlackAndroidSDK/blob/master/BlaCat.MD#1发起充值makerecharge)
+			* [2）、确认充值（前端）](https://github.com/joshua0526/BlackAndroidSDK/blob/master/BlaCat.MD#2确认充值前端)
+				* [1））、交易链上处理完成回调（getAppNotifysRes）](https://github.com/joshua0526/BlackAndroidSDK/blob/master/BlaCat.MD#1交易链上处理完成回调getappnotifysres)
+				* [2））、确认收到（confirmAppNotify）](https://github.com/joshua0526/BlackAndroidSDK/blob/master/BlaCat.MD#2确认收到confirmappnotify)
+			* [3）、确认充值（后端）](https://github.com/joshua0526/BlackAndroidSDK/blob/master/BlaCat.MD#3确认充值后端)
+				* [1））、接口说明](https://github.com/joshua0526/BlackAndroidSDK/blob/master/BlaCat.MD#1接口说明)
+				* [2））、sign签名算法](https://github.com/joshua0526/BlackAndroidSDK/blob/master/BlaCat.MD#2sign签名算法)
+				* [3））、sign签名算法（PHP）](https://github.com/joshua0526/BlackAndroidSDK/blob/master/BlaCat.MD#3sign签名算法php)
+		* [5、获取余额（getBalance）](https://github.com/joshua0526/BlackAndroidSDK/blob/master/BlaCat.MD#5获取余额getbalance)
+		* [6、获取用户信息（getUserInfo）](https://github.com/joshua0526/BlackAndroidSDK/blob/master/BlaCat.MD#6获取用户信息getuserinfo)
+		* [7、获取当前网络类型（getNetType）](https://github.com/joshua0526/BlackAndroidSDK/blob/master/BlaCat.MD#7获取当前网络类型getnettype)
+		* [8、GAS转账（makeGasTransfer）](https://github.com/joshua0526/BlackAndroidSDK/blob/master/BlaCat.MD#8gas转账makegastransfer)
+		* [9、GAS批量转账（makeGasTransferMulti）](https://github.com/joshua0526/BlackAndroidSDK/blob/master/BlaCat.MD#9gas批量转账makegastransfermulti)
+	* [三、进阶应用](https://github.com/joshua0526/BlackAndroidSDK/blob/master/BlaCat.MD#三进阶应用)
+		* [1、智能合约调用方式](https://github.com/joshua0526/BlackAndroidSDK/blob/master/BlaCat.MD#1智能合约调用方式)
+		* [2、合约读取（invokescript）](https://github.com/joshua0526/BlackAndroidSDK/blob/master/BlaCat.MD#2合约读取invokescript)
+		* [3、合约写入（makeRawTransaction）](https://github.com/joshua0526/BlackAndroidSDK/blob/master/BlaCat.MD#3合约写入makerawtransaction)
+	* [四、辅助功能](https://github.com/joshua0526/BlackAndroidSDK/blob/master/BlaCat.MD#四辅助功能)
+		* [1、设置SDK语言（setLang）](https://github.com/joshua0526/BlackAndroidSDK/blob/master/BlaCat.MD#1设置sdk语言setlang)
+		* [2、设置初始默认网络（setDefaultType）](https://github.com/joshua0526/BlackAndroidSDK/blob/master/BlaCat.MD#2设置初始默认网络setdefaulttype)
+		* [3、展开/缩略SDK（showMain/showIcon）](https://github.com/joshua0526/BlackAndroidSDK/blob/master/BlaCat.MD#3展开缩略sdkshowmainshowicon)
 
 # **BlaCatSDK使用文档**
 
@@ -37,29 +37,35 @@ BlaCat是基于NEO高性能侧链的链游平台，平台业务主要包括：�
 
 ## 二、基础应用
 ### 1、引入SDK
-要使用BlaCatSDK，先要引入BlaCatSDK运行的必要文件
-
-    <link rel="stylesheet" href="res/css/panel.css" type="text/css" />
-    <script src="lib/rollup/aes.js"></script>
-    <script src="lib/component/aes.js"></script>
-    <script src="lib/component/mode-ecb.js"></script>
-    <script src="lib/component/pad-nopadding.js"></script>
-    <script src="lib/scrypt.js"></script>
-    <script src="lib/jsrsasign.js"></script>
-    <script src="lib/neo-ts.js"></script>
-    <script src="lib/qr-code-with-logo.browser.min.js"></script>
-    <script src="lib/code.js"></script>
+* 要使用BlaCatSDK，需要把blacatwebview打包成aar文件，android studio里面gradle里面配置了makeJar1，双击执行自动打包，文件生成位置blacatwebview/build/outputs/aar/文件夹下。
+* unity导出android工程，libs文件夹下引用aar文件。
+* AndroidManifest.xml文件添加权限
+```
+<uses-permission android:name="android.permission.INTERNET"/>
+<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+```
+* UnityPlayerActivity创建对象`DragViewCtr dvc = null`,并在onCreate方法里赋值
+```
+    dvc = new DragViewCtr(this);
+    dvc.showDragCallView();
+    dvc.InitWebView(this, this);
+```
+* UnityPlayerActivity实现接口`implements IResultListener,WebViewListener`获取返回值。
 ### 2、初始化SDK（init）
-BlaCatSDK使用前，需要执行初始化操作
-`BlackCat.SDK.init(appid, appkey, listener, lang)`
-
+BlaCatSDK使用前，需要执行初始化操作，在方法WebViewComplite调用。
+```
+List<String> list = new ArrayList<>();
+list.add(appid);
+list.add(appkey);
+list.add(lang);
+BlaCatSDK.getBlaCatSDK().BlaCatSDK("initSDK", list);
+```
 **参数说明：** 
 
 |参数名|必选|类型|说明|
 |:----    |:---|:----- |-----   |
 |appid |是  |string |BlaCat分配的appid   |
 |appkey |是  |string |BlaCat分配的appkey   |
-|listener |是  |function |应用注册的SDK回调函数   |
 |lang |否  |string |SDK语言，默认cn（中文），可取值cn、en   |
 **返回说明：** 
 无返回
@@ -67,78 +73,88 @@ BlaCatSDK使用前，需要执行初始化操作
 **回调方式说明：** 
 BlaCatSDK支持两种回调方式，一种是初始化SDK时（init）注册回调函数方式（推荐），一种是函数回调方式。有些功能回调，比如切换网络类型通知、交易确认完成通知等，只能通过方式一。
 
-回调方式一（推荐）：
+回调方式就是上面实现IResultListener接口，方法如下：
+```
+/**
+    * 登陆回调
+    * @param data 登陆回调返回值
+    */
+void getLoginRes(JSONObject data);
+/**
+    * 登出回调
+    * @param data
+    */
+void getLogoutRes(JSONObject data);
 
-    var listener = function(data)
-    {
-    	// 回调处理，data是JSON格式String
-		var res = JSON.parse(data)
-		console.log('listener => ', res)
-		switch (res.cmd) {
-			case "loginRes": // 登录成功回调
-				// 此处需要发送接收到的数据到服务端验证后再登录应用
-				break;
-			case "logoutRes": // 登出回调
-				break;
-			case "makeRechargeRes": // 充值回调
-				break;
-			case "getAppNotifysRes": // 交易链上处理完成回调
-				break;
-			case "confirmAppNotifyRes": // 交易链上处理完成回调接收确认回调
-				break;
-			case "getBalanceRes": // 获取余额
-				break;
-			case "getUserInfoRes": // 获取登录用户信息
-				break;
-			case "getNetTypeRes": // 获取网络类型
-				break;
-			case "invokescriptRes": // 合约读取调用
-				break;
-			case "makeRawTransactionRes": // 合约写入请求结果
-				break;
-			case "makeGasTransferRes": // GAS转账回调
-				break;
-			case "makeGasTransferMultiRes": // GAS批量转账回调
-				break;
-			case "changeNetTypeRes": // 网络切换回调
-				break;
-		}
-    };
-	BlackCat.SDK.init(appid, appkey, listener, lang)
+/**
+    * 充值回调
+    * @param data
+    */
+void getMakeRechargeRes(JSONObject data);
 
-回调方式二：
-    
-    BlackCat.SDK.functionName(data, function(res) {  
-	    //回调结果处理
-	})
+/**
+    * 交易链上处理完成回调
+    * @param data
+    */
+void getAppNotifysRes(JSONArray data);
+
+/**
+    * 交易链上处理完成回调接收确认回调
+    * @param data
+    */
+void getConfirmAppNotifyRes(JSONObject data);
+
+/**
+    * 获取余额
+    * @param data
+    */
+void getBalanceRes(JSONObject data);
+
+/**
+    * 获取登录用户信息
+    * @param data
+    */
+void getUserInfoRes(JSONObject data);
+/**
+    * 获取网络类型
+    * @param data
+    */
+void getNetTypeRes(int data);
+/**
+    * 合约读取调用
+    * @param data
+    */
+void getInvokescriptRes(JSONObject data);
+/**
+    * 合约写入请求结果
+    * @param data
+    */
+void getMakeRawTransactionRes(JSONObject data);
+/**
+    * GAS转账回调
+    * @param data
+    */
+void getMakeGasTransferRes(JSONObject data);
+/**
+    * GAS批量转账回调
+    * @param data
+    */
+void getMakeGasTransferMultiRes(JSONObject data);
+/**
+    * 网络切换回调
+    * @param data
+    */
+void getChangeNetTypeRes(JSONObject data);
+```
 
 ### 3、登录（login）
 需要先初始化（init）后才能调用。
 ``` 
-  // 方式一，结果在listener通知
-  BlackCat.SDK.login()
-  
-  // 方式二
-  BlackCat.SDK.login(function(res) {
-    // 接口回调
-  })
+  BlaCatSDK.getBlaCatSDK().BlaCatSDK("LoginSDK");
 ```
 
 **返回说明：** 
 ``` 
-// 方式一
-{
-    "cmd": "loginRes",
-    "data": {
-        "g_id": "5",
-        "time": 1531891115,
-        "uid": "sj_xxs23",
-        "wallet": "AQXPAKF7uD5rYbBnqikGDVcsP1Ukpkopg5",
-        "sign": "40d48798189ec210153339d7a1cf71e5"
-    }
-}
-  
-// 方式二
 {
 	"g_id": "5",
 	"time": 1531891115,
@@ -189,22 +205,12 @@ function getLoginSign($params, $login_key) {
 
 ### 4、充值
 #### 1）、发起充值（makeRecharge）
-应用客户端调用发起充值接口，发起链上支付交易。以下为支付0.001个sgas代码。
+应用客户端调用发起充值接口，发起链上支付交易。
 ``` 
-  var params = { count: "0.001", extString: "makeRecharge" };
-  
-  // 方式一，结果在listener通知
-  BlackCat.SDK.makeRecharge(params)
-  
-  // 方式二
-  BlackCat.SDK.makeRecharge(params, function(res){
-    // 接口回调
-    if（res.err == false）{
-      // 获取支付交易提交成功的txid
-      var txid = res.info.txid;
-      alert('支付提交成功，等待链上确认');
-    }
-  })
+List<String> list = new ArrayList<>();
+list.add(count);
+list.add(extString);
+BlaCatSDK.getBlaCatSDK().BlaCatSDK("makeRecharge", list);
 ```
 **params参数：** 
 
@@ -216,37 +222,23 @@ function getLoginSign($params, $login_key) {
 **返回示例**
 
 ``` 
-// 方式一的回调data：
-{
-    "cmd": "makeRechargeRes",
-    "data": {
-        "params": {
-            "count": "0.001",
-            "extString": "makeRecharge",
-            "nnc": "0x2761020e5e6dfcd8d37fdd50ff98fa0f93bccf54",
-            "sbParamJson": [
-                "(address)AQXPAKF7uD5rYbBnqikGDVcsP1Ukpkopg5",
-                "(address)ASZzR4Qm7iVbdUnLrRA7vBMEoX1dnmXeQe",
-                "(integer)100000"
-            ],
-            "sbPushString": "transfer"
-        },
-        "res": {
-            "err": false,
-            "info": {
-                "txid": "0x0bc5dddcde95b4de9f81cb39e06d43ab157d62ed6fb4e12b49e1a6aa76e22c93"
-            }
-        }
+"params": {
+    "count": "0.001",
+    "extString": "makeRecharge",
+    "nnc": "0x2761020e5e6dfcd8d37fdd50ff98fa0f93bccf54",
+    "sbParamJson": [
+        "(address)AQXPAKF7uD5rYbBnqikGDVcsP1Ukpkopg5",
+        "(address)ASZzR4Qm7iVbdUnLrRA7vBMEoX1dnmXeQe",
+        "(integer)100000"
+    ],
+    "sbPushString": "transfer"
+},
+"res": {
+    "err": false,
+    "info": {
+        "txid": "0x0bc5dddcde95b4de9f81cb39e06d43ab157d62ed6fb4e12b49e1a6aa76e22c93"
     }
-}
-
-// 方式二的函数回调res：
-{
-	"err": false,
-	"info": {
-		"txid": "0xccf73255d0efd7fdc329af599378a6589dab38e24783e8b2e376a5336ce6b393"
-	}
-}
+} 
 ```
 **返回说明**
 此回调表示充值请求已经上链，等待NEO链进行确认。NEO链确认有可能成功，也有可能失败。
@@ -260,34 +252,22 @@ getAppNotifysRes回调是通过BlaCatSDK执行的交易都会收到的一个回�
 **返回示例**
 
 ``` 
-// 方式一（只支持方式一的回调方式）
-{
-    "cmd": "getAppNotifysRes",
-    "data": [
-        {
-            "id": "367",
-            "g_id": "5",
-            "txid": "340645e5f0307c285c19c54bc245935ce5dcef5a284bcb86a11e91ac7f80da32",
-            "state": "1",
-            "params": "{\"sbPushString\":\"transfer\", \"toaddr\":\"AQXPAKF7uD5rYbBnqikGDVcsP1Ukpkopg5\", \"count\": \"0.01\"}"
-        }
-    ]
-}
+[
+    {
+        "id": "367",
+        "g_id": "5",
+        "txid": "340645e5f0307c285c19c54bc245935ce5dcef5a284bcb86a11e91ac7f80da32",
+        "state": "1",
+        "params": "{\"sbPushString\":\"transfer\", \"toaddr\":\"AQXPAKF7uD5rYbBnqikGDVcsP1Ukpkopg5\", \"count\": \"0.01\"}"
+    }
+]
 ```
 ##### 2））、确认收到（confirmAppNotify）
 当应用获取到getAppNotifysRes回调，处理对应前端逻辑后，应该确认收到交易链上处理完成回调。如果不做确认处理，下次用户登录游戏，还会再次收到getAppNotifysRes回调
 ``` 
-var params = {
-	txid: "340645e5f0307c285c19c54bc245935ce5dcef5a284bcb86a11e91ac7f80da32"
-}
-
-// 方式一
-BlackCat.SDK.confirmAppNotify(params)
-
-// 方式二
-BlackCat.SDK.confirmAppNotify(params, function(res){
-	console.log('[BlackCat]', 'confirmAppNotify.callback.function.res => ', res)
-})
+List<String> list = new ArrayList<>();
+list.add(txid);
+BlaCatSDK.getBlaCatSDK().BlaCatSDK("confirmAppNotify", list);
 ```
 **params参数：** 
 
@@ -298,25 +278,14 @@ BlackCat.SDK.confirmAppNotify(params, function(res){
 **返回示例**
 
 ``` 
-// 方式一
 {
-    "cmd": "confirmAppNotifyRes",
-    "data": {
-        "params": {
-            "txid": "340645e5f0307c285c19c54bc245935ce5dcef5a284bcb86a11e91ac7f80da32"
-        },
-        "res": {
-            "err": false,
-            "info": 1
-        }
+    "params": {
+        "txid": "340645e5f0307c285c19c54bc245935ce5dcef5a284bcb86a11e91ac7f80da32"
+    },
+    "res": {
+        "err": false,
+        "info": 1
     }
-}
-// 方式二
-{
-	"res": {
-		"err": false,
-		"info": 1
-	}
 }
 ```
 
@@ -377,27 +346,12 @@ function getNotifySign($params, $key)
 ### 5、获取余额（getBalance）
 获取当前用户的sgas和gas余额
 ``` 
-// 方式一
-BlackCat.SDK.getBalance()
-
-// 方式二
-BlackCat.SDK.getBalance(function(res){
-	console.log("getbalance.callback.function.res ", res)
-})
+BlaCatSDK.getBlaCatSDK().BlaCatSDK("getBalance");
 ```
 
 **返回示例**
 
 ``` 
-// 方式一：
-{
-    "cmd": "getBalanceRes",
-    "data": {
-        "sgas": 0.988,
-        "gas": 1230.19491
-    }
-}
-// 方式二：
 {
 	"sgas": 0,
 	"gas": 1
@@ -407,38 +361,12 @@ BlackCat.SDK.getBalance(function(res){
 ### 6、获取用户信息（getUserInfo）
 获取当前用户的基础信息
 ``` 
-// 方式一
-BlackCat.SDK.getUserInfo()
-
-// 方式二
-BlackCat.SDK.getUserInfo(function(res){
-	console.log('[BlackCat]', 'getUserInfo.callback.function.res => ', res)
-})
+BlaCatSDK.getBlaCatSDK().BlaCatSDK("getUserInfo");
 ```
 
 **返回示例**
 
 ``` 
-// 方式一
-{
-    "cmd": "getUserInfoRes",
-    "data": {
-        "uid": "sj_xxs23",
-        "name": "136****3881",
-        "invitor": "",
-        "ip": "11.11.11.11",
-        "lastlogin": "1531492182",
-        "token": "8b6853ac07f3f30129eeaea498567b25",
-        "jifen": "0",
-        "wallet": "AQXPAKF7uD5rYbBnqikGDVcsP1Ukpkopg5",
-        "region": "CN",
-        "area": "",
-        "email": "",
-        "qq": "",
-        "icon": ""
-    }
-}
-// 方式二
 {
   "uid": "sj_xxs23",
   "name": "136****3882",
@@ -460,43 +388,23 @@ BlackCat.SDK.getUserInfo(function(res){
 ### 7、获取当前网络类型（getNetType）
 获取当前网络类型，1表示主网，2表示测试网
 ``` 
-// 方式一
-BlackCat.SDK.getNetType()
-
-// 方式二
-BlackCat.SDK.getNetType(function(res){
-	console.log("getNetType.callback.function.res ", res)
-})
+BlaCatSDK.getBlaCatSDK().BlaCatSDK("getNetType");
 ```
 
 **返回示例**
 
 ``` 
-// 方式一：
-{
-    "cmd": "getNetTypeRes",
-    "data": 2
-}
-方式二：
 2
 ```
 
 ### 8、GAS转账（makeGasTransfer）
 执行GAS转账操作，该调用需要钱包用户签名。
 ``` 
-var params = {
-	toaddr: "AQXPAKF7uD5rYbBnqikGDVcsP1Ukpkopg5",
-	count: "0.01",
-	extString: "makeGasTransfer"
-}
-
-// 方式一
-BlackCat.SDK.makeGasTransfer(params)
-
-// 方式二
-BlackCat.SDK.makeGasTransfer(params, function(res){
-    console.log("makeGasTransfer.callback.function.res ", res)
-})
+List<String> list = new ArrayList<>();
+list.add(toaddr);
+list.add(count);
+list.add(extString);
+BlaCatSDK.getBlaCatSDK().BlaCatSDK("makeGasTransfer", list);
 ```
 **params参数：** 
 
@@ -511,52 +419,30 @@ BlackCat.SDK.makeGasTransfer(params, function(res){
 ``` 
 方式一：
 {
-    "cmd": "makeGasTransferRes",
-    "data": {
-        "params": {
-            "toaddr": "AQXPAKF7uD5rYbBnqikGDVcsP1Ukpkopg5",
-            "count": "0.01",
-            "extString": "makeGasTransfer"
-        },
-        "res": {
-            "err": false,
-            "info": "340645e5f0307c285c19c54bc245935ce5dcef5a284bcb86a11e91ac7f80da32"
-        }
+    "params": {
+        "toaddr": "AQXPAKF7uD5rYbBnqikGDVcsP1Ukpkopg5",
+        "count": "0.01",
+        "extString": "makeGasTransfer"
+    },
+    "res": {
+        "err": false,
+        "info": "340645e5f0307c285c19c54bc245935ce5dcef5a284bcb86a11e91ac7f80da32"
     }
-}
-
-方式二：
-{
-	"res": {
-		"err": false,
-		"info": "340645e5f0307c285c19c54bc245935ce5dcef5a284bcb86a11e91ac7f80da32"
-	}
 }
 ```
 
 ### 9、GAS批量转账（makeGasTransferMulti）
 执行GAS批量转账操作，该调用需要钱包用户签名。
 ``` 
-var params = [
-	{
-		toaddr: "AbYR3eUbPUcnenEfmbJ7Fc4DUZLabKD6Cf",
-		count: "0.001",
-		extString: "makeGasTransferMulti1"
-	},
-	{
-		toaddr: "AYkiQ74FHWFygR39WizXCz9f4xCLRYCxMT",
-		count: "0.002",
-		extString: "makeGasTransferMulti2"
-	}
-]
-
-// 方式一
-BlackCat.SDK.makeGasTransferMulti(params)
-
-// 方式二
-BlackCat.SDK.makeGasTransferMulti(params, function(res){
-    console.log("makeGasTransferMulti.callback.function.res ", res)
-})
+List<String> list = new ArrayList<>();
+for (int i = 0; i < 5; i++){
+    List<String> tempList = new ArrayList<>();
+    tempList.add(toaddr);
+    tempList.add(count);
+    tempList.add(extString);
+    list.add(tempList.toString());
+}
+BlaCatSDK.getBlaCatSDK().BlaCatSDKMulti("makeGasTransferMulti", list);
 ```
 **params参数：** 
 
@@ -571,35 +457,24 @@ BlackCat.SDK.makeGasTransferMulti(params, function(res){
 ``` 
 方式一：
 {
-    "cmd": "makeGasTransferMultiRes",
-    "data": {
-        "params": [
-            {
-                "toaddr": "AbYR3eUbPUcnenEfmbJ7Fc4DUZLabKD6Cf",
-                "count": "0.001",
-                "extString": "makeGasTransferMulti1",
-                "sbPushString": "transfer"
-            },
-            {
-                "toaddr": "AYkiQ74FHWFygR39WizXCz9f4xCLRYCxMT",
-                "count": "0.002",
-                "extString": "makeGasTransferMulti2",
-                "sbPushString": "transfer"
-            }
-        ],
-        "res": {
-            "err": false,
-            "info": "c23537c41751e5a96621a1bf1c077d854ef522087b5fc9b245bf22e97f9e4451"
+    "params": [
+        {
+            "toaddr": "AbYR3eUbPUcnenEfmbJ7Fc4DUZLabKD6Cf",
+            "count": "0.001",
+            "extString": "makeGasTransferMulti1",
+            "sbPushString": "transfer"
+        },
+        {
+            "toaddr": "AYkiQ74FHWFygR39WizXCz9f4xCLRYCxMT",
+            "count": "0.002",
+            "extString": "makeGasTransferMulti2",
+            "sbPushString": "transfer"
         }
+    ],
+    "res": {
+        "err": false,
+        "info": "c23537c41751e5a96621a1bf1c077d854ef522087b5fc9b245bf22e97f9e4451"
     }
-}
-
-方式二：
-{
-	"res": {
-		"err": false,
-		"info": "c23537c41751e5a96621a1bf1c077d854ef522087b5fc9b245bf22e97f9e4451"
-	}
 }
 ```
 
@@ -609,24 +484,14 @@ BlackCat.SDK.makeGasTransferMulti(params, function(res){
 ### 2、合约读取（invokescript）
 以只读方式读取智能合约信息，该调用不需要钱包用户签名即可调用。
 ``` 
-  var params = {
-      sbParamJson: ["(addr)AYkiQ74FHWFygR39WizXCz9f4xCLRYCxMT"],
-      sbPushString: "balanceOf",
-      nnc: "0xcfe8f6824365f70d382733a92d8f373ee4faf222",
-	  extString: "invokeScript"
-  };
-  
-  // 方式一
-  BlackCat.SDK.invokescript(params)
-  
-  // 方式二
-  BlackCat.SDK.invokescript(params, function(res){
-    // 接口回调
-    if（res.err == false）{
-      // 获取合约调用数据结果
-      var stack = res.info.stack;
-    }
-  })
+List<String> sbParamJson = new ArrayList<>();
+sbParamJson.add("(addr)AYkiQ74FHWFygR39WizXCz9f4xCLRYCxMT");
+List<String> list = new ArrayList<>();
+list.add(sbParamJson.toString());
+list.add(sbPushString);
+list.add(nnc);
+list.add(extString);
+BlaCatSDK.getBlaCatSDK().BlaCatSDK("invokeScript", list);
 ```
 **params参数：** 
 
@@ -641,46 +506,29 @@ BlackCat.SDK.makeGasTransferMulti(params, function(res){
 
 ``` 
 // 方式一
-{
-    "cmd": "invokescriptRes",
-    "data": {
-        "params": {
-            "nnc": "0xcfe8f6824365f70d382733a92d8f373ee4faf222",
-            "sbParamJson": [
-                "(addr)AYkiQ74FHWFygR39WizXCz9f4xCLRYCxMT"
-            ],
-            "sbPushString": "balanceOf",
-            "extString": "invokeScript"
-        },
-        "res": {
-            "err": false,
-            "info": {
-                "script": "14ba42009c9f422111ca847526b443467fc6483f3651c10962616c616e63654f666722f2fae43e378f2da93327380df7654382f6e8cf",
-                "state": "HALT, BREAK",
-                "gas_consumed": "0.326",
-                "stack": [
-                    {
-                        "type": "ByteArray",
-                        "value": ""
-                    }
-                ]
-            }
+ {
+    "params": {
+        "nnc": "0xcfe8f6824365f70d382733a92d8f373ee4faf222",
+        "sbParamJson": [
+            "(addr)AYkiQ74FHWFygR39WizXCz9f4xCLRYCxMT"
+        ],
+        "sbPushString": "balanceOf",
+        "extString": "invokeScript"
+    },
+    "res": {
+        "err": false,
+        "info": {
+            "script": "14ba42009c9f422111ca847526b443467fc6483f3651c10962616c616e63654f666722f2fae43e378f2da93327380df7654382f6e8cf",
+            "state": "HALT, BREAK",
+            "gas_consumed": "0.326",
+            "stack": [
+                {
+                    "type": "ByteArray",
+                    "value": ""
+                }
+            ]
         }
     }
-}
-
-// 方式二
-{
-	"err": false,
-	"info": {
-		"script": "14ba42009c9f422111ca847526b443467fc6483f3651c10962616c616e63654f666722f2fae43e378f2da93327380df7654382f6e8cf",
-		"state": "HALT, BREAK",
-		"gas_consumed": "0.326",
-		"stack": [{
-			"type": "ByteArray",
-			"value": ""
-		}]
-	}
 }
 ```
 
@@ -693,18 +541,16 @@ BlackCat.SDK.makeGasTransferMulti(params, function(res){
       nnc: "0x3f7420285874867c30f32e44f304fd62ad1e9573",
 	  extString: "makeRawTransaction"
   };
-  
-  // 方式一
-  BlackCat.SDK.makeRawTransaction(params)
-  
-  // 方式二
-  BlackCat.SDK.makeRawTransaction(params, function(res){
-    // 接口回调
-    if（res.err == false）{
-      // 获取合约执行结果
-      var txid = res.info.txid;
-    }
-  })
+List<String> sbParamJson = new ArrayList<>();
+sbParamJson.add("(addr)AYkiQ74FHWFygR39WizXCz9f4xCLRYCxMT");
+sbParamJson.add("(address)AWPVmAobCJGxrupvQSnovofakaVb2ue65a);
+sbParamJson.add("(integer)100000");
+List<String> list = new ArrayList<>();
+list.add(sbParamJson.toString());
+list.add(sbPushString);
+list.add(nnc);
+list.add(extString);
+BlaCatSDK.getBlaCatSDK().BlaCatSDK("makeRawTransaction", list);
 ```
 **params参数：** 
 
@@ -718,35 +564,23 @@ BlackCat.SDK.makeGasTransferMulti(params, function(res){
 **返回示例**
 
 ``` 
-方式一：
 {
-    "cmd": "makeRawTransactionRes",
-    "data": {
-        "params": {
-            "nnc": "0x3f7420285874867c30f32e44f304fd62ad1e9573",
-            "sbParamJson": [
-                "(addr)AYkiQ74FHWFygR39WizXCz9f4xCLRYCxMT",
-                "(address)AWPVmAobCJGxrupvQSnovofakaVb2ue65a",
-                "(integer)100000"
-            ],
-            "sbPushString": "transfer",
-            "extString": "makeRawTransaction"
-        },
-        "res": {
-            "err": false,
-            "info": {
-                "txid": "0x0478bc0bb5757db60d1a1a6c5f774d1a33be5b493156788043712585e7abb779"
-            }
+    "params": {
+        "nnc": "0x3f7420285874867c30f32e44f304fd62ad1e9573",
+        "sbParamJson": [
+            "(addr)AYkiQ74FHWFygR39WizXCz9f4xCLRYCxMT",
+            "(address)AWPVmAobCJGxrupvQSnovofakaVb2ue65a",
+            "(integer)100000"
+        ],
+        "sbPushString": "transfer",
+        "extString": "makeRawTransaction"
+    },
+    "res": {
+        "err": false,
+        "info": {
+            "txid": "0x0478bc0bb5757db60d1a1a6c5f774d1a33be5b493156788043712585e7abb779"
         }
     }
-}
-
-// 方式二
-{
-	"err": false,
-	"info": {
-		"txid": "0x0478bc0bb5757db60d1a1a6c5f774d1a33be5b493156788043712585e7abb779"
-	}
 }
 ```
 
@@ -754,12 +588,16 @@ BlackCat.SDK.makeGasTransferMulti(params, function(res){
 ### 1、设置SDK语言（setLang）
 设置当前SDK语言，可选cn、en
 ``` 
-BlackCat.SDK.setLang(lang)
+List<String> list = new ArrayList<>();
+list.add(Lang);
+BlaCatSDK.getBlaCatSDK().BlaCatSDK("Language", list);
 ```
 ### 2、设置初始默认网络（setDefaultType）
 设置初始默认网络类型（1：主网；2：测试网）
 ``` 
-BlackCat.SDK.setDefaultType(2)
+List<String> list = new ArrayList<>();
+list.add(netNum);
+BlaCatSDK.getBlaCatSDK().BlaCatSDK("setDefaultNetType", list);
 ```
 
 
