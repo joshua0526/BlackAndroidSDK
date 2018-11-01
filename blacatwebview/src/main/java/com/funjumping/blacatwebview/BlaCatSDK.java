@@ -23,14 +23,14 @@ public class BlaCatSDK{
 
     public void BlaCatSDK(String method){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            MyWebView.getMyWebView().evaluateJavascript("javascript:BlaCatSDK('" + method + "')", new ValueCallback<String>() {
+            MyWebView.getMyWebView().evaluateJavascript("javascript:BlaCatSDK('" + method + "','')", new ValueCallback<String>() {
                 @Override
                 public void onReceiveValue(String value) {
 
                 }
             });
         }else {
-            MyWebView.getMyWebView().loadUrl("javascript:BlaCatSDK('" + method + "')");
+            MyWebView.getMyWebView().loadUrl("javascript:BlaCatSDK('" + method + "','')");
         }
     }
     /**

@@ -15,6 +15,7 @@ public class AndroidJavaScript {
     }
     @JavascriptInterface
     public void callback(String data){
+        Toast.makeText(MyWebView.getMyWebView().mContext, data, Toast.LENGTH_LONG).show();
         try {
             JSONObject res = new JSONObject(data);
             switch(res.getString("cmd")){
