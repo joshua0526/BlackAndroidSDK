@@ -27,17 +27,17 @@
             AndroidSDK.callback(data);
         }
 
-        function BlaCatSDK(method, list){
+        function BlaCatSDK(method, list=null){
             switch(method){
                 case "initSDK"://初始化方法
                     BlackCat.SDK.init(list[0],list[1], returnMessage,list[2]);
-                    BlackCat.SDK.showMain()
                 break;
                 case "Language"://语言修改
                     BlackCat.SDK.setLang(list[0]);
                 break;
                 case "LoginSDK"://登陆
                     BlackCat.SDK.login();
+					BlackCat.SDK.showMain();
                 break;
                 case "makeRecharge"://发起充值
                     var params = {count:list[0],extString:list[1]};
@@ -96,6 +96,7 @@
                     BlackCat.SDK.makRawTransaction(params);
                 break;
                 case "setDefaultNetType":
+				alert(2);
                     BlackCat.SDK.setDefaultNetType(list[0]);
                 break;
                 default:

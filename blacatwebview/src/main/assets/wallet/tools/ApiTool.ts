@@ -171,23 +171,19 @@ namespace BlackCat {
             return this.common('user_addressbook.update_addr', { uid: uid, token: token, address_name: address_name, address_wallet: address_wallet, address_desc: address_desc, id: id })
         }
 
-        static async getExchangeInfo(uid: string, token: string, src_coin: number) {
-            return this.common('user_gas.get_info', { uid: uid, token: token, src_coin: src_coin })
-        }
-
-        //获取bcp信息
-        static async getExchangeBCPInfo(uid: string, token: string, src_coin: number) {
-            return this.common('user_bcp.get_info', { uid: uid, token: token, src_coin: src_coin })
+        // 获取交易价格信息
+        static async getExchangeInfo(uid: string, token: string, src_coin: number, net_type: number, exchange:string) {
+            return this.common('wallet_transfer.get_info', { uid: uid, token: token, src_coin: src_coin, net_type: net_type, exchange: exchange })
         }
 
         // 获取不同类型的交易钱包地址
-        static async getOtherAddress(uid: string, token: string, type_src:string) {
-            return this.common('wallet_transfer.get_other_address', { uid: uid, token: token, type_src: type_src })
+        static async getOtherAddress(uid: string, token: string, type_src:string, net_type: number) {
+            return this.common('wallet_transfer.get_other_address', { uid: uid, token: token, type_src: type_src, net_type: net_type })
         }
 
         // 购买
-        static async transferByOther(uid: string, token: string, type_src:string, type:string, price: string, count:string) {
-            return this.common('wallet_transfer.buy', { uid: uid, token: token, type_src: type_src, type: type, price: price, count: count })
+        static async transferByOther(uid: string, token: string, type_src:string, type:string, price: string, count:string, net_type: number, txid: string, c_hash: string) {
+            return this.common('wallet_transfer.buy', { uid: uid, token: token, type_src: type_src, type: type, price: price, count: count, net_type: net_type, txid: txid, c_hash: c_hash })
         }
     }
 }

@@ -512,13 +512,26 @@
             pay_exchange_purchase: "Purchase",
             pay_exchange_price: "Latest price",
             pay_exchange_balance: "Balance",
+            pay_exchange_NEObalance: "NEO余额（仅限购买GAS）",
             pay_exchange_balance_not_enough: "balance is insufficient!",
             pay_exchange_range: "24H Range",
             pay_exchange_buy_ok: "Succeeded!",
+            pay_exchange_consumption: " consumption：",       
+            pay_exchange_placeholderconfirm: "Please confirm your purchase",
+            pay_exchange_confirmbuy: "Confirm",     
+            pay_exchange_purchase_process: "Purchase process",
+            pay_exchange_processp1: "1.Please input GAS amounts and the system wil show the amounts of %type% balance in Exchange.",
+            pay_exchange_processp2: "2.%type% wallet address provided by platform can be found below. Please transfer corresponding %type1% to it in Exchange. If the transaction succeeded,  system will show your current %type2% balance.",
 
             // PayExchangeBcpDetail
             pay_exchange_bcp: "Exchange BCP",
             pay_exchange_create_wallet_fail: "Failed to create a trading wallet, please try it later!",
+
+            // PayExchangeDetailView
+            pay_exchange_detail_buy_GAS_fail: "购买GAS失败！",
+            pay_exchange_detail_buy_BCP_fail: "购买BCP失败！",
+
+            pay_exchange_spent_not_enough: "数量太小，请调整数量！",
 
             // ViewAlert
 

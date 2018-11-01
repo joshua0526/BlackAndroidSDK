@@ -21,6 +21,15 @@ namespace BlackCat {
             this.div = this.objCreate("div") as HTMLDivElement;
             this.div.classList.add("pc_bj", "pc_login")
 
+            // 捕获登录回车事件
+            this.div.onkeyup = (e) => {
+                var code = e.charCode || e.keyCode;
+                if (code == 13) {
+                    //此处编写用户敲回车后的代码
+                    this.doLogin();
+                }
+            }
+
             //登录logo
             var divLogo = this.objCreate("div")
             divLogo.classList.add("pc_login_logo", "iconfont", "icon-bc-blacat")

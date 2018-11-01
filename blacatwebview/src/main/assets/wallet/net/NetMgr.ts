@@ -285,9 +285,16 @@ namespace BlackCat {
                 // cgas协调退款地址
                 tools.WWW.api_cgas = 'https://apiwallet.nel.group/api/testnet';
 
-                // NEP5
-                tools.CoinTool.id_BTC_NEP5 = "0x93ae7faf78f67c9753e768a3c6ffcfd974ea1c6f"
-                tools.CoinTool.id_ETH_NEP5 = ""
+                // BTC-NEP5
+                tools.CoinTool.id_BTC_NEP5 = "0x07bc2c1398e1a472f3841a00e7e7e02029b8b38b"
+                tools.CoinTool.id_BTC_NEP5_DESTROY = "AUWYsHRi1xv584DswcQKkz1UXJf8G3se4Y"
+
+                // ETH-NEP5
+                tools.CoinTool.id_ETH_NEP5 = "0x7c652b368ddc0fb035bb9c63eca91b2e3c55385e"
+                tools.CoinTool.id_ETH_NEP5_DESTROY = "AQN4ecUAEcX8Sce11e7eyWNRYPPbDv7rcZ"
+
+                // NEO
+                tools.CoinTool.id_NEO_NEP5_DESTROY = "AWN6jngST5ytpNnY1dhBQG7QHd7V8SqSCp"
 
                 // 回调
                 callback()
@@ -306,9 +313,16 @@ namespace BlackCat {
                 // cgas协调退款地址
                 tools.WWW.api_cgas = 'https://apiwallet.nel.group/api/mainnet';
 
-                // NEP5
-                tools.CoinTool.id_BTC_NEP5 = "0x93ae7faf78f67c9753e768a3c6ffcfd974ea1c6f"
+                // BTC-NEP5
+                tools.CoinTool.id_BTC_NEP5 = ""
+                tools.CoinTool.id_BTC_NEP5_DESTROY = ""
+
+                // ETH-NEP5
                 tools.CoinTool.id_ETH_NEP5 = ""
+                tools.CoinTool.id_ETH_NEP5_DESTROY = ""
+
+                // NEO
+                tools.CoinTool.id_NEO_NEP5_DESTROY = ""
 
                 // 回调
                 callback()

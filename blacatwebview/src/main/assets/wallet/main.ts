@@ -1160,6 +1160,29 @@ namespace BlackCat {
             var openTask = null; // 打开钱包任务
             for (let k in params) {
                 switch (params[k].type) {
+                    case "9": // 储值到交易钱包
+                        if (params[k].state == "1") {
+                            if (params[k].ext) {
+                                // 提交成功，循环获取结果，不需要开钱包
+                                try {
+                                    let ext_obj = JSON.parse(params[k].ext)
+                                    if (ext_obj.hasOwnProperty('txid')) {
+                                        Main.doPlatNotifyTransferRes(params[k], ext_obj['txid'])
+                                    }
+                                }
+                                catch(e) {
+                                    this.confirmPlatNotify(params[k])
+                                }
+                            }
+                            else {
+                                this.confirmPlatNotify(params[k])
+                            }
+                        }
+                        else {
+                            // 失败的，直接回调
+                            this.confirmPlatNotify(params[k])
+                        }
+                        break;
                     case "2": // sgas->gas退款
                         if (params[k].state == "1") {
                             if (params[k].ext) {
@@ -1348,6 +1371,20 @@ namespace BlackCat {
             } else {
                 // Main.showErrMsg("获取转换合约失败！");
                 Main.showErrMsg(("main_refund_getScript_err"))
+            }
+        }
+        private static async doPlatNotifyTransferRes(params, txid) {
+            var r = await tools.WWW.getrawtransaction(txid)
+            if (r) {
+                console.log("[BlaCat]", '[main]', 'doPlatNotifyTransferRes, txid: ' + txid + ", r => ", r)
+                await Main.confirmPlatNotify(params)
+                // 刷新payview交易状态
+                Main.viewMgr.payView.doGetWalletLists()
+            }
+            else {
+                setTimeout(() => {
+                    this.doPlatNotifyTransferRes(params, txid)
+                }, 10000);
             }
         }
         private static async doPlatNotifyRefundRes(params, txid) {

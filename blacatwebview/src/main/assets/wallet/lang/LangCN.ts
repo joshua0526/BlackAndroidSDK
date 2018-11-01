@@ -432,11 +432,18 @@ namespace BlackCat {
             pay_refresh: "刷新",
             pay_wallet_detail: "详情",
             pay_coin_name: "代币",
+            pay_coin_blacat: "BlaCat",
+            pay_coin_neo: "NEO",
+            pay_coin_other: "其他",
             pay_coin_old: "CGAS(old)兑换",
             pay_gas: "GAS",
             pay_gas_desc: "GAS是NEO链上的数字货币，可以通过交易所获取",
             pay_sgas: "CGAS",
             pay_sgas_desc: "CGAS是BlaCat提供给玩家消费用的通用筹码",
+            pay_neo: "NEO",
+            pay_neo_desc: "NEO是BlaCat提供给玩家消费用的通用筹码",
+            pay_btc: "BTC",
+            pay_eth: "ETH",
             pay_send: "转账",
             pay_purchase: "购买",
             pay_purchase_testnet_cant_buy: "请切换到主网购买GAS！",
@@ -516,10 +523,27 @@ namespace BlackCat {
             pay_exchange_balance_not_enough: "余额不足！",
             pay_exchange_range: "24H涨跌",
             pay_exchange_buy_ok: "提交成功！",
+            pay_exchange_consumption: "消耗：",
+            pay_exchange_placeholderconfirm: "输入购买数量",
+            pay_exchange_confirmbuy: "确认购买",     
+            pay_exchange_purchase_process: "购买流程",
+            pay_exchange_processp1: "1.以下是平台提供%type%钱包地址，请去各大交易所转入所需要的%type1%数量，转账成功后上方会显示您的%type2%余额",
+          
+            
 
             // PayExchangeBcpDetail
             pay_exchange_bcp: "购买BCP",
             pay_exchange_create_wallet_fail: "创建交易钱包失败，请稍候重试！",
+
+            // PayExchangeNEODetail
+            pay_exchange_neo: "获取NEO",
+
+            // PayExchangeDetailView
+            pay_exchange_detail_buy_GAS_fail: "购买GAS失败！",
+            pay_exchange_detail_buy_BCP_fail: "购买BCP失败！",
+            pay_exchange_buyNEO: "输入支付数量",
+
+            pay_exchange_spent_not_enough: "数量太小，请调整数量！",
 
             // ViewAlert
 

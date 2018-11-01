@@ -2,7 +2,7 @@
 /// <reference path="./ViewBase.ts" />
 
 namespace BlackCat {
-    // 交易所
+    // 购买BCP
     export class PayExchangeBCPView extends ViewBase {
 
 
@@ -79,7 +79,7 @@ namespace BlackCat {
 
         private async getExchangeBCPInfo(src_coin: number) {
             try {
-                var res = await ApiTool.getExchangeBCPInfo(Main.user.info.uid, Main.user.info.token, src_coin)
+                var res = await ApiTool.getExchangeInfo(Main.user.info.uid, Main.user.info.token, src_coin, Main.netMgr.type, "bcp")
                 if (res.r) {
                     let data = res.data;
                     console.log("[BlaCat]", '[PayExchangeBCPView]', 'getExchangeBCPInfo, data =>', data)
@@ -187,7 +187,7 @@ namespace BlackCat {
                 Main.viewMgr.change("ViewLoading")
                 try {
                     // 获取交易钱包地址
-                    var res = await ApiTool.getOtherAddress(Main.user.info.uid, Main.user.info.token, this.exchange_coin_name.toLowerCase())
+                    var res = await ApiTool.getOtherAddress(Main.user.info.uid, Main.user.info.token, this.exchange_coin_name.toLowerCase(), Main.netMgr.type)
                 }
                 catch(e) {
 

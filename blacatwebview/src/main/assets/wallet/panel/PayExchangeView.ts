@@ -2,7 +2,7 @@
 /// <reference path="./ViewBase.ts" />
 
 namespace BlackCat {
-    // 交易所
+    // 购买GAS
     export class PayExchangeView extends ViewBase {
 
 
@@ -79,7 +79,7 @@ namespace BlackCat {
 
         private async getExchangeInfo(src_coin: number) {
             try {
-                var res = await ApiTool.getExchangeInfo(Main.user.info.uid, Main.user.info.token, src_coin)
+                var res = await ApiTool.getExchangeInfo(Main.user.info.uid, Main.user.info.token, src_coin, Main.netMgr.type, "gas")
                 if (res.r) {
                     let data = res.data;
                     console.log("[BlaCat]", '[PayExchangeView]', 'getExchangeInfo, data =>', data)
@@ -183,21 +183,34 @@ namespace BlackCat {
             var buyObj_buy_btn = this.objCreate("button")
             buyObj_buy_btn.textContent = Main.langMgr.get("pay_exchange_purchase") // "购买"
             buyObj_buy_btn.onclick = async () => {
-                Main.viewMgr.change("ViewLoading")
-                // 获取交易钱包地址
-                try {
-                    var res = await ApiTool.getOtherAddress(Main.user.info.uid, Main.user.info.token, this.exchange_coin_name.toLowerCase())
+                if (this.exchange_coin_name.toLowerCase() == "neo") {
+                    var res: any = {}
+                    res['data'] = {
+                        address: Main.user.info.wallet,
+                        balance: Main.viewMgr.payView.neo,
+                        type: "",
+                        type_src: "neo",
+                        uid: Main.user.info.uid,
+                    }
                 }
-                catch(e) {
-
+                else {
+                    Main.viewMgr.change("ViewLoading")
+                    // 获取交易钱包地址
+                    try {
+                        var res = await ApiTool.getOtherAddress(Main.user.info.uid, Main.user.info.token, this.exchange_coin_name.toLowerCase(), Main.netMgr.type)
+                    }
+                    catch(e) {
+    
+                    }
+                    Main.viewMgr.viewLoading.remove()
+    
+                    if (!res || !res.r) {
+                        // 获取失败
+                        Main.showErrMsg("pay_exchange_create_wallet_fail")
+                        return
+                    }
                 }
-                Main.viewMgr.viewLoading.remove()
-
-                if (!res || !res.r) {
-                    // 获取失败
-                    Main.showErrMsg("pay_exchange_create_wallet_fail")
-                    return
-                }
+                
 
                 this.hidden()
                 PayExchangeDetailView.callback_params = {
