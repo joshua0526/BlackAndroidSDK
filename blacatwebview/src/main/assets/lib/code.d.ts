@@ -76,7 +76,6 @@ declare namespace BlackCat {
         private static doPlatNotify;
         static continueRefund(): Promise<void>;
         private static doPlatNotiyRefund;
-        private static doPlatNotifyTransferRes;
         private static doPlatNotifyRefundRes;
         private static confirmPlatNotify;
         private static confirmPlatNotifyExt;
@@ -525,24 +524,15 @@ declare namespace BlackCat {
             pay_transferDoSucc: string;
             pay_transferDoFail: string;
             pay_transferGasNotEnough: string;
-            pay_transferBCPNotEnough: string;
-            pay_transferBCTNotEnough: string;
             pay_wallet: string;
             pay_refresh: string;
             pay_wallet_detail: string;
             pay_coin_name: string;
-            pay_coin_blacat: string;
-            pay_coin_neo: string;
-            pay_coin_other: string;
             pay_coin_old: string;
             pay_gas: string;
             pay_gas_desc: string;
             pay_sgas: string;
             pay_sgas_desc: string;
-            pay_neo: string;
-            pay_neo_desc: string;
-            pay_btc: string;
-            pay_eth: string;
             pay_send: string;
             pay_purchase: string;
             pay_purchase_testnet_cant_buy: string;
@@ -603,23 +593,7 @@ declare namespace BlackCat {
             pay_exchange_gas: string;
             pay_exchange_purchase: string;
             pay_exchange_price: string;
-            pay_exchange_balance: string;
-            pay_exchange_NEObalance: string;
-            pay_exchange_balance_not_enough: string;
             pay_exchange_range: string;
-            pay_exchange_buy_ok: string;
-            pay_exchange_consumption: string;
-            pay_exchange_placeholderconfirm: string;
-            pay_exchange_confirmbuy: string;
-            pay_exchange_purchase_process: string;
-            pay_exchange_processp1: string;
-            pay_exchange_bcp: string;
-            pay_exchange_create_wallet_fail: string;
-            pay_exchange_neo: string;
-            pay_exchange_detail_buy_GAS_fail: string;
-            pay_exchange_detail_buy_BCP_fail: string;
-            pay_exchange_buyNEO: string;
-            pay_exchange_spent_not_enough: string;
             pay_makeRecharge: string;
             pay_trust_tips: string;
             pay_trust_Vice_tips: string;
@@ -707,6 +681,8 @@ declare namespace BlackCat {
             netmgr_select_cli_slow: string;
             netmgr_connecting: string;
             netmgr_connecting_fail: string;
+            pay_exchange_bcp: string;
+            pay_exchange_bct: string;
         };
     }
 }
@@ -1086,8 +1062,6 @@ declare namespace BlackCat {
             pay_transferDoSucc: string;
             pay_transferDoFail: string;
             pay_transferGasNotEnough: string;
-            pay_transferBCPNotEnough: string;
-            pay_transferBCTNotEnough: string;
             pay_wallet: string;
             pay_refresh: string;
             pay_wallet_detail: string;
@@ -1157,22 +1131,7 @@ declare namespace BlackCat {
             pay_exchange_gas: string;
             pay_exchange_purchase: string;
             pay_exchange_price: string;
-            pay_exchange_balance: string;
-            pay_exchange_NEObalance: string;
-            pay_exchange_balance_not_enough: string;
             pay_exchange_range: string;
-            pay_exchange_buy_ok: string;
-            pay_exchange_consumption: string;
-            pay_exchange_placeholderconfirm: string;
-            pay_exchange_confirmbuy: string;
-            pay_exchange_purchase_process: string;
-            pay_exchange_processp1: string;
-            pay_exchange_processp2: string;
-            pay_exchange_bcp: string;
-            pay_exchange_create_wallet_fail: string;
-            pay_exchange_detail_buy_GAS_fail: string;
-            pay_exchange_detail_buy_BCP_fail: string;
-            pay_exchange_spent_not_enough: string;
             pay_makeRecharge: string;
             pay_trust_tips: string;
             pay_trust_Vice_tips: string;
@@ -1260,6 +1219,8 @@ declare namespace BlackCat {
             netmgr_select_cli_slow: string;
             netmgr_connecting: string;
             netmgr_connecting_fail: string;
+            pay_exchange_bcp: string;
+            pay_exchange_bct: string;
         };
     }
 }
@@ -1639,8 +1600,6 @@ declare namespace BlackCat {
             pay_transferDoSucc: string;
             pay_transferDoFail: string;
             pay_transferGasNotEnough: string;
-            pay_transferBCPNotEnough: string;
-            pay_transferBCTNotEnough: string;
             pay_wallet: string;
             pay_refresh: string;
             pay_wallet_detail: string;
@@ -1710,21 +1669,7 @@ declare namespace BlackCat {
             pay_exchange_gas: string;
             pay_exchange_purchase: string;
             pay_exchange_price: string;
-            pay_exchange_balance: string;
-            pay_exchange_NEObalance: string;
-            pay_exchange_balance_not_enough: string;
             pay_exchange_range: string;
-            pay_exchange_buy_ok: string;
-            pay_exchange_consumption: string;
-            pay_exchange_placeholderconfirm: string;
-            pay_exchange_confirmbuy: string;
-            pay_exchange_purchase_process: string;
-            pay_exchange_processp1: string;
-            pay_exchange_processp2: string;
-            pay_exchange_bcp: string;
-            pay_exchange_create_wallet_fail: string;
-            pay_exchange_detail_buy_GAS_fail: string;
-            pay_exchange_detail_buy_BCP_fail: string;
             pay_makeRecharge: string;
             pay_trust_tips: string;
             pay_trust_Vice_tips: string;
@@ -1812,6 +1757,8 @@ declare namespace BlackCat {
             netmgr_select_cli_slow: string;
             netmgr_connecting: string;
             netmgr_connecting_fail: string;
+            pay_exchange_bcp: string;
+            pay_exchange_bct: string;
         };
     }
 }
@@ -2165,40 +2112,13 @@ declare namespace BlackCat {
 }
 declare namespace BlackCat {
     class PayExchangeDetailView extends ViewBase {
+        private ulExchange;
+        private divAddress;
         private inputGas;
-        private inputNEO;
-        private balanceHtmlElement;
-        private balance;
-        private netFeeCom;
-        private net_fee;
-        private nnc;
-        private destoryAddr;
-        private buyFail;
-        private s_getWalletLists;
         create(): void;
         toRefer(): void;
         private doMakeTransfer;
         private base64ToBlob;
-        private checkTransCount;
-        private getBalance;
-        private buy;
-        private getSpent;
-        private getBuyContractHash;
-        private addGetWalletLists;
-    }
-}
-declare namespace BlackCat {
-    class PayExchangeShowWalletView extends ViewBase {
-        private balanceHtmlElement;
-        private balance;
-        private s_getWalletLists;
-        create(): void;
-        toRefer(): void;
-        private doMakeTransfer;
-        private base64ToBlob;
-        private checkTransCount;
-        private getBalance;
-        private addGetWalletLists;
     }
 }
 declare namespace BlackCat {
@@ -2295,14 +2215,10 @@ declare namespace BlackCat {
 declare namespace BlackCat {
     class PayView extends ViewBase {
         wallet_addr: string;
-        wallet_addr_other: any;
         gas: number;
         sgas: number;
-        neo: number;
         bct: number;
         bcp: number;
-        btc: number;
-        eth: number;
         listPageNum: number;
         payMyWallet: HTMLElement;
         height_clis: number;
@@ -2311,17 +2227,9 @@ declare namespace BlackCat {
         private spanSgas;
         private spanBCP;
         private spanBCT;
-        private spanNEO;
-        private spanBTC;
-        private spanETH;
+        private spanABC;
         private divHeight_clis;
         private divHeight_nodes;
-        private token_blacat;
-        private token_neo;
-        private token_other;
-        private divCurrencyBlaCatlist;
-        private divCurrencyNEOlist;
-        private divCurrencyotherlist;
         private divLists;
         private divListsMore;
         private divNetSelect;
@@ -2340,16 +2248,10 @@ declare namespace BlackCat {
         private clearTimeout;
         doGetBalances(): Promise<void>;
         private doMakeRefundOld;
-        private doExchangeGAS;
-        private doMakeMintToken;
-        private doExchange;
-        private doExchangeNEO;
         private doExchangeBCT;
         private doExchangeBCP;
-        private doExchangeBTC;
-        private doExchangeETH;
-        getWalletAddrOther(type: string): Promise<any>;
-        private _doExchangeOther;
+        private doMakePurchase;
+        private doMakeMintToken;
         private divLists_recreate;
         doGetWalletLists(force?: number): Promise<void>;
         private getSgasIcon;
@@ -2367,7 +2269,6 @@ declare namespace BlackCat {
         private makeRefundTransaction;
         private doMakeReceivables;
         private doMakeTransfer;
-        private changetokenlist;
         flushListCtm(): void;
         private getNetTypeName;
         private showChangeNetType;
@@ -2375,10 +2276,6 @@ declare namespace BlackCat {
         checkTransCount(count: string): boolean;
         getHeight(type: string): Promise<void>;
         updateHeight(type: any, height: any): void;
-        parseTypeDetailType10(type_detail: string): {
-            type: string;
-            type_src: string;
-        };
     }
 }
 declare namespace BlackCat {
@@ -2534,7 +2431,6 @@ declare namespace BlackCat {
         addressbookOpView: AddressbookOpView;
         viewConnecting: ViewConnecting;
         payExchangeBCTView: PayExchangeBCTView;
-        payExchangeShowWalletView: PayExchangeShowWalletView;
         constructor();
         change(type: string): void;
         removeAll(): void;
@@ -2877,9 +2773,8 @@ declare namespace BlackCat {
         static delAddrbook(uid: string, token: string, id: string): Promise<any>;
         static getAddrbook(uid: string, token: string): Promise<any>;
         static updateAddrbook(uid: string, token: string, address_name: string, address_wallet: string, address_desc: string, id: string): Promise<any>;
-        static getExchangeInfo(uid: string, token: string, src_coin: number, net_type: number, exchange: string): Promise<any>;
-        static getOtherAddress(uid: string, token: string, type_src: string, net_type: number): Promise<any>;
-        static transferByOther(uid: string, token: string, type_src: string, type: string, price: string, count: string, net_type: number, txid: string, c_hash: string): Promise<any>;
+        static getExchangeInfo(uid: string, token: string, src_coin: number): Promise<any>;
+        static getExchangeBCPInfo(uid: string, token: string, src_coin: number): Promise<any>;
     }
 }
 declare namespace BlackCat {
@@ -2903,11 +2798,6 @@ declare namespace BlackCat.tools {
         static id_SGAS_OLD: Array<string>;
         static id_BCT: string;
         static id_BCP: string;
-        static id_BTC_NEP5: string;
-        static id_BTC_NEP5_DESTROY: string;
-        static id_ETH_NEP5: string;
-        static id_ETH_NEP5_DESTROY: string;
-        static id_NEO_NEP5_DESTROY: string;
         static assetID2name: {
             [id: string]: string;
         };
@@ -2929,9 +2819,9 @@ declare namespace BlackCat.tools {
         }>, assetid: string, net_fee?: Neo.Fixed8): Result;
         static rawTransaction(targetaddr: string, asset: string, count: string, net_fee?: Neo.Fixed8): Promise<Result>;
         static rawTransactionMulti(targets: Array<any>, asset: string, net_fee?: Neo.Fixed8): Promise<Result>;
-        static contractInvokeTrans_attributes(script: Uint8Array, net_fee?: string, not_send?: boolean): Promise<Result>;
+        static contractInvokeTrans_attributes(script: Uint8Array): Promise<Result>;
         static contractInvokeTrans(script: Uint8Array): Promise<Result>;
-        static nep5Transaction(address: string, tatgeraddr: any, asset: string, amount: string, net_fee?: string, not_send?: boolean): Promise<Result>;
+        static nep5Transaction(address: string, tatgeraddr: any, asset: string, amount: string): Promise<Result>;
         static getsgasAssets(id_SGAS?: string): Promise<{
             [id: string]: UTXO[];
         }>;

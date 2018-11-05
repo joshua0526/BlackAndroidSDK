@@ -12,15 +12,6 @@ namespace BlackCat.tools {
         static id_BCT: string = "";
         static id_BCP: string = "";
 
-        // btc-nep5
-        static id_BTC_NEP5: string = "";
-        static id_BTC_NEP5_DESTROY: string = "";
-        // eth-nep5
-        static id_ETH_NEP5: string = "";
-        static id_ETH_NEP5_DESTROY: string = "";
-        // neo,没有nep5
-        static id_NEO_NEP5_DESTROY: string = ""
-
 
         // static readonly id_SGAS_RATE: number = 100000000;
         static assetID2name: { [id: string]: string } = {};
@@ -521,49 +512,13 @@ namespace BlackCat.tools {
          * invokeTrans 方式调用合约塞入attributes
          * @param script 合约的script
          */
-        static async contractInvokeTrans_attributes(script: Uint8Array, net_fee: string = "0", not_send: boolean = false) {
+        static async contractInvokeTrans_attributes(script: Uint8Array) {
             let current: LoginInfo = LoginInfo.getCurrentLogin();
             var addr = current.address;
-
-            var tran: ThinNeo.Transaction;
-
-            // 有网络手续费
-            if (Number(net_fee) > 0) {
-
-                // makeTranRes.info.tran.extdata.gas = Neo.Fixed8.fromNumber(Number(net_fee));
-                try {
-                    // 获取用户utxo
-                    var user_utxos_assets = await tools.CoinTool.getassets();
-                    console.log("[BlaCat]", '[PayView]', 'makeRefundTransaction, user_utxos_assets => ', user_utxos_assets)
-
-                    var user_makeTranRes: Result = tools.CoinTool.makeTran(
-                        user_utxos_assets,
-                        Main.user.info.wallet,
-                        tools.CoinTool.id_GAS,
-                        Neo.Fixed8.Zero,
-                        Neo.Fixed8.fromNumber(Number(net_fee)),
-                    );
-
-                    // inputs、outputs、oldarr塞入
-                    var tran = user_makeTranRes.info.tran as ThinNeo.Transaction
-                    var oldarr = user_makeTranRes.info.oldarr
-                    console.log("[BlaCat]", '[cointool]', 'contractInvokeTrans_attributes, user_makeTranRes => ', user_makeTranRes)
-                }
-                catch (e) {
-                    var res: Result = new Result();
-                    res.err = true
-                    res.info = e.toString()
-                    return res;
-                }
-            }
-            else {
-                tran = new ThinNeo.Transaction();
-                //合约类型
-                tran.inputs = [];
-                tran.outputs = [];
-            }
-
-
+            var tran: ThinNeo.Transaction = new ThinNeo.Transaction();
+            //合约类型
+            tran.inputs = [];
+            tran.outputs = [];
             tran.type = ThinNeo.TransactionType.InvocationTransaction;
             tran.extdata = new ThinNeo.InvokeTransData();
             //塞入脚本
@@ -585,32 +540,10 @@ namespace BlackCat.tools {
             let txid = tran.GetHash().clone().reverse().toHexString();
 
             var res: Result = new Result();
-
-            if (not_send) {
-                // 不发送请求，后续自行发送，给出txid等信息
-                res.err = false
-                res.info = txid
-                res['data'] = data
-
-                // 记录使用的utxo，后面不再使用，需要记录高度
-                if (Number(net_fee) > 0 && oldarr) {
-                    var height = await tools.WWW.api_getHeight_nodes();
-                    oldarr.map(old => old.height = height);
-                    res['oldarr'] = oldarr
-                }
-                return res
-            }
-
             var result = await tools.WWW.api_postRawTransaction(data);
             if (result["sendrawtransactionresult"]) {
                 if (!result["txid"]) {
                     result["txid"] = txid
-                }
-                // 记录使用的utxo，后面不再使用，需要记录高度
-                if (Number(net_fee) > 0 && oldarr) {
-                    var height = await tools.WWW.api_getHeight_nodes();
-                    oldarr.map(old => old.height = height);
-                    tools.OldUTXO.oldutxosPush(oldarr);
                 }
             }
             res.err = !result["sendrawtransactionresult"];
@@ -658,10 +591,8 @@ namespace BlackCat.tools {
          * @param tatgeraddr 转账的地址
          * @param asset nep5资产id
          * @param amount 转账数额
-         * @param net_fee 手续费
-         * @param not_send false（默认）发送请求到链上，true：不发送请求
          */
-        static async nep5Transaction(address: string, tatgeraddr, asset: string, amount: string, net_fee:string = "0", not_send: boolean = false) {
+        static async nep5Transaction(address: string, tatgeraddr, asset: string, amount: string) {
             let res = await tools.WWW.getNep5Asset(asset);
             var decimals = res["decimals"] as number;
             var numarr = amount.split(".");
@@ -694,7 +625,7 @@ namespace BlackCat.tools {
             sb.EmitParamJson(["(address)" + address, "(address)" + tatgeraddr, "(integer)" + intv]);//第二个参数是个数组
             sb.EmitPushString("transfer");
             sb.EmitAppCall(scriptaddress);
-            var result = await CoinTool.contractInvokeTrans_attributes(sb.ToArray(), net_fee, not_send)
+            var result = await CoinTool.contractInvokeTrans_attributes(sb.ToArray())
             return result;
         }
 

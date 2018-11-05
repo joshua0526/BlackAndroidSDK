@@ -2,7 +2,7 @@
 /// <reference path="./ViewBase.ts" />
 
 namespace BlackCat {
-    // 购买BCT
+    // XX币充值
     export class PayExchangeBCTView extends ViewBase {
 
         private inputamount: HTMLInputElement

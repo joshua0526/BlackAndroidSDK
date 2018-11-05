@@ -71,9 +71,7 @@ namespace BlackCat {
 
             // 交易速度选择
             var divSpeedSelect = this.objCreate("div")
-            var spanspeed = this.objCreate("span")
-            this.ObjAppend(divSpeedSelect, spanspeed)
-            spanspeed.textContent = Main.langMgr.get("pay_transCount_speed") //交易速度
+            divSpeedSelect.textContent = Main.langMgr.get("pay_transCount_speed") //交易速度
             this.ObjAppend(this.mainDiv, divSpeedSelect)
 
             // 免费选择

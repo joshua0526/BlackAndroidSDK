@@ -22,12 +22,12 @@ namespace BlackCat {
                 // 调试服
                 // ["CN", "https://api00.9191wyx.com/apic_v2/"],
                 // ["CN", "http://192.168.23.128/apic_v2/"],
-                ["CN", "https://blacat.9191wyx.com/apic/"],
+                // ["CN", "https://blacat.9191wyx.com/apic/"],
                 // ["CN", "http://10.1.8.132/new/nel/api_c/"],
 
                 // 正式服
-                // ["CN", "//apip01.9191wyx.com/apic/"], // gateway
-                // ["HK", "//api01.blacat.org/apic/"],
+                ["CN", "//apip01.9191wyx.com/apic/"], // gateway
+                ["HK", "//api01.blacat.org/apic/"],
             ]
 
             this.nodes = {}
@@ -285,17 +285,6 @@ namespace BlackCat {
                 // cgas协调退款地址
                 tools.WWW.api_cgas = 'https://apiwallet.nel.group/api/testnet';
 
-                // BTC-NEP5
-                tools.CoinTool.id_BTC_NEP5 = "0x07bc2c1398e1a472f3841a00e7e7e02029b8b38b"
-                tools.CoinTool.id_BTC_NEP5_DESTROY = "AUWYsHRi1xv584DswcQKkz1UXJf8G3se4Y"
-
-                // ETH-NEP5
-                tools.CoinTool.id_ETH_NEP5 = "0x7c652b368ddc0fb035bb9c63eca91b2e3c55385e"
-                tools.CoinTool.id_ETH_NEP5_DESTROY = "AQN4ecUAEcX8Sce11e7eyWNRYPPbDv7rcZ"
-
-                // NEO
-                tools.CoinTool.id_NEO_NEP5_DESTROY = "AWN6jngST5ytpNnY1dhBQG7QHd7V8SqSCp"
-
                 // 回调
                 callback()
             }, 2)
@@ -312,17 +301,6 @@ namespace BlackCat {
 
                 // cgas协调退款地址
                 tools.WWW.api_cgas = 'https://apiwallet.nel.group/api/mainnet';
-
-                // BTC-NEP5
-                tools.CoinTool.id_BTC_NEP5 = ""
-                tools.CoinTool.id_BTC_NEP5_DESTROY = ""
-
-                // ETH-NEP5
-                tools.CoinTool.id_ETH_NEP5 = ""
-                tools.CoinTool.id_ETH_NEP5_DESTROY = ""
-
-                // NEO
-                tools.CoinTool.id_NEO_NEP5_DESTROY = ""
 
                 // 回调
                 callback()

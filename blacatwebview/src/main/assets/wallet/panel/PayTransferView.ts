@@ -92,44 +92,44 @@ namespace BlackCat {
             this.selectType.classList.add("pc_transfertypes")
             this.ObjAppend(divtransferdiv, this.selectType)
 
-            this.selectType.onchange = () => {
+            this.selectType.onchange = () =>{
                 this.transferType = this.selectType.value;
 
-                switch (this.transferType) {
+                switch(this.transferType){
                     case 'BCP':
-                        this.spanBalance.innerText = this.transferType + ": " + this.bcpBalance;
-                        break;
+                        this.spanBalance.innerText = this.transferType + ": "+this.bcpBalance;
+                    break;
                     case 'BCT':
-                        this.spanBalance.innerText = this.transferType + ": " + this.bctBalance;
-                        break;
+                        this.spanBalance.innerText = this.transferType + ": "+this.bctBalance;
+                    break;
                     case 'GAS':
-                        this.spanBalance.innerText = this.transferType + ": " + this.gasBalance;
-                        break;
+                        this.spanBalance.innerText = this.transferType + ": "+this.gasBalance;
+                    break;
                 }
             }
 
             // 选择GAS类型
             var optionGas = this.objCreate("option") as HTMLOptionElement
             optionGas.value = Main.langMgr.get("gas") // "GAS"
-            optionGas.innerHTML = Main.langMgr.get("gas")
+            optionGas.innerHTML =Main.langMgr.get("gas")
             this.ObjAppend(this.selectType, optionGas)
 
             // 选择BCP类型
             var optionBcp = this.objCreate("option") as HTMLOptionElement
             optionBcp.value = Main.langMgr.get("bcp") // "BCP"
-            optionBcp.innerHTML = Main.langMgr.get("bcp")
+            optionBcp.innerHTML =Main.langMgr.get("bcp")
             this.ObjAppend(this.selectType, optionBcp)
 
             // 选择BCT类型
             var optionBct = this.objCreate("option") as HTMLOptionElement
             optionBct.value = Main.langMgr.get("bct") // "BCP"
-            optionBct.innerHTML = Main.langMgr.get("bct")
+            optionBct.innerHTML =Main.langMgr.get("bct")
             this.ObjAppend(this.selectType, optionBct)
 
             this.spanBalance = this.objCreate('span');
             this.spanBalance.classList.add('pc_gasbalancespan');  //添加类样式
-            this.spanBalance.innerText = "GAS: " + this.gasBalance;
-            this.ObjAppend(divtransferdiv, this.spanBalance);
+            this.spanBalance.innerText = "GAS: "+this.gasBalance;
+            this.ObjAppend(divtransferdiv,this.spanBalance);
 
             // 余额
             // var gasBalanceObj = this.objCreate("span");
@@ -298,66 +298,27 @@ namespace BlackCat {
             var net_fee = this.net_fee
 
             // 余额判断
-            switch (this.transferType) {
-                case 'GAS':
-                    //gas转账
-                    if (Number(this.inputGasCount.value) + Number(net_fee) > Number(this.gasBalance)) {
-                        Main.showErrMsg("pay_transferGasNotEnough", () => {
-                            this.inputGasCount.focus()
-                        })
-                        return
-                    }
-                    break;
-                case 'BCP': //BCP转账
-                    if ( Number(net_fee) > Number(this.gasBalance)) {
-                        Main.showErrMsg("pay_transferGasNotEnough", () => {
-                            this.inputGasCount.focus()
-                        })
-                        return
-                    }
-                    if (Number(this.inputGasCount.value) > Number(this.bcpBalance)) {
-                        Main.showErrMsg("pay_transferBCPNotEnough", () => {
-                            this.inputGasCount.focus()
-                        })
-                        return
-                    }
-                    break;
-                case 'BCT': //BCT转账
-                    if ( Number(net_fee) > Number(this.gasBalance)) {
-                        Main.showErrMsg("pay_transferGasNotEnough", () => {
-                            this.inputGasCount.focus()
-                        })
-                        return
-                    }
-                    if (Number(this.inputGasCount.value) > Number(this.bctBalance)) {
-                        Main.showErrMsg("pay_transferBCTNotEnough", () => {
-                            this.inputGasCount.focus()
-                        })
-                        return
-                    }
-                    break;
+            if (Number(this.inputGasCount.value) + Number(net_fee) > Number(this.gasBalance)) {
+                Main.showErrMsg("pay_transferGasNotEnough", () => {
+                    this.inputGasCount.focus()
+                })
+                return
             }
 
-            
-
             Main.viewMgr.change("ViewLoading")
-            var api_type: string;
 
             try {
-                switch (this.transferType) {
+                switch(this.transferType){
                     case 'GAS':
                         //gas转账
-                        var res: Result = await tools.CoinTool.rawTransaction(this.toaddress, tools.CoinTool.id_GAS, this.inputGasCount.value, Neo.Fixed8.fromNumber(Number(net_fee)));
-                        api_type = "6"
-                        break;
+                        var res: Result = await tools.CoinTool.rawTransaction(this.toaddress, tools.CoinTool.id_GAS, this.inputGasCount.value, Neo.Fixed8.fromNumber(Number(net_fee)) );
+                    break;
                     case 'BCP': //BCP转账
-                        var res: Result = await tools.CoinTool.nep5Transaction(Main.user.info.wallet, this.toaddress, tools.CoinTool.id_BCP, this.inputGasCount.value, net_fee);
-                        api_type = "7"
-                        break;
+                       var res: Result = await tools.CoinTool.nep5Transaction(Main.user.info.wallet,this.toaddress,tools.CoinTool.id_BCP,this.inputGasCount.value);
+                    break;
                     case 'BCT': //BCT转账
-                        var res: Result = await tools.CoinTool.nep5Transaction(Main.user.info.wallet, this.toaddress, tools.CoinTool.id_BCT, this.inputGasCount.value, net_fee);
-                        api_type = "8"
-                        break;
+                       var res: Result = await tools.CoinTool.nep5Transaction(Main.user.info.wallet,this.toaddress,tools.CoinTool.id_BCT,this.inputGasCount.value);
+                    break;
                 }
             }
             catch (e) {
@@ -381,7 +342,7 @@ namespace BlackCat {
                         res.info,
                         "0",
                         this.inputGasCount.value,
-                        api_type,
+                        "6",
                         '{"sbPushString":"transfer", "toaddr":"' + this.toaddress + '", "count": "' + this.inputGasCount.value + '"}',
                         Main.netMgr.type,
                         "0",

@@ -2,7 +2,7 @@
 /// <reference path="./ViewBase.ts" />
 
 namespace BlackCat {
-    // 购买GAS
+    // 交易所
     export class PayExchangeView extends ViewBase {
 
 
@@ -79,7 +79,7 @@ namespace BlackCat {
 
         private async getExchangeInfo(src_coin: number) {
             try {
-                var res = await ApiTool.getExchangeInfo(Main.user.info.uid, Main.user.info.token, src_coin, Main.netMgr.type, "gas")
+                var res = await ApiTool.getExchangeInfo(Main.user.info.uid, Main.user.info.token, src_coin)
                 if (res.r) {
                     let data = res.data;
                     console.log("[BlaCat]", '[PayExchangeView]', 'getExchangeInfo, data =>', data)
@@ -182,44 +182,8 @@ namespace BlackCat {
             // 按钮
             var buyObj_buy_btn = this.objCreate("button")
             buyObj_buy_btn.textContent = Main.langMgr.get("pay_exchange_purchase") // "购买"
-            buyObj_buy_btn.onclick = async () => {
-                if (this.exchange_coin_name.toLowerCase() == "neo") {
-                    var res: any = {}
-                    res['data'] = {
-                        address: Main.user.info.wallet,
-                        balance: Main.viewMgr.payView.neo,
-                        type: "",
-                        type_src: "neo",
-                        uid: Main.user.info.uid,
-                    }
-                }
-                else {
-                    Main.viewMgr.change("ViewLoading")
-                    // 获取交易钱包地址
-                    try {
-                        var res = await ApiTool.getOtherAddress(Main.user.info.uid, Main.user.info.token, this.exchange_coin_name.toLowerCase(), Main.netMgr.type)
-                    }
-                    catch(e) {
-    
-                    }
-                    Main.viewMgr.viewLoading.remove()
-    
-                    if (!res || !res.r) {
-                        // 获取失败
-                        Main.showErrMsg("pay_exchange_create_wallet_fail")
-                        return
-                    }
-                }
-                
-
+            buyObj_buy_btn.onclick = () => {
                 this.hidden()
-                PayExchangeDetailView.callback_params = {
-                    type: "GAS",
-                    type_id: this.exchange_coin_type,
-                    type_src: this.exchange_coin_name,
-                    price: buyObj_price_price.textContent,
-                    data: res.data,
-                }
                 PayExchangeDetailView.refer = "PayExchangeView"
                 Main.viewMgr.change("PayExchangeDetailView")
             }
@@ -324,5 +288,6 @@ namespace BlackCat {
             }
             return count == 0 ? 0 : floatNum.round(curr / count, 8);
         }
+
     }
 }

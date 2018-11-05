@@ -54,8 +54,6 @@ namespace BlackCat {
         viewConnecting: ViewConnecting; // 连接中
 
         payExchangeBCTView: PayExchangeBCTView; //91币充值
-        payExchangeShowWalletView: PayExchangeShowWalletView; // 显示交易时的NEO/BTC/ETH钱包二维码
-
 
 
         constructor() {
@@ -386,13 +384,6 @@ namespace BlackCat {
                     }
                     this.payExchangeBCTView.start()
                     break;
-                case "PayExchangeShowWalletView" :
-                if (!this.payExchangeShowWalletView) {
-                    this.payExchangeShowWalletView = new PayExchangeShowWalletView();
-                    this.views[type] = this.payExchangeShowWalletView
-                }
-                this.payExchangeShowWalletView.start()
-                break;
             }
         }
 

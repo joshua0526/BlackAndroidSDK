@@ -2,7 +2,7 @@
 /// <reference path="./ViewBase.ts" />
 
 namespace BlackCat {
-    // 购买BCP
+    // 交易所
     export class PayExchangeBCPView extends ViewBase {
 
 
@@ -79,7 +79,7 @@ namespace BlackCat {
 
         private async getExchangeBCPInfo(src_coin: number) {
             try {
-                var res = await ApiTool.getExchangeInfo(Main.user.info.uid, Main.user.info.token, src_coin, Main.netMgr.type, "bcp")
+                var res = await ApiTool.getExchangeBCPInfo(Main.user.info.uid, Main.user.info.token, src_coin)
                 if (res.r) {
                     let data = res.data;
                     console.log("[BlaCat]", '[PayExchangeBCPView]', 'getExchangeBCPInfo, data =>', data)
@@ -183,30 +183,8 @@ namespace BlackCat {
             // 按钮
             var buyObj_buy_btn = this.objCreate("button")
             buyObj_buy_btn.textContent = Main.langMgr.get("pay_exchange_purchase") // "购买"
-            buyObj_buy_btn.onclick = async () => {
-                Main.viewMgr.change("ViewLoading")
-                try {
-                    // 获取交易钱包地址
-                    var res = await ApiTool.getOtherAddress(Main.user.info.uid, Main.user.info.token, this.exchange_coin_name.toLowerCase(), Main.netMgr.type)
-                }
-                catch(e) {
-
-                }
-                Main.viewMgr.viewLoading.remove()
-                
-                if (!res || !res.r) {
-                    // 获取失败
-                    Main.showErrMsg("pay_exchange_create_wallet_fail")
-                    return
-                }
-
+            buyObj_buy_btn.onclick = () => {
                 this.hidden()
-                PayExchangeDetailView.callback_params = {
-                    type: "BCP",
-                    type_src: this.exchange_coin_name,
-                    price: buyObj_price_price.textContent,
-                    data: res.data,
-                }
                 PayExchangeDetailView.refer = "PayExchangeBCPView"
                 Main.viewMgr.change("PayExchangeDetailView")
             }

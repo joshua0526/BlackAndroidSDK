@@ -83,23 +83,7 @@ namespace BlackCat {
         }
 
         private getWallet() {
-            switch (PayListDetailView.list.type) {
-                case "9":   // 储值
-                case "10":  // 钱包扣款
-                    try {
-                        var ext = JSON.parse(PayListDetailView.list.ext)
-                        if (ext.hasOwnProperty("wallet")) {
-                            return ext.wallet
-                        }
-                    }
-                    catch (e) {
-
-                    }
-                    //break; // 此处不需要break
-                default:
-                    return PayListDetailView.list.wallet
-            }
-            
+            return PayListDetailView.list.wallet
         }
 
         private getParams() {
@@ -112,7 +96,7 @@ namespace BlackCat {
                         params = [params]
                     }
                     if (params instanceof Array) {
-                        if (PayListDetailView.list.type == "6" || PayListDetailView.list.type == "7" || PayListDetailView.list.type == "8") {
+                        if (PayListDetailView.list.type == "6") {
                             // gas转账
                             for (let k in params) {
                                 html += '<li class="pc_contractAddress">'
