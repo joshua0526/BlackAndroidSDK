@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
@@ -17,18 +18,11 @@ import android.webkit.JsPromptResult;
 import android.webkit.JsResult;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.EditText;
-import android.widget.Toast;
-
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class MyWebView extends WebView{
     public Activity mContext = null;
@@ -37,7 +31,7 @@ public class MyWebView extends WebView{
     private AndroidJavaScript androidJavaScript = null;
 
     private MyWebView(Activity context){
-        super(context.getApplicationContext());
+        super(context);
         mContext = context;
     }
 
@@ -60,63 +54,18 @@ public class MyWebView extends WebView{
             }
 
             @Override
-            public boolean onJsAlert(WebView view, String url, String message, final JsResult result) {
-                new AlertDialog.Builder(mContext).setTitle("JSAlert").setMessage(message)
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                result.confirm();
-                            }
-                        })
-                        .setCancelable(false).show();
-                return true;
+            public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
+                return super.onJsAlert(view, url, message, result);
             }
 
             @Override
-            public boolean onJsConfirm(WebView view, String url, String message, final JsResult result) {
-                new AlertDialog.Builder(mContext)
-                        .setTitle("JsConfirm")
-                        .setMessage(message)
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                result.confirm();
-                            }
-                        })
-                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                result.cancel();
-                            }
-                        })
-                        .setCancelable(false)
-                        .show();
-                return true;
+            public boolean onJsConfirm(WebView view, String url, String message, JsResult result) {
+                return super.onJsConfirm(view, url, message, result);
             }
 
             @Override
-            public boolean onJsPrompt(WebView view, String url, String message, String defaultValue, final JsPromptResult result) {
-                final EditText et = new EditText(mContext);
-                et.setText(defaultValue);
-                new AlertDialog.Builder(mContext)
-                        .setTitle(message)
-                        .setView(et)
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                result.confirm(et.getText().toString());
-                            }
-                        })
-                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                result.cancel();
-                            }
-                        })
-                        .setCancelable(false)
-                        .show();
-
-                return true;
+            public boolean onJsPrompt(WebView view, String url, String message, String defaultValue, JsPromptResult result) {
+                return super.onJsPrompt(view, url, message, defaultValue, result);
             }
         });
         myWebView.setWebViewClient(new WebViewClient(){
@@ -135,6 +84,11 @@ public class MyWebView extends WebView{
             public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
                 handler.proceed();
             }
+
+            @Override
+            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+                super.onReceivedError(view, request, error);
+            }
         });
         setWebSettings();
         myWebView.loadUrl("file:///android_asset/index.html");
@@ -144,6 +98,8 @@ public class MyWebView extends WebView{
         myWebView.addJavascriptInterface(androidJavaScript, "AndroidSDK");
 
         params = new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        params.type = WindowManager.LayoutParams.TYPE_APPLICATION_SUB_PANEL;
+//        params.gravity = Gravity.CENTER;
         mContext.addContentView(myWebView, params);
         myWebView.setVisibility(View.GONE);
     }
@@ -159,7 +115,7 @@ public class MyWebView extends WebView{
         //如果访问的页面中要与Javascript交互，则webview必须设置支持Javascript
         webSettings.setJavaScriptEnabled(true);
         //支持插件
-        webSettings.setPluginState(WebSettings.PluginState.ON);
+        //webSettings.setPluginState(WebSettings.PluginState.ON);
 
 //        //设置自适应屏幕，两者合用
 //        webSettings.setUseWideViewPort(true); //将图片调整到适合webview的大小
@@ -167,6 +123,9 @@ public class MyWebView extends WebView{
 
         webSettings.setDomStorageEnabled(true);//支持HTML5 DOM Storage
         webSettings.setDefaultTextEncodingName("utf-8");//设置编码格式
+
+        webSettings.setAllowFileAccess(true);
+        webSettings.setAllowContentAccess(true);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
             webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
@@ -179,5 +138,6 @@ public class MyWebView extends WebView{
         }else{
             myWebView.setVisibility(View.VISIBLE);
         }
+        //BlaCatSDK.getBlaCatSDK().BlaCatSDK("LoginSDK");
     }
 }

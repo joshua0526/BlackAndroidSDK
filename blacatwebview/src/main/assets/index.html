@@ -25,11 +25,17 @@
     <script>
         var returnMessage = function(data){
             AndroidSDK.callback(data);
-        }
+        }				
 		
         function BlaCatSDK(method, list=null){
+			if (list){
+				var alist = [];
+				list = list.substr(1,list.length - 2);
+				alist = list.split(",");
+				list = alist;
+			}
             switch(method){
-                case "initSDK"://初始化方法
+                case "initSDK"://初始化方法					
                     BlackCat.SDK.init(list[0],list[1], returnMessage,list[2]);
                 break;
                 case "Language"://语言修改
@@ -96,7 +102,7 @@
                     BlackCat.SDK.makRawTransaction(params);
                 break;
                 case "setDefaultNetType":
-                    BlackCat.SDK.setDefaultNetType(list[0]);
+                    BlackCat.SDK.setDefaultNetType(parseInt(list[0]));
                 break;
                 default:
                     BlackCat.SDK.showMain()

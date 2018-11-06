@@ -6511,6 +6511,175 @@ var BlackCat;
 })(BlackCat || (BlackCat = {}));
 var BlackCat;
 (function (BlackCat) {
+    class PayExchangeShowWalletView extends BlackCat.ViewBase {
+        constructor() {
+            super(...arguments);
+            this.balance = 0;
+            this.s_getWalletLists = {};
+        }
+        create() {
+            this.div = this.objCreate("div");
+            this.div.classList.add("pc_bj", "pc_exchangedetail", "buygas", "buycoin");
+            var header = this.objCreate("div");
+            header.classList.add("pc_header");
+            this.ObjAppend(this.div, header);
+            var returnA = this.objCreate("a");
+            returnA.classList.add("iconfont", "icon-bc-fanhui");
+            returnA.textContent = BlackCat.Main.langMgr.get("return");
+            returnA.onclick = () => {
+                this.addGetWalletLists();
+                this.return();
+            };
+            this.ObjAppend(header, returnA);
+            var headerH1 = this.objCreate("h1");
+            headerH1.textContent = BlackCat.Main.langMgr.get("get_pay") + PayExchangeShowWalletView.callback_params.type_src;
+            this.ObjAppend(header, headerH1);
+            var divBalance = this.objCreate("div");
+            divBalance.classList.add("pc_exchangeprice");
+            var labelBalanceName = this.objCreate("label");
+            labelBalanceName.textContent = PayExchangeShowWalletView.callback_params.type_src + BlackCat.Main.langMgr.get("pay_exchange_balance");
+            this.ObjAppend(divBalance, labelBalanceName);
+            this.balanceHtmlElement = this.objCreate("p");
+            this.balanceHtmlElement.textContent = PayExchangeShowWalletView.callback_params.data.balance;
+            this.ObjAppend(divBalance, this.balanceHtmlElement);
+            var divBalanceObj = this.objCreate("div");
+            divBalanceObj.classList.add("pc_exchangelist", "balance", "margin_top45");
+            this.ObjAppend(this.div, divBalanceObj);
+            this.ObjAppend(divBalanceObj, divBalance);
+            var divDescribeTitle = this.objCreate("div");
+            divDescribeTitle.classList.add("pc_addresstitle");
+            divDescribeTitle.textContent = BlackCat.Main.langMgr.get("pay_exchange_purchase_process");
+            this.ObjAppend(this.div, divDescribeTitle);
+            var divDescribeText = this.objCreate("div");
+            divDescribeText.classList.add("pc_describetext");
+            this.ObjAppend(this.div, divDescribeText);
+            var processp1 = this.objCreate("p");
+            var callback_params_typesrc = PayExchangeShowWalletView.callback_params.type_src;
+            var callback_params_typesrc_a = PayExchangeShowWalletView.callback_params.type_src;
+            var callback_params_typesrc_b = PayExchangeShowWalletView.callback_params.type_src;
+            processp1.textContent = BlackCat.Main.langMgr.get("pay_exchange_processp1", { type: callback_params_typesrc, type1: callback_params_typesrc_a, type2: callback_params_typesrc_b });
+            this.ObjAppend(divDescribeText, processp1);
+            var divObj = this.objCreate("div");
+            divObj.classList.add("pc_addressbookdet");
+            this.ObjAppend(this.div, divObj);
+            var divAddressTitle = this.objCreate("div");
+            divAddressTitle.classList.add("pc_addresstitle");
+            this.ObjAppend(divObj, divAddressTitle);
+            var labelAddressTitle = this.objCreate("label");
+            labelAddressTitle.textContent = BlackCat.Main.langMgr.get("addressbook_det_address");
+            this.ObjAppend(divAddressTitle, labelAddressTitle);
+            var butCopy = this.objCreate("button");
+            butCopy.textContent = BlackCat.Main.langMgr.get("copy");
+            butCopy.onclick = () => {
+                var inputCooy = this.objCreate("input");
+                inputCooy.value = divAddress.innerText;
+                this.ObjAppend(divObj, inputCooy);
+                inputCooy.select();
+                document.execCommand("Copy");
+                inputCooy.remove();
+                BlackCat.Main.showToast("pc_receivables_copy", 1500);
+            };
+            this.ObjAppend(divAddressTitle, butCopy);
+            var divAddress = this.objCreate("p");
+            divAddress.classList.add("pc_address");
+            divAddress.textContent = PayExchangeShowWalletView.callback_params.data.address;
+            this.ObjAppend(divObj, divAddress);
+            var divQRCode = this.objCreate("div");
+            divQRCode.classList.add("pc_qrcode");
+            this.ObjAppend(divObj, divQRCode);
+            var qrObj = this.objCreate("img");
+            QrCodeWithLogo.toImage({
+                image: qrObj,
+                content: PayExchangeShowWalletView.callback_params.data.address
+            }).then(() => {
+                var url = URL.createObjectURL(this.base64ToBlob(qrObj.src));
+                qr_download.setAttribute('href', url);
+                qr_download.setAttribute("download", PayExchangeShowWalletView.callback_params.data.address + ".png");
+            });
+            this.ObjAppend(divQRCode, qrObj);
+            var qr_download = this.objCreate("a");
+            qr_download.classList.add("iconfont", "icon-bc-xiazai");
+            qr_download.textContent = BlackCat.Main.langMgr.get("addressbook_det_download");
+            this.ObjAppend(divQRCode, qr_download);
+            this.getBalance();
+        }
+        toRefer() {
+            if (PayExchangeShowWalletView.refer) {
+                BlackCat.Main.viewMgr.change(PayExchangeShowWalletView.refer);
+                PayExchangeShowWalletView.refer = null;
+            }
+        }
+        doMakeTransfer() {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (BlackCat.Main.isWalletOpen()) {
+                    BlackCat.PayTransferView.callback = () => {
+                        BlackCat.Main.viewMgr.payView.doGetWalletLists(1);
+                    };
+                    BlackCat.Main.viewMgr.change("PayTransferView");
+                }
+                else {
+                    BlackCat.ViewWalletOpen.callback = () => {
+                        this.doMakeTransfer();
+                    };
+                    BlackCat.Main.viewMgr.change("ViewWalletOpen");
+                }
+            });
+        }
+        base64ToBlob(code) {
+            let parts = code.split(';base64,');
+            let contentType = parts[0].split(':')[1];
+            let raw = window.atob(parts[1]);
+            let rawLength = raw.length;
+            let uInt8Array = new Uint8Array(rawLength);
+            for (let i = 0; i < rawLength; ++i) {
+                uInt8Array[i] = raw.charCodeAt(i);
+            }
+            return new Blob([uInt8Array], { type: contentType });
+        }
+        checkTransCount(count) {
+            var regex = /(?!^0*(\.0{1,2})?$)^\d{1,14}(\.\d{1,8})?$/;
+            if (!regex.test(count)) {
+                return false;
+            }
+            if (Number(count) <= 0) {
+                return false;
+            }
+            return true;
+        }
+        getBalance() {
+            return __awaiter(this, void 0, void 0, function* () {
+                this.balance = BlackCat.Main.viewMgr.payView[PayExchangeShowWalletView.callback_params.data.type_src];
+                this.balanceHtmlElement.textContent = BlackCat.Main.getStringNumber(this.balance);
+            });
+        }
+        addGetWalletLists() {
+            var type = PayExchangeShowWalletView.callback_params.type_src;
+            var timeout = 1000;
+            switch (type) {
+                case "BTC":
+                    timeout = 15 * 60 * 1000;
+                    break;
+                case "ETH":
+                    timeout = 3 * 60 * 1000;
+                    break;
+                default:
+                    timeout = 2 * 60 * 1000;
+                    break;
+            }
+            if (this.s_getWalletLists.hasOwnProperty(type)) {
+                if (this.s_getWalletLists[type]) {
+                    clearTimeout(this.s_getWalletLists[type]);
+                }
+            }
+            this.s_getWalletLists[type] = setTimeout(() => {
+                BlackCat.Main.viewMgr.payView.doGetWalletLists();
+            }, timeout);
+        }
+    }
+    BlackCat.PayExchangeShowWalletView = PayExchangeShowWalletView;
+})(BlackCat || (BlackCat = {}));
+var BlackCat;
+(function (BlackCat) {
     class PayExchangeView extends BlackCat.ViewBase {
         create() {
             this.div = this.objCreate("div");

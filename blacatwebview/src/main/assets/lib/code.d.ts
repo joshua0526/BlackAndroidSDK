@@ -2122,6 +2122,20 @@ declare namespace BlackCat {
     }
 }
 declare namespace BlackCat {
+    class PayExchangeShowWalletView extends ViewBase {
+        private balanceHtmlElement;
+        private balance;
+        private s_getWalletLists;
+        create(): void;
+        toRefer(): void;
+        private doMakeTransfer;
+        private base64ToBlob;
+        private checkTransCount;
+        private getBalance;
+        private addGetWalletLists;
+    }
+}
+declare namespace BlackCat {
     class PayExchangeView extends ViewBase {
         private exchange_type_buy;
         private exchange_typeObj;

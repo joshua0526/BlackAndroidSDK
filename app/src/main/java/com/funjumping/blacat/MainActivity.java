@@ -2,31 +2,18 @@ package com.funjumping.blacat;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.JsonReader;
-import android.util.JsonToken;
-import android.view.Gravity;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.webkit.JavascriptInterface;
-import android.webkit.WebChromeClient;
-import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.funjumping.blacatwebview.BlaCatSDK;
 import com.funjumping.blacatwebview.DragViewCtr;
 import com.funjumping.blacatwebview.IResultListener;
-import com.funjumping.blacatwebview.MyWebView;
 import com.funjumping.blacatwebview.WebViewListener;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -45,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements IResultListener,W
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
