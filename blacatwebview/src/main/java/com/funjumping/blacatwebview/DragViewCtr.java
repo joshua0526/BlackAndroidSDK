@@ -3,6 +3,8 @@ package com.funjumping.blacatwebview;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.os.Build;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -12,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+
+import static android.graphics.Color.argb;
 
 public class DragViewCtr {
     private static final int MOVE_LENGH = 150;
@@ -38,6 +42,11 @@ public class DragViewCtr {
         LayoutInflater factory = LayoutInflater.from(activity);
         View layout = factory.inflate(R.layout.draglayout, null);
         decorView.addView(layout);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            layout.setBackgroundColor(Color.argb(0.0f,1.0f,0.0f,0.0f));
+        }else{
+            layout.setBackgroundColor(Color.parseColor("#00ff0000"));
+        }
 
         this.iv_drag = (ImageButton) layout.findViewById(R.id.imageview_drag);
 

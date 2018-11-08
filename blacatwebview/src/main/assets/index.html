@@ -37,6 +37,7 @@
             switch(method){
                 case "initSDK"://初始化方法					
                     BlackCat.SDK.init(list[0],list[1], returnMessage,list[2]);
+                    BlackCat.SDK.showMain();
                 break;
                 case "Language"://语言修改
                     BlackCat.SDK.setLang(list[0]);
@@ -103,9 +104,10 @@
                 break;
                 case "setDefaultNetType":
                     BlackCat.SDK.setDefaultNetType(parseInt(list[0]));
+                    BlackCat.SDK.showMain();
                 break;
                 default:
-                    BlackCat.SDK.showMain()
+                    BlackCat.SDK.showMain();
                 break;
             }
         }        
