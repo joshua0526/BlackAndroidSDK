@@ -23,6 +23,7 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 public class MyWebView extends WebView{
     public Activity mContext = null;
@@ -40,6 +41,12 @@ public class MyWebView extends WebView{
             myWebView = new MyWebView(context);
         }
         return myWebView;
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        myWebView = null;
     }
 
     public static MyWebView getMyWebView(){
@@ -105,9 +112,9 @@ public class MyWebView extends WebView{
     }
 
     WebViewListener webViewListener = null;
-    public void AddResultListener(IResultListener listener, WebViewListener wListener){
-        androidJavaScript = new AndroidJavaScript(listener);
-        webViewListener = wListener;
+    public void AddResultListener(){
+        androidJavaScript = new AndroidJavaScript((IResultListener) mContext);
+        webViewListener = (WebViewListener) mContext;
     }
 
     private void setWebSettings(){
@@ -135,9 +142,8 @@ public class MyWebView extends WebView{
     public void Show(){
         if (myWebView.getVisibility() == View.VISIBLE){
             myWebView.setVisibility(View.GONE);
-        }else{
+        }else {
             myWebView.setVisibility(View.VISIBLE);
         }
-        //BlaCatSDK.getBlaCatSDK().BlaCatSDK("LoginSDK");
     }
 }

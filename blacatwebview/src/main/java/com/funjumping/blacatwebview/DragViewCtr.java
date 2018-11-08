@@ -53,16 +53,15 @@ public class DragViewCtr {
         this.sp = activity.getSharedPreferences("config", Context.MODE_PRIVATE);
     }
 
-    public void InitWebView(IResultListener listener, WebViewListener wlistener){
+    public void InitWebView(){
         myWebView = MyWebView.getMyWebView(activity);
-        myWebView.AddResultListener(listener, wlistener);
+        myWebView.AddResultListener();
         myWebView.Init();
     }
     /**
      * 显示可拖动的客服电话图标
      */
     public void showDragCallView() {
-
         this.iv_drag.setVisibility(View.VISIBLE);
         DisplayMetrics metric = new DisplayMetrics();
         activity.getWindowManager().getDefaultDisplay().getMetrics(metric);
@@ -163,8 +162,7 @@ public class DragViewCtr {
      */
     private void call() {
         if (myWebView == null){
-            myWebView = MyWebView.getMyWebView(activity);
-            myWebView.Init();
+            InitWebView();
         }
         myWebView.Show();
     }
@@ -202,5 +200,6 @@ public class DragViewCtr {
             myWebView = null;
         }
     }
+
 }
 

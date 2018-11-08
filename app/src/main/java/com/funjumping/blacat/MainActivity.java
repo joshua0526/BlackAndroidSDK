@@ -7,6 +7,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.funjumping.blacatwebview.BlaCatSDK;
 import com.funjumping.blacatwebview.DragViewCtr;
@@ -21,12 +22,6 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements IResultListener,WebViewListener {
 
-    WebView myWebView = null;
-    WindowManager wm = null;
-    WindowManager.LayoutParams wmlay = null;
-
-    Button tv = null;
-
     DragViewCtr dvc = null;
 
     @Override
@@ -39,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements IResultListener,W
 
         dvc = new DragViewCtr(this);
         dvc.showDragCallView();
-        dvc.InitWebView(this, this);
+        dvc.InitWebView();
     }
 
     @Override
@@ -56,8 +51,8 @@ public class MainActivity extends AppCompatActivity implements IResultListener,W
 
     @Override
     protected void onDestroy() {
-        dvc.onDestroy();
         super.onDestroy();
+        dvc.onDestroy();
     }
 
     @Override
