@@ -3,10 +3,11 @@
 
 <head>
     <meta charset="utf-8" />
+	<meta name=”viewport” content=”width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no”/>
     <title>BlackCat SDK</title>
 
     <link rel="stylesheet" href="res/css/panel.css" type="text/css" />
-
+	
 
     <script src="lib/rollup/aes.js"></script>
     <script src="lib/component/aes.js"></script>
@@ -25,7 +26,11 @@
     <script>
         var returnMessage = function(data){
             AndroidSDK.callback(data);
-        }				
+        }	
+        
+        BlaCatSDK("initSDK","['2',,'cn']");
+        BlaCatSDK("setDefaultNetType","[2]");
+        BlaCatSDK("LoginSDK");
 		
         function BlaCatSDK(method, list=null){
 			if (list){

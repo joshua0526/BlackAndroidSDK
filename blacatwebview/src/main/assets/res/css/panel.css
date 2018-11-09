@@ -20,9 +20,9 @@
 .pc_window *{margin: 0;padding: 0;border: 0;word-wrap:break-word;}
 
 
-@-webkit-keyframes pc_window{0%{-webkit-transform: translate(375px)}100%{-webkit-transform: translate(0)}}
-@keyframes pc_window{0%{transform: translate(375px)}100%{transform: translate(0)}}
-.pc_windowhide{-webkit-transform: translate(375px);transform: translate(375px)}
+@-webkit-keyframes pc_window{0%{-webkit-transform: translate(367px)}100%{-webkit-transform: translate(0)}}
+@keyframes pc_window{0%{transform: translate(367px)}100%{transform: translate(0)}}
+.pc_windowhide{-webkit-transform: translate(367px);transform: translate(367px)}
 /* base公共样式 */
 .mainbox{padding: 10px 20px;}
 .firstdiv{margin-top: 45px; }
@@ -51,7 +51,7 @@
 .pc_windowtest2 .pc_addressbooklist li.pc_addressbooktitle,.pc_windowtest2 .pc_search input,.pc_windowtest2 .pc_addresstitle{background-color: #2a3736;}
 
 /*所有页面的宽高及滚动条*/
-.pc_bj{position: relative;width: 375px;height: 100vh;background-color: #343643; max-height:667px;overflow-x: auto;z-index: 2;}
+.pc_bj{position: relative;width: 367px;height: 100vh;background-color: #343643; max-height:667px;overflow-x: auto;z-index: 2;}
 .pc_bj::-webkit-scrollbar {width: 4px;}
 .pc_bj::-webkit-scrollbar-thumb{border-radius: 5px;-webkit-box-shadow: inset 0 0 5px rgba(255,255,255, 0.3);background: rgba(0, 0, 0, 0.2);}
 
@@ -113,7 +113,7 @@ a.pc_areaa{font-size: 20px;color: #9c9ead;position: absolute;top: 10px;right: 5p
 
 
 /*创建钱包和导入钱包和所以弹窗*/
-.pc_popup,.pc_alter,.pc_loading{width: 375px;height: 100vh;max-height:667px;background-color: rgba(0, 0, 0,0.9);position: fixed;top: 0;right: 0;z-index: 9;-webkit-animation: fadeIn 0.3s;animation: fadeIn 0.3s;}
+.pc_popup,.pc_alter,.pc_loading{width: 367px;height: 100vh;max-height:667px;background-color: rgba(0, 0, 0,0.9);position: fixed;top: 0;right: 0;z-index: 9;-webkit-animation: fadeIn 0.3s;animation: fadeIn 0.3s;}
 .pc_popupbox,.pc_alterbox{width: 85%;background-color: #33353e;margin: auto;position: absolute;left: 0;right: 0;top: 30%; -webkit-animation: fadeInNarrow 0.3s;animation: fadeInNarrow 0.3s;}
 .pc_popup_title,.pc_altertitle{font-size: 18px;text-align: center;color: #a4a8c2;height: 40px;line-height: 40px;border-bottom: 1px solid #222335;position: relative;background-color: #2f323b}
 .pc_popupbox input{width: 70%;margin: 20px auto;height: 25px;background-color: #c3c4c9;color: #30313b;border: 1px solid #9c9ead;display: block;font-size: 14px;text-align: center}
@@ -227,7 +227,7 @@ button.pc_cancel{background-color: #3b3d4a !important;color: #b2b2b2 !important;
 
 
 /* 我的钱包 */
-.pc_header{position: fixed;right: 0;top: 0;z-index: 8; width: 375px; height: 45px;line-height: 45px;background-color: #343643; box-shadow: 1px 2px 2px #262837;}
+.pc_header{position: fixed;right: 0;top: 0;z-index: 8; width: 367px; height: 45px;line-height: 45px;background-color: #343643; box-shadow: 1px 2px 2px #262837;}
 .pc_header a{font-size: 28px;color: #dbdde9;position: absolute;padding: 0 12px;cursor: pointer;}
 .pc_header .icon-bc-fanhui{font-size: 16px;padding: 0 10px;}
 .pc_payheighet{position: absolute;left: 50px;color: #9c9ead;line-height: 47px;cursor: pointer;}
@@ -309,7 +309,7 @@ button.pc_cancel{background-color: #3b3d4a !important;color: #b2b2b2 !important;
 
 /*交易详情*/
 .pc_tradeconfirm{background-color: #343643; position: fixed;top: 0;right: 0;z-index: 9;}
-.pc_tradeconfirmbut{text-align: center;position: fixed;right: 0;top: 517px;width: 375px;height: 150px; background:#343643;box-shadow: 2px -2px 1px #000}
+.pc_tradeconfirmbut{text-align: center;position: fixed;right: 0;top: 517px;width: 367px;height: 150px; background:#343643;box-shadow: 2px -2px 1px #000}
 .pc_tradeconfirmbut button{width: 30%;height: 40px;background-color: #c8ab73;font-size: 20px;color: #5f491f;margin: auto 25px;border-radius: 5px;margin-top: 15px;box-shadow: inset 0 -5px 30px rgba(50, 0, 0, 0.45);}
 
 

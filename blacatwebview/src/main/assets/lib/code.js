@@ -7509,7 +7509,6 @@ var BlackCat;
             aReturnGame.onclick = () => {
                 BlackCat.SDK.showIcon();
             };
-            this.ObjAppend(headerTitle, aReturnGame);
             var paycard = this.objCreate("div");
             paycard.classList.add("pc_card");
             this.ObjAppend(this.div, paycard);
