@@ -90,7 +90,6 @@
                         nnc:list[2],
                         extString:list[3]
                     }
-                    params.sbParamJson = JSON.parse(params.sbParamJson);
                     BlackCat.SDK.invokescript(params);
                 break;
                 case "makeRawTransaction":
@@ -100,8 +99,7 @@
                         nnc:list[2],
                         extString:list[3]
                     }
-                    params.sbParamJson = JSON.parse(params.sbParamJson);
-                    BlackCat.SDK.makRawTransaction(params);
+                    BlackCat.SDK.makeRawTransaction(params);
                 break;
                 case "setDefaultNetType":
                     BlackCat.SDK.setDefaultNetType(parseInt(list[0]));
