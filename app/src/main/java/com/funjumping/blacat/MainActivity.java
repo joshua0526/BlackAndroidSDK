@@ -1,5 +1,7 @@
 package com.funjumping.blacat;
 
+import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -142,15 +144,23 @@ public class MainActivity extends AppCompatActivity implements IResultListener,W
 
         BlaCatSDK.getBlaCatSDK().BlaCatSDK("LoginSDK");
 
+
         List<String> sbParamJson = new ArrayList<>();
         sbParamJson.add("(addr)AYkiQ74FHWFygR39WizXCz9f4xCLRYCxMT");
         sbParamJson.add("(address)AWPVmAobCJGxrupvQSnovofakaVb2ue65a");
         sbParamJson.add("(integer)100000");
         List<String> list2 = new ArrayList<>();
-        list.add(sbParamJson.toString());
-        list.add("transfer");
-        list.add("0x3f7420285874867c30f32e44f304fd62ad1e9573");
-        list.add("makeRawTransaction");
+        list2.add(sbParamJson.toString());
+        list2.add("transfer");
+        list2.add("0x3f7420285874867c30f32e44f304fd62ad1e9573");
+        list2.add("makeRawTransaction");
         BlaCatSDK.getBlaCatSDK().BlaCatSDK("makeRawTransaction", list2);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1)
+        dvc.myWebView.onActivityResult(requestCode,resultCode,data);
     }
 }

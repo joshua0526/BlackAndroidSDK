@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.http.SslError;
@@ -24,6 +25,9 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MyWebView extends WebView{
     public Activity mContext = null;
@@ -53,28 +57,9 @@ public class MyWebView extends WebView{
         return myWebView;
     }
 
+    MyWebChromeClient mwcc = new MyWebChromeClient(mContext);
     public void Init(){
-        myWebView.setWebChromeClient(new WebChromeClient(){
-            @Override
-            public void onProgressChanged(WebView view, int newProgress) {
-                super.onProgressChanged(view, newProgress);
-            }
-
-            @Override
-            public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
-                return super.onJsAlert(view, url, message, result);
-            }
-
-            @Override
-            public boolean onJsConfirm(WebView view, String url, String message, JsResult result) {
-                return super.onJsConfirm(view, url, message, result);
-            }
-
-            @Override
-            public boolean onJsPrompt(WebView view, String url, String message, String defaultValue, JsPromptResult result) {
-                return super.onJsPrompt(view, url, message, defaultValue, result);
-            }
-        });
+        myWebView.setWebChromeClient(mwcc);
         myWebView.setWebViewClient(new WebViewClient(){
             @Override
             public void onPageFinished(WebView view, String url) {
@@ -145,5 +130,10 @@ public class MyWebView extends WebView{
         }else {
             myWebView.setVisibility(View.VISIBLE);
         }
+
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        mwcc.onActivityResult(requestCode,resultCode,data);
     }
 }
