@@ -31,6 +31,9 @@ public class DragViewCtr {
 
     public MyWebView myWebView = null;
 
+    public final static int FILE_CHOOSER_RESULT_CODE = 10000;
+    public final static int FILE_CHOOSER_RESULT_CODE_FOR_ANDROID_5 = 10001;
+
     public DragViewCtr(Activity activity) {
         this.activity = activity;
         this.screenHeight = activity.getWindowManager().getDefaultDisplay()

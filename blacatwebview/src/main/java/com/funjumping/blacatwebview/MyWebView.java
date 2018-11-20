@@ -34,10 +34,12 @@ public class MyWebView extends WebView{
     public WindowManager.LayoutParams params = null;
     private static MyWebView myWebView = null;
     private AndroidJavaScript androidJavaScript = null;
+    MyWebChromeClient mwcc = null;
 
     private MyWebView(Activity context){
         super(context);
         mContext = context;
+        mwcc = new MyWebChromeClient(mContext);
     }
 
     public static MyWebView getMyWebView(Activity context){
@@ -57,7 +59,6 @@ public class MyWebView extends WebView{
         return myWebView;
     }
 
-    MyWebChromeClient mwcc = new MyWebChromeClient(mContext);
     public void Init(){
         myWebView.setWebChromeClient(mwcc);
         myWebView.setWebViewClient(new WebViewClient(){

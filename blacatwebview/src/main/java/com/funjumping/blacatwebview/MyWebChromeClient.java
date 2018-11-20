@@ -23,6 +23,7 @@ import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebStorage;
 import android.webkit.WebView;
+import android.widget.Toast;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -34,8 +35,6 @@ public class MyWebChromeClient extends WebChromeClient {
     private ValueCallback<Uri> uploadMessage;
     private  ValueCallback<Uri[]> uploadMessageAboveL;
     private final static String TAG="MyWebChromeClient";
-    private final static int FILE_CHOOSER_RESULT_CODE = 10000;
-
 
     public MyWebChromeClient(Activity context) {
         mContext = context;
@@ -46,31 +45,15 @@ public class MyWebChromeClient extends WebChromeClient {
         super.onProgressChanged(view, newProgress);
     }
 
-
-    // For Android < 3.0
-    public void openFileChooser(ValueCallback<Uri> valueCallback) {
-        uploadMessage = valueCallback;
-        openImageChooserActivity();
-    }
-
-    // For Android  >= 3.0
-    public void openFileChooser(ValueCallback valueCallback, String acceptType) {
-        uploadMessage = valueCallback;
-        openImageChooserActivity();
-    }
-
-    //For Android  >= 4.1
-    public void openFileChooser(ValueCallback<Uri> valueCallback, String acceptType, String capture) {
-        uploadMessage = valueCallback;
-        openImageChooserActivity();
+    public void openFileChooser(ValueCallback<Uri> uploadFile, String acceptType, String capture) {
+        openFileChooserImpl(uploadMessage);
     }
 
     // For Android >= 5.0
     @Override
     public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams) {
-        uploadMessageAboveL = filePathCallback;
-        openImageChooserActivity();
-        return true;
+        onenFileChooseImpleForAndroid(uploadMessageAboveL);
+        return false;
     }
 
     @Override
@@ -81,39 +64,7 @@ public class MyWebChromeClient extends WebChromeClient {
 
     @Override
     public void onConsoleMessage(String message, int lineNumber, String sourceID) {
-        Log.e("h5端的log", String.format("%s -- From line %s of %s", message, lineNumber, sourceID));
-    }
-
-
-    private void openImageChooserActivity() {
-
-        initDialog();
-    }
-
-    /**
-     * 上传头像时的弹出框
-     */
-    private void initDialog(){
-        new AlertDialog.Builder(mContext)
-                .setTitle("更改头像")
-                .setItems(new String[]{"拍照", "图库选取"},
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog,
-                                                int which) {
-                                switch (which) {
-                                    case 0:
-                                        Intent i1=createCameraIntent();
-                                        mContext.startActivityForResult(Intent.createChooser(i1, "Image Chooser"), FILE_CHOOSER_RESULT_CODE);
-                                        break;
-                                    case 1:
-                                        Intent i=createFileItent();
-                                        mContext.startActivityForResult(Intent.createChooser(i, "Image Chooser"), FILE_CHOOSER_RESULT_CODE);
-                                        break;
-                                }
-
-                            }
-                        }).setNegativeButton("取消", null).show();
+        //Log.e("h5端的log", String.format("%s -- From line %s of %s", message, lineNumber, sourceID));
     }
 
     @Override
@@ -148,109 +99,58 @@ public class MyWebChromeClient extends WebChromeClient {
         return intent;
     }
 
-
-    public static void checkAndRequestPermissionAbove23(Activity context){
-        int i = ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA);
-        if (i!= PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(context,
-                    new String[]{Manifest.permission.CAMERA}, 1
-            );
-        }
-    }
-    /**
-     * 创建调用照相机的intent
-     * @return
-     */
-    private Intent createCameraIntent() {
-        checkAndRequestPermissionAbove23(mContext);
-        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-        File externalDataDir = Environment
-                .getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
-        System.out.println("externalDataDir:" + externalDataDir);
-        File cameraDataDir = new File(externalDataDir.getAbsolutePath()
-                + File.separator + "browser-photo");
-        cameraDataDir.mkdirs();
-        mCameraFilePath = cameraDataDir.getAbsolutePath() + File.separator
-                + System.currentTimeMillis() + ".jpg";
-        System.out.println("mcamerafilepath:" + mCameraFilePath);
-        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-                Uri.fromFile(new File(mCameraFilePath)));
-
-        return cameraIntent;
+    private void openFileChooserImpl(ValueCallback<Uri> uploadMsg) {
+        uploadMessage = uploadMsg;
+        Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+        i.addCategory(Intent.CATEGORY_OPENABLE);
+        i.setType("image/*");
+        mContext.startActivityForResult(Intent.createChooser(i, "File Chooser"), DragViewCtr.FILE_CHOOSER_RESULT_CODE);
     }
 
     /**
      * 处理拍照返回函数
      * @param requestCode
      * @param resultCode
-     * @param data
+     * @param intent
      */
-    public  void onActivityResult(int requestCode, int resultCode, Intent data){
-        if (requestCode == FILE_CHOOSER_RESULT_CODE) {
-            if (null == uploadMessage&& null == uploadMessageAboveL)
-                return;
-            Uri result = data == null || resultCode != Activity.RESULT_OK ? null
-                    : data.getData();
-            if (uploadMessageAboveL != null) {//5.0以上
-                onActivityResultAboveL(requestCode, resultCode, data);
-            }else if(uploadMessage != null) {
-                if (result == null && data == null
-                        && resultCode == Activity.RESULT_OK) {
-                    File cameraFile = new File(mCameraFilePath);
-
-                    Bitmap bitmap1 = getimage(cameraFile.getPath());
-
-                    result = Uri.parse(MediaStore.Images.Media.insertImage(
-                            mContext.getContentResolver(), bitmap1, null, null));
-                }
-                Log.e(TAG,"5.0-result="+result);
+    public  void onActivityResult(int requestCode, int resultCode, Intent intent){
+        Uri result = (intent == null || resultCode != Activity.RESULT_OK) ? null: intent.getData();
+        switch (requestCode){
+            case DragViewCtr.FILE_CHOOSER_RESULT_CODE:  //android 5.0以下 选择图片回调
+                if (null == uploadMessage)
+                    return;
                 uploadMessage.onReceiveValue(result);
                 uploadMessage = null;
-            }
-
-
+                break;
+            case DragViewCtr.FILE_CHOOSER_RESULT_CODE_FOR_ANDROID_5:  //android 5.0(含) 以上 选择图片回调
+                if (null == uploadMessageAboveL)
+                    return;
+                if (result != null) {
+                    uploadMessageAboveL.onReceiveValue(new Uri[]{result});
+                } else {
+                    uploadMessageAboveL.onReceiveValue(new Uri[]{});
+                }
+                uploadMessageAboveL = null;
+                break;
         }
     }
 
     /**
-     * 处理拍照返回函数  5。0以上
-     * @param requestCode
-     * @param resultCode
-     * @param intent
+     * android 5.0(含) 以上开启图片选择（原生）
+     *
+     * 可以自己改图片选择框架。
      */
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private void onActivityResultAboveL(int requestCode, int resultCode, Intent intent) {
-        Log.e(TAG,"5.0+ 返回了");
-        if (requestCode != FILE_CHOOSER_RESULT_CODE || uploadMessageAboveL == null)
-            return;
-        Uri[] results = null;
-        if (resultCode == Activity.RESULT_OK) {
-            if (intent != null) {
-                String dataString = intent.getDataString();
-                ClipData clipData = intent.getClipData();
-                if (clipData != null) {
-                    results = new Uri[clipData.getItemCount()];
-                    for (int i = 0; i < clipData.getItemCount(); i++) {
-                        ClipData.Item item = clipData.getItemAt(i);
-                        results[i] = item.getUri();
-                    }
-                }
-                if (dataString != null)
-                    results = new Uri[]{Uri.parse(dataString)};
-            }else {
+    private void onenFileChooseImpleForAndroid(ValueCallback<Uri[]> filePathCallback) {
+        uploadMessageAboveL = filePathCallback;
+        Intent contentSelectionIntent = new Intent(Intent.ACTION_GET_CONTENT);
+        contentSelectionIntent.addCategory(Intent.CATEGORY_OPENABLE);
+        contentSelectionIntent.setType("image/*");
 
-                File cameraFile = new File(mCameraFilePath);
+        Intent chooserIntent = new Intent(Intent.ACTION_CHOOSER);
+        chooserIntent.putExtra(Intent.EXTRA_INTENT, contentSelectionIntent);
+        chooserIntent.putExtra(Intent.EXTRA_TITLE, "Image Chooser");
 
-                Bitmap bitmap1 = getimage(cameraFile.getPath());
-
-                Uri result = Uri.parse(MediaStore.Images.Media.insertImage(
-                        mContext.getContentResolver(), bitmap1, null, null));
-                results=new Uri[]{result};
-            }
-        }
-        uploadMessageAboveL.onReceiveValue(results);
-        uploadMessageAboveL = null;
+        mContext.startActivityForResult(chooserIntent, DragViewCtr.FILE_CHOOSER_RESULT_CODE_FOR_ANDROID_5);
     }
 
     /**
