@@ -40,27 +40,27 @@ public class BlaCatSDK{
      */
     public void BlaCatSDK(String method, List<String> list){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            MyWebView.getMyWebView().evaluateJavascript("javascript:BlaCatSDK('" + method + "','" + list.toString() + "')", new ValueCallback<String>() {
+            MyWebView.getMyWebView().evaluateJavascript("javascript:BlaCatSDK('" + method + "','" + list.toString().replaceAll(" ", "") + "')", new ValueCallback<String>() {
                 @Override
                 public void onReceiveValue(String value) {
 
                 }
             });
         }else {
-            MyWebView.getMyWebView().loadUrl("javascript:BlaCatSDK('" + method + "','" + list.toString() + "')");
+            MyWebView.getMyWebView().loadUrl("javascript:BlaCatSDK('" + method + "','" + list.toString().replaceAll(" ", "") + "')");
         }
     }
 
     public void BlaCatSDKMulti(String method, List<List<String>> list){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            MyWebView.getMyWebView().evaluateJavascript("javascript:BlaCatSDK('" + method + "','" + list.toString() + "')", new ValueCallback<String>() {
+            MyWebView.getMyWebView().evaluateJavascript("javascript:BlaCatSDK('" + method + "','" + list.toString().replaceAll(" ", "") + "')", new ValueCallback<String>() {
                 @Override
                 public void onReceiveValue(String value) {
 
                 }
             });
         }else {
-            MyWebView.getMyWebView().loadUrl("javascript:BlaCatSDK('" + method + "','" + list.toString() + "')");
+            MyWebView.getMyWebView().loadUrl("javascript:BlaCatSDK('" + method + "','" + list.toString().replaceAll(" ", "") + "')");
         }
     }
 }

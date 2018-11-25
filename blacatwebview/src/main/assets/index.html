@@ -26,14 +26,24 @@
     <script>
         var returnMessage = function(data){
             AndroidSDK.callback(data);
-        }	
-		
+        }			
+
         function BlaCatSDK(method, list=null){
 			if (list){
-				var alist = [];
-				list = list.substr(1,list.length - 2);
-				alist = list.split(",");
-				list = alist;
+				var alist = [];      
+                list = list.substring(list.indexOf("[") + 1, list.lastIndexOf("]"));
+                if (list.indexOf("[") < 0) {
+                    alist = list.split(",");
+				    list = alist;
+                }else{
+                    alist[0] = list.substring(list.indexOf("["), list.lastIndexOf("]") + 1);
+                    list = list.substring(list.lastIndexOf("]") + 2);
+                    list = list.split(",");
+                    for (let i = 0; i < list.length; i++){
+                        alist[i+1] = list[i];
+                    }
+                    list = alist;                    
+                }
 			}
             switch(method){
                 case "initSDK"://初始化方法					
