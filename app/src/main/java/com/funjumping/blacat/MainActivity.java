@@ -68,12 +68,12 @@ public class MainActivity extends AppCompatActivity implements IResultListener,W
 
     @Override
     public void getLoginRes(JSONObject data) {
-
+        Toast.makeText(this, data.toString(), Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void getLogoutRes(JSONObject data) {
-
+        Toast.makeText(this, data.toString(), Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements IResultListener,W
         BlaCatSDK.getBlaCatSDK().BlaCatSDK("initSDK", list);
 
         List<String> list1 = new ArrayList<>();
-        list1.add("2");
+        list1.add("1");
         BlaCatSDK.getBlaCatSDK().BlaCatSDK("setDefaultNetType", list1);
 
         BlaCatSDK.getBlaCatSDK().BlaCatSDK("LoginSDK");
@@ -157,21 +157,21 @@ public class MainActivity extends AppCompatActivity implements IResultListener,W
         list2.add("makeRawTransaction");
         BlaCatSDK.getBlaCatSDK().BlaCatSDK("makeRawTransaction", list2);
 
-        List<String> sbParamJson1 = new ArrayList<>();
-        sbParamJson1.add("(addr)AYkiQ74FHWFygR39WizXCz9f4xCLRYCxMT");
-        sbParamJson1.add("(address)AWPVmAobCJGxrupvQSnovofakaVb2ue65a");
-        sbParamJson1.add("(integer)100000");
-        BlaCatSDK.getBlaCatSDK().BlaCatSDK("makeRawTransaction", sbParamJson1, "transfer", "0x3f7420285874867c30f32e44f304fd62ad1e9573", "makeRawTransaction");
-
-        List<List<String>> listarray = new ArrayList<>();
-        for (int i = 0; i < 5; i++){
-            List<String> tempList = new ArrayList<>();
-            tempList.add("toaddr");
-            tempList.add("count");
-            tempList.add("makeGasTransferMulti1");
-            listarray.add(tempList);
-        }
-        BlaCatSDK.getBlaCatSDK().BlaCatSDKMulti("makeGasTransferMulti", listarray);
+//        List<String> sbParamJson1 = new ArrayList<>();
+//        sbParamJson1.add("(addr)AYkiQ74FHWFygR39WizXCz9f4xCLRYCxMT");
+//        sbParamJson1.add("(address)AWPVmAobCJGxrupvQSnovofakaVb2ue65a");
+//        sbParamJson1.add("(integer)100000");
+//        BlaCatSDK.getBlaCatSDK().BlaCatSDK("makeRawTransaction", sbParamJson1, "transfer", "0x3f7420285874867c30f32e44f304fd62ad1e9573", "makeRawTransaction");
+//
+//        List<List<String>> listarray = new ArrayList<>();
+//        for (int i = 0; i < 5; i++){
+//            List<String> tempList = new ArrayList<>();
+//            tempList.add("toaddr");
+//            tempList.add("count");
+//            tempList.add("makeGasTransferMulti1");
+//            listarray.add(tempList);
+//        }
+//        BlaCatSDK.getBlaCatSDK().BlaCatSDKMulti("makeGasTransferMulti", listarray);
     }
 
     @Override

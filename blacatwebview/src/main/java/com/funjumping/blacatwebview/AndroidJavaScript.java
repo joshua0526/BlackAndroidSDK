@@ -1,6 +1,7 @@
 package com.funjumping.blacatwebview;
 
 import android.webkit.JavascriptInterface;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;

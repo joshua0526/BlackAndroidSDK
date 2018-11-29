@@ -1,6 +1,7 @@
 package com.funjumping.blacatwebview;
 
 import android.os.Build;
+import android.util.Log;
 import android.webkit.ValueCallback;
 import android.widget.Toast;
 
@@ -40,28 +41,29 @@ public class BlaCatSDK{
      * @param list
      */
     public void BlaCatSDK(String method, List<String> list){
+        Log.e("blacat", Helper.ListToString(list));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            MyWebView.getMyWebView().evaluateJavascript("javascript:BlaCatSDK('" + method + "','" + Helper.ListToString(list) + "')", new ValueCallback<String>() {
+            MyWebView.getMyWebView().evaluateJavascript("javascript:BlaCatSDK('" + method + "','" + list.toString().replace(" ", "") + "')", new ValueCallback<String>() {
                 @Override
                 public void onReceiveValue(String value) {
 
                 }
             });
         }else {
-            MyWebView.getMyWebView().loadUrl("javascript:BlaCatSDK('" + method + "','" + Helper.ListToString(list) + "')");
+            MyWebView.getMyWebView().loadUrl("javascript:BlaCatSDK('" + method + "','" + list.toString().replace(" ", "") + "')");
         }
     }
 
     public void BlaCatSDKMulti(String method, List<List<String>> list){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            MyWebView.getMyWebView().evaluateJavascript("javascript:BlaCatSDK('" + method + "','" + Helper.ListToListToString(list) + "')", new ValueCallback<String>() {
+            MyWebView.getMyWebView().evaluateJavascript("javascript:BlaCatSDK('" + method + "','" + list.toString().replace(" ", "") + "')", new ValueCallback<String>() {
                 @Override
                 public void onReceiveValue(String value) {
 
                 }
             });
         }else {
-            MyWebView.getMyWebView().loadUrl("javascript:BlaCatSDK('" + method + "','" + Helper.ListToListToString(list) + "')");
+            MyWebView.getMyWebView().loadUrl("javascript:BlaCatSDK('" + method + "','" + list.toString().replace(" ", "") + "')");
         }
     }
 
@@ -80,14 +82,14 @@ public class BlaCatSDK{
         list.add(contractHash);
         list.add(methodName);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            MyWebView.getMyWebView().evaluateJavascript("javascript:BlaCatSDK('" + method + "','" + Helper.ListToString(list) + "')", new ValueCallback<String>() {
+            MyWebView.getMyWebView().evaluateJavascript("javascript:BlaCatSDK('" + method + "','" + list.toString().replace(" ", "") + "')", new ValueCallback<String>() {
                 @Override
                 public void onReceiveValue(String value) {
 
                 }
             });
         }else {
-            MyWebView.getMyWebView().loadUrl("javascript:BlaCatSDK('" + method + "','" + Helper.ListToString(list) + "')");
+            MyWebView.getMyWebView().loadUrl("javascript:BlaCatSDK('" + method + "','" + list.toString().replace(" ", "") + "')");
         }
     }
 }
