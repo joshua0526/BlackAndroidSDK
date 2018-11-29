@@ -25,28 +25,35 @@
 
     <script>
         var returnMessage = function(data){
+            alert(data);
             AndroidSDK.callback(data);
         }			
 
+        // BlaCatSDK("initSDK", "[1000063,111,cn]");
+        // BlaCatSDK("setDefaultNetType", "[2]");
+        // BlaCatSDK("LoginSDK");
+
         function BlaCatSDK(method, list=null){
+            alert(list);
 			if (list){
 				var alist = [];      
                 list = list.substring(list.indexOf("[") + 1, list.lastIndexOf("]"));
                 if (list.indexOf("[") < 0) {
-                    alist = list.split(",");
-				    list = alist;
+                    alist = list.split(",");				    
                 }else{
                     alist[0] = list.substring(list.indexOf("["), list.lastIndexOf("]") + 1);
                     list = list.substring(list.lastIndexOf("]") + 2);
                     list = list.split(",");
                     for (let i = 0; i < list.length; i++){
                         alist[i+1] = list[i];
-                    }
-                    list = alist;                    
+                    }                  
                 }
+                list = alist;
             }
+            
             switch(method){
-                case "initSDK"://初始化方法					
+                case "initSDK"://初始化方法			
+                    //alert(typeof(list[0]) + " " + typeof(list[1]) + " " + typeof(list[2]));		
                     BlackCat.SDK.init(list[0],list[1], returnMessage,list[2]);
                     BlackCat.SDK.showMain();
                 break;
