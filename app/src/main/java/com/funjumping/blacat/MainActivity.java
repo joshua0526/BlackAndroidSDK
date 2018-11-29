@@ -156,6 +156,22 @@ public class MainActivity extends AppCompatActivity implements IResultListener,W
         list2.add("0x3f7420285874867c30f32e44f304fd62ad1e9573");
         list2.add("makeRawTransaction");
         BlaCatSDK.getBlaCatSDK().BlaCatSDK("makeRawTransaction", list2);
+
+        List<String> sbParamJson1 = new ArrayList<>();
+        sbParamJson1.add("(addr)AYkiQ74FHWFygR39WizXCz9f4xCLRYCxMT");
+        sbParamJson1.add("(address)AWPVmAobCJGxrupvQSnovofakaVb2ue65a");
+        sbParamJson1.add("(integer)100000");
+        BlaCatSDK.getBlaCatSDK().BlaCatSDK("makeRawTransaction", sbParamJson1, "transfer", "0x3f7420285874867c30f32e44f304fd62ad1e9573", "makeRawTransaction");
+
+        List<List<String>> listarray = new ArrayList<>();
+        for (int i = 0; i < 5; i++){
+            List<String> tempList = new ArrayList<>();
+            tempList.add("toaddr");
+            tempList.add("count");
+            tempList.add("makeGasTransferMulti1");
+            listarray.add(tempList);
+        }
+        BlaCatSDK.getBlaCatSDK().BlaCatSDKMulti("makeGasTransferMulti", listarray);
     }
 
     @Override

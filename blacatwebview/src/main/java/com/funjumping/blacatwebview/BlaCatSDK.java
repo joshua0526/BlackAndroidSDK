@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -61,6 +62,32 @@ public class BlaCatSDK{
             });
         }else {
             MyWebView.getMyWebView().loadUrl("javascript:BlaCatSDK('" + method + "','" + Helper.ListToListToString(list) + "')");
+        }
+    }
+
+    /**
+     *
+     * @param method 交互方法名
+     * @param params array传参
+     * @param contractMethod 合约内部方法
+     * @param contractHash 合约哈希
+     * @param methodName 访问服务器方法名
+     */
+    public void BlaCatSDK(String method, List<String> params, String contractMethod, String contractHash, String methodName){
+        List<String> list = new ArrayList<>();
+        list.add(Helper.ListToString(params));
+        list.add(contractMethod);
+        list.add(contractHash);
+        list.add(methodName);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            MyWebView.getMyWebView().evaluateJavascript("javascript:BlaCatSDK('" + method + "','" + Helper.ListToString(list) + "')", new ValueCallback<String>() {
+                @Override
+                public void onReceiveValue(String value) {
+
+                }
+            });
+        }else {
+            MyWebView.getMyWebView().loadUrl("javascript:BlaCatSDK('" + method + "','" + Helper.ListToString(list) + "')");
         }
     }
 }

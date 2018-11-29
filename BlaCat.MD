@@ -434,13 +434,13 @@ BlaCatSDK.getBlaCatSDK().BlaCatSDK("makeGasTransfer", list);
 ### 9、GAS批量转账（makeGasTransferMulti）
 执行GAS批量转账操作，该调用需要钱包用户签名。
 ``` 
-List<String> list = new ArrayList<>();
+List<List<String>> list = new ArrayList<>();
 for (int i = 0; i < 5; i++){
     List<String> tempList = new ArrayList<>();
     tempList.add(toaddr);
     tempList.add(count);
     tempList.add(extString);
-    list.add(tempList.toString());
+    list.add(tempList);
 }
 BlaCatSDK.getBlaCatSDK().BlaCatSDKMulti("makeGasTransferMulti", list);
 ```
