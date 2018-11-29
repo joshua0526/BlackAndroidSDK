@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.funjumping.blacatwebview.BlaCatSDK;
 import com.funjumping.blacatwebview.DragViewCtr;
+import com.funjumping.blacatwebview.Helper;
 import com.funjumping.blacatwebview.IResultListener;
 import com.funjumping.blacatwebview.WebViewListener;
 
@@ -150,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements IResultListener,W
         sbParamJson.add("(address)AWPVmAobCJGxrupvQSnovofakaVb2ue65a");
         sbParamJson.add("(integer)100000");
         List<String> list2 = new ArrayList<>();
-        list2.add(sbParamJson.toString());
+        list2.add(Helper.ListToString(sbParamJson));
         list2.add("transfer");
         list2.add("0x3f7420285874867c30f32e44f304fd62ad1e9573");
         list2.add("makeRawTransaction");
