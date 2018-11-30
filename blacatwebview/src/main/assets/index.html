@@ -25,16 +25,14 @@
 
     <script>
         var returnMessage = function(data){
-            alert(data);
             AndroidSDK.callback(data);
         }			
 
-        // BlaCatSDK("initSDK", "[1000063,111,cn]");
-        // BlaCatSDK("setDefaultNetType", "[2]");
-        // BlaCatSDK("LoginSDK");
+        BlaCatSDK("initSDK", "[1000063,111,cn]");
+        BlaCatSDK("setDefaultNetType", "[2]");
+        BlaCatSDK("LoginSDK");
 
         function BlaCatSDK(method, list=null){
-            alert(list);
 			if (list){
 				var alist = [];      
                 list = list.substring(list.indexOf("[") + 1, list.lastIndexOf("]"));
