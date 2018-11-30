@@ -146,16 +146,16 @@ public class MainActivity extends AppCompatActivity implements IResultListener,W
         BlaCatSDK.getBlaCatSDK().BlaCatSDK("LoginSDK");
 
 
-//        List<String> sbParamJson = new ArrayList<>();
-//        sbParamJson.add("(addr)AYkiQ74FHWFygR39WizXCz9f4xCLRYCxMT");
-//        sbParamJson.add("(address)AWPVmAobCJGxrupvQSnovofakaVb2ue65a");
-//        sbParamJson.add("(integer)100000");
-//        List<String> list2 = new ArrayList<>();
-//        list2.add(Helper.ListToString(sbParamJson));
-//        list2.add("transfer");
-//        list2.add("0x3f7420285874867c30f32e44f304fd62ad1e9573");
-//        list2.add("makeRawTransaction");
-//        BlaCatSDK.getBlaCatSDK().BlaCatSDK("makeRawTransaction", list2);
+        List<String> sbParamJson = new ArrayList<>();
+        sbParamJson.add("(addr)AYkiQ74FHWFygR39WizXCz9f4xCLRYCxMT");
+        sbParamJson.add("(address)AWPVmAobCJGxrupvQSnovofakaVb2ue65a");
+        sbParamJson.add("(integer)100000");
+        List<String> list2 = new ArrayList<>();
+        list2.add(Helper.ListToString(sbParamJson));
+        list2.add("transfer");
+        list2.add("0x3f7420285874867c30f32e44f304fd62ad1e9573");
+        list2.add("makeRawTransaction");
+        BlaCatSDK.getBlaCatSDK().BlaCatSDK("makeRawTransaction", list2);
 
 //        List<String> sbParamJson1 = new ArrayList<>();
 //        sbParamJson1.add("(addr)AYkiQ74FHWFygR39WizXCz9f4xCLRYCxMT");
