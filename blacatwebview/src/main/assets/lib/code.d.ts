@@ -3135,7 +3135,7 @@ declare namespace BlackCat {
         static getOtherAddress(uid: string, token: string, type_src: string, net_type: number): Promise<any>;
         static transferByOther(uid: string, token: string, type_src: string, type: string, price: string, count: string, net_type: number, txid: string, c_hash: string): Promise<any>;
         static getBctIframe(uid: string, token: string): Promise<any>;
-        static getGameAssets(uid: string, token: string, assets: Array<string>): Promise<any>;
+        static getGameAssets(uid: string, token: string, assets: Array<string>, appid?: string): Promise<any>;
     }
 }
 declare namespace BlackCat {

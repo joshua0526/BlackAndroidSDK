@@ -34,7 +34,7 @@
 
 
 /*icon小图标*/
-.pc_icon{position: fixed;top: 0px;right: 0px;width: 64px;height: 64px;background: url(../img/BlackCaticon5.png) 0% 0% / cover;cursor: pointer;z-index: 98;}
+.pc_icon{position: fixed;top: 0px;right: 0px;width: 64px;height: 64px;background: url(../img/BlackCaticon0.png) 0% 0% / cover;cursor: pointer;z-index: 98;}
 .pc_iconstate{background-color: #08070f;width: 24px;height: 24px;padding: 1px; border-radius: 50%;position: absolute;bottom: 2px;right: 3px;}
 .pc_iconfail{background: url(../img/BlackCaticonfail.png) 0% 0% / cover;}
 /*动态小图标*/
@@ -268,7 +268,6 @@ button.pc_cancel{background-color: #3b3d4a !important;color: #b2b2b2 !important;
 .pc_currencylist div:hover{background: #272836;}
 
 /* 虚拟资产 */
-.pc_assets{display: none;}
 .pc_assets .pc_assetsul li{margin: 10px 20px 10px;border-bottom: 1px solid #424453;font-size: 16px;color:#dbdde9;padding-bottom: 5px}
 .pc_assets .pc_assets_title{border-left: 3px solid #fff;padding-left: 10px; color: #fff;display: inline; line-height: 40px;}
 .pc_assets .pc_balanceimg{width: 20px;height: 20px;display: inline-block;}
@@ -616,3 +615,4 @@ div.pc_modifysex_active{background-color: #f3ce87;color: #33353e;border-color: #
 .pc_currencylist div:first-child{border-top: 1px solid #3a3c4a;}
 .pc_windowtest2 .pc_currency .pc_currencynumber div{background: #344241}
 .pc_windowtest2 .pc_currencynumber .active,.pc_windowtest2 .pc_currencylist div{border-color:#2a3736 }
+.assetsdiv .pc_balance,.assetsdiv .pc_balancename{color: #a7a8ba;}

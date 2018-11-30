@@ -930,6 +930,7 @@ var BlackCat;
                     params['sbParamJson'] = log_sbParamJson;
                     params['toaddr'] = target;
                     params['total'] = total.toString();
+                    params['refer'] = "1";
                     BlackCat.ViewTransConfirm.isTrustFeeLess = false;
                     let unTrust = Main.getUnTrustNnc(params);
                     if (unTrust.length == 0) {
@@ -1243,10 +1244,13 @@ var BlackCat;
                                     if (res && Main.viewMgr.personalCenterView) {
                                         Main.viewMgr.personalCenterView.updateVip();
                                     }
-                                    var listener_res = new BlackCat.Result();
-                                    listener_res.err = false;
-                                    listener_res.info = JSON.parse(params[k].params);
-                                    Main.listenerCallback("buyVipResNotify", listener_res);
+                                    let params_tmp = JSON.parse(params[k].params);
+                                    if (params_tmp.hasOwnProperty("refer") && params_tmp['refer'] == "1") {
+                                        var listener_res = new BlackCat.Result();
+                                        listener_res.err = false;
+                                        listener_res.info = params_tmp;
+                                        Main.listenerCallback("buyVipResNotify", listener_res);
+                                    }
                                 }
                                 catch (e) { }
                             }
@@ -7292,7 +7296,6 @@ var BlackCat;
                 }
                 if (res.r) {
                     this.iframDivElement.innerHTML = '<iframe src=' + res.data + net + ' width="100%" height="100%" scrolling="no"></iframe>';
-                    console.log(res.data);
                 }
                 else {
                     BlackCat.Main.showErrCode(res.errCode);
@@ -8744,9 +8747,6 @@ var BlackCat;
                 this.wallet_btn.classList.remove("pc_active");
                 this.my_asset();
             };
-            this.game_assets_element = this.objCreate("div");
-            this.game_assets_element.classList.add("pc_assets");
-            this.ObjAppend(this.div, this.game_assets_element);
             var paycard = this.objCreate("div");
             paycard.classList.add("pc_card");
             this.ObjAppend(this.div, paycard);
@@ -8826,10 +8826,16 @@ var BlackCat;
                     let labelElement = this.objCreate("label");
                     labelElement.classList.add("iconfont", "icon-bc-help");
                     this.ObjAppend(coinElement, labelElement);
-                    let descElement = this.objCreate("div");
-                    descElement.classList.add("pc_coincon");
-                    descElement.textContent = BlackCat.Main.langMgr.get("pay_" + coin + "_desc");
-                    this.ObjAppend(labelElement, descElement);
+                    let descText = BlackCat.Main.langMgr.get("pay_" + coin + "_desc");
+                    if (descText != "") {
+                        let descElement = this.objCreate("div");
+                        descElement.classList.add("pc_coincon");
+                        descElement.textContent = BlackCat.Main.langMgr.get("pay_" + coin + "_desc");
+                        this.ObjAppend(labelElement, descElement);
+                    }
+                    else {
+                        labelElement.style.display = "none";
+                    }
                     let moreElement = this.objCreate("i");
                     moreElement.classList.add("iconfont", "icon-bc-gengduo");
                     this.ObjAppend(coinElement, moreElement);
@@ -8875,6 +8881,9 @@ var BlackCat;
                     }
                 });
             }
+            this.game_assets_element = this.objCreate("div");
+            this.game_assets_element.classList.add("pc_assets", "assetsdiv");
+            this.ObjAppend(this.div, this.game_assets_element);
             this.divLists = this.objCreate("ul");
             this.divLists.classList.add("pc_paylists");
             this.ObjAppend(this.div, this.divLists);
@@ -8903,6 +8912,7 @@ var BlackCat;
             if (BlackCat.tools.WWW.api_clis && BlackCat.tools.WWW.api_clis != "") {
                 this.getHeight("clis");
             }
+            this.my_asset();
         }
         update() {
             var isHidden = this.isHidden();
@@ -8938,14 +8948,19 @@ var BlackCat;
                     this["spanGAS"].textContent = "0";
                     this["spanNEO"].textContent = "0";
                 }
-                this.getNep5Balance("BCT");
-                this.getNep5Balance("BCP");
-                this.getNep5Balance("CGAS");
-                this.getNep5Balance("CNEO");
-                this.getNep5Balance("BTC");
-                this.getNep5Balance("ETH");
-                this.getNep5BalanceOld("CGAS_OLD");
-                this.getNep5BalanceOld("CNEO_OLD");
+                PayView.tokens_coin.forEach(token => {
+                    token.forEach(coin => {
+                        if (coin != "gas" && coin != "neo") {
+                            this.getNep5Balance(coin.toUpperCase());
+                        }
+                    });
+                });
+                for (let k in PayView.tokens_old) {
+                    PayView.tokens_old[k].forEach(coin => {
+                        this.getNep5BalanceOld(coin.toUpperCase() + "_OLD");
+                    });
+                }
+                yield this.my_asset();
             });
         }
         getNep5BalanceOld(coin) {
@@ -10027,7 +10042,6 @@ var BlackCat;
             return __awaiter(this, void 0, void 0, function* () {
                 var curr = Date.parse(new Date().toString());
                 if (!this.game_assets_ts || curr - this.game_assets_ts > this.game_assets_update) {
-                    BlackCat.Main.viewMgr.change("ViewLoading");
                     try {
                         var allNep5AssetsBalance = yield BlackCat.tools.WWW.api_getAllNep5AssetBalanceOfAddress(BlackCat.Main.user.info.wallet);
                         if (allNep5AssetsBalance) {
@@ -10036,7 +10050,7 @@ var BlackCat;
                                 game_assetids.push(allNep5AssetsBalance[k]['assetid']);
                                 this.allnep5_balance[allNep5AssetsBalance[k]['assetid']] = allNep5AssetsBalance[k];
                             }
-                            var res = yield BlackCat.ApiTool.getGameAssets(BlackCat.Main.user.info.uid, BlackCat.Main.user.info.token, game_assetids);
+                            var res = yield BlackCat.ApiTool.getGameAssets(BlackCat.Main.user.info.uid, BlackCat.Main.user.info.token, [], BlackCat.Main.appid);
                             console.log("[BlaCat]", '[PayView]', 'my_asset, getGameAssets res => ', res);
                             if (res.r) {
                                 if (res.data) {
@@ -10046,14 +10060,12 @@ var BlackCat;
                                 }
                             }
                             else {
-                                BlackCat.Main.viewMgr.viewLoading.remove();
                                 BlackCat.Main.showErrCode(res.errCode);
                                 return;
                             }
                         }
                     }
                     catch (e) { }
-                    BlackCat.Main.viewMgr.viewLoading.remove();
                 }
                 else {
                     console.log("[BlaCat]", '[PayView]', 'my_asset, tm not reach, last ', curr - this.game_assets_ts, ', this.game_assets_update: ', this.game_assets_update);
@@ -10070,10 +10082,6 @@ var BlackCat;
                         this.ObjAppend(this.game_assets_element, assets_ul);
                         var assets_li = this.objCreate("li");
                         this.ObjAppend(assets_ul, assets_li);
-                        var assets_title = this.objCreate("div");
-                        assets_title.textContent = this.getAppName(this.game_assets[k]['name']);
-                        assets_title.classList.add("pc_assets_title");
-                        this.ObjAppend(assets_li, assets_title);
                         if (this.game_assets[k].hasOwnProperty('coins')) {
                             for (let m in this.game_assets[k]['coins']) {
                                 var assets_balance = this.objCreate("div");
@@ -10091,8 +10099,11 @@ var BlackCat;
                                 this.ObjAppend(assets_balance, balancename);
                                 var balance = this.objCreate("span");
                                 balance.classList.add("pc_balance");
-                                balance.textContent = BlackCat.Main.getStringNumber(this.allnep5_balance[this.game_assets[k]['coins'][m]['contract']]['balance']);
+                                balance.textContent = "0";
                                 this.ObjAppend(assets_balance, balance);
+                                if (this.allnep5_balance.hasOwnProperty(this.game_assets[k]['coins'][m]['contract'])) {
+                                    balance.textContent = BlackCat.Main.getStringNumber(this.allnep5_balance[this.game_assets[k]['coins'][m]['contract']]['balance']);
+                                }
                             }
                         }
                         if (this.game_assets[k].hasOwnProperty('nfts')) {
@@ -13434,9 +13445,9 @@ var BlackCat;
                 return this.common('wallet_transfer.get_pay_add', { uid: uid, token: token });
             });
         }
-        static getGameAssets(uid, token, assets) {
+        static getGameAssets(uid, token, assets, appid = "") {
             return __awaiter(this, void 0, void 0, function* () {
-                return this.common('user_wallet.get_game_assets', { uid: uid, token: token, assets: assets });
+                return this.common('user_wallet.get_game_assets', { uid: uid, token: token, assets: assets, appid: appid });
             });
         }
     }
