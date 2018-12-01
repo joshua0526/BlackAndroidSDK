@@ -131,7 +131,6 @@ public class MyWebView extends WebView{
         }else {
             myWebView.setVisibility(View.VISIBLE);
         }
-
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

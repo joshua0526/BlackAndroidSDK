@@ -41,7 +41,6 @@ public class BlaCatSDK{
      * @param list
      */
     public void BlaCatSDK(String method, List<String> list){
-        Log.e("blacat", Helper.ListToString(list));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             MyWebView.getMyWebView().evaluateJavascript("javascript:BlaCatSDK('" + method + "','" + list.toString().replace(" ", "") + "')", new ValueCallback<String>() {
                 @Override
