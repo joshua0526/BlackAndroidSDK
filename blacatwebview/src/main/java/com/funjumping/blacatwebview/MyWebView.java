@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
@@ -62,6 +63,23 @@ public class MyWebView extends WebView{
     public void Init(){
         myWebView.setWebChromeClient(mwcc);
         myWebView.setWebViewClient(new WebViewClient(){
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                if (url == null) return false;
+                try{
+                    if (!url.startsWith("http://") && !url.startsWith("https://")){
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                        mContext.startActivity(intent);
+                        return true;
+                    }
+                }catch (Exception e){
+                    return true;
+                }
+                myWebView.loadUrl(url);
+                return true;
+            }
+
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
@@ -92,7 +110,6 @@ public class MyWebView extends WebView{
 
         params = new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
         params.type = WindowManager.LayoutParams.TYPE_APPLICATION_SUB_PANEL;
-//        params.gravity = Gravity.CENTER;
         mContext.addContentView(myWebView, params);
         myWebView.setVisibility(View.GONE);
     }
@@ -137,4 +154,5 @@ public class MyWebView extends WebView{
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         mwcc.onActivityResult(requestCode,resultCode,data);
     }
+
 }

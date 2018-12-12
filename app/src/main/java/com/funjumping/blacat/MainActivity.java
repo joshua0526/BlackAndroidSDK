@@ -134,8 +134,8 @@ public class MainActivity extends AppCompatActivity implements IResultListener,W
     @Override
     public void WebViewComplite() {
         List<String> list = new ArrayList<>();
-        list.add("1000063");
-        list.add("111");
+        list.add("1000121");
+        list.add("1");
         list.add("cn");
         BlaCatSDK.getBlaCatSDK().BlaCatSDK("initSDK", list);
 
