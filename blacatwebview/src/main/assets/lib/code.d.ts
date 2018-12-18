@@ -75,31 +75,31 @@ declare namespace BlackCat {
         }>;
         invokescript(params: any): Promise<tools.Result>;
         makeRawTransaction(params: any, callback: any): Promise<void>;
-        private _makeRawTransaction(params, trust, net_fee, callback?);
+        private _makeRawTransaction;
         makeRecharge(params: any, callback: any): Promise<void>;
         makeGasTransfer(params: any, callback?: any): Promise<void>;
         makeNeoTransfer(params: any, callback?: any): Promise<void>;
         makeGasTransferMulti(params: any, callback?: any): Promise<void>;
         confirmAppNotify(params: any): Promise<Result>;
         bancor(params: any, callback?: any): Promise<void>;
-        private _bancor(params, trust, net_fee, callback?);
+        private _bancor;
         buyVip(params: any, callback?: any): Promise<void>;
-        private _buyVip(params, trust, net_fee, callback?);
+        private _buyVip;
         static loginCallback(): Promise<void>;
-        private static setGameInfo(param);
+        private static setGameInfo;
         isLogined(): boolean;
         static logoutCallback(): Promise<void>;
         static listenerCallback(cmd: any, data: any): Promise<void>;
         static update(): Promise<void>;
         static getAppNotifys(): Promise<boolean>;
-        private static doPlatNotify(params);
+        private static doPlatNotify;
         static continueWithOpenWallet(): Promise<void>;
-        private static doPlatNotifyBancor(params);
-        private static doPlatNotiyRefund(params);
-        private static doPlatNotifyTransferRes(params, txid);
-        private static doPlatNotifyRefundRes(params, txid);
-        private static confirmPlatNotify(params);
-        private static confirmPlatNotifyExt(params, ext);
+        private static doPlatNotifyBancor;
+        private static doPlatNotiyRefund;
+        private static doPlatNotifyTransferRes;
+        private static doPlatNotifyRefundRes;
+        private static confirmPlatNotify;
+        private static confirmPlatNotifyExt;
         static getPlatNotifys(): Promise<boolean>;
         static changeNetType(type: number): void;
         static getUrlParam(name: any): string;
@@ -123,8 +123,8 @@ declare namespace BlackCat {
         static setLiveTimeMax(minutes: number): void;
         static getLiveTimeMax(): number;
         static getStringNumber(num: number): string;
-        private static setTsOffset(loginParam);
-        private static getUrlHead();
+        private static setTsOffset;
+        private static getUrlHead;
         static randomSort(arr: any, newArr: any): any;
         static check(): string;
         static in_array(search: string, array: Array<string>): boolean;
@@ -158,11 +158,11 @@ declare namespace BlackCat {
         createDiv(): void;
         hidden(): void;
         show(): void;
-        private getNetFeesIdx(net_fee);
-        private dofree();
-        private dospeed(net_fee?);
-        private getNetFeeShow();
-        private showNetFee();
+        private getNetFeesIdx;
+        private dofree;
+        private dospeed;
+        private getNetFeeShow;
+        private showNetFee;
     }
 }
 declare namespace BlackCat {
@@ -2019,7 +2019,7 @@ declare namespace BlackCat {
         private fetch_error;
         constructor(hosts: Array<string>, check_params: string, check_type?: string);
         getOne(callback: any): void;
-        private check_results(callback);
+        private check_results;
     }
 }
 declare namespace BlackCat {
@@ -2036,17 +2036,17 @@ declare namespace BlackCat {
         private node_change_tmp;
         constructor();
         selectApi(callback: any): void;
-        private _selectApi(callback);
-        private selectNode(callback, type, force?);
-        private _selectNode(callback, type, force);
-        private selectCli(callback, type, force?);
-        private _selectCli(callback, type);
+        private _selectApi;
+        private selectNode;
+        private _selectNode;
+        private selectCli;
+        private _selectCli;
         change(callback: any, type?: number): void;
         setDefault(type: number): void;
-        private change2test(callback);
-        private change2Main(callback);
+        private change2test;
+        private change2Main;
         getOtherTypes(): Array<number>;
-        private getHosts(hosts);
+        private getHosts;
         getCurrNodeInfo(type: string): any;
         getNodeLists(type: string): any;
         setNode(type: any, url: any): void;
@@ -2069,7 +2069,7 @@ declare namespace BlackCat {
         key_enter(): void;
         start(): void;
         remove(timeout?: number, fadeClass?: string): void;
-        private _remove();
+        private _remove;
         return(timeout?: number): void;
         hidden(): void;
         show(): void;
@@ -2091,10 +2091,10 @@ declare namespace BlackCat {
         constructor();
         create(): void;
         toRefer(): void;
-        private dodel();
-        private makedel();
-        private doMakeTransfer();
-        private base64ToBlob(code);
+        private dodel;
+        private makedel;
+        private doMakeTransfer;
+        private base64ToBlob;
     }
 }
 declare namespace BlackCat {
@@ -2108,7 +2108,7 @@ declare namespace BlackCat {
         start(): void;
         create(): void;
         toRefer(): void;
-        private doFinished();
+        private doFinished;
     }
 }
 declare namespace BlackCat {
@@ -2121,8 +2121,8 @@ declare namespace BlackCat {
         create(): void;
         toRefer(): void;
         getAddressbook(): Promise<void>;
-        private searchAddressbook();
-        private getAddressElement(k, addrs);
+        private searchAddressbook;
+        private getAddressElement;
     }
 }
 declare namespace BlackCat {
@@ -2160,17 +2160,17 @@ declare namespace BlackCat {
         start(): void;
         update(): void;
         reset(): void;
-        private empty(value);
-        private validateAccount(emptySkip?);
-        private validateCode();
-        private validatePass();
-        private validateVpass();
-        private checkAccountFromApi();
-        private doForgetPassword();
-        private doRetryCount(type);
-        private _doRetryCount();
-        private doGetCode();
-        private getPhone();
+        private empty;
+        private validateAccount;
+        private validateCode;
+        private validatePass;
+        private validateVpass;
+        private checkAccountFromApi;
+        private doForgetPassword;
+        private doRetryCount;
+        private _doRetryCount;
+        private doGetCode;
+        private getPhone;
     }
 }
 declare namespace BlackCat {
@@ -2189,9 +2189,9 @@ declare namespace BlackCat {
         showFail(): void;
         showSucc(): void;
         flushProcess(count: any): void;
-        private dragTouch(ev);
-        private drag();
-        private onResize();
+        private dragTouch;
+        private drag;
+        private onResize;
     }
 }
 declare namespace BlackCat {
@@ -2205,10 +2205,10 @@ declare namespace BlackCat {
         create(): void;
         start(): void;
         key_enter(): void;
-        private getPhone();
-        private verifyAccount();
-        private verifyPass();
-        private doLogin();
+        private getPhone;
+        private verifyAccount;
+        private verifyPass;
+        private doLogin;
     }
 }
 declare namespace BlackCat {
@@ -2231,7 +2231,7 @@ declare namespace BlackCat {
         show(): void;
         toRefer(): void;
         key_esc(): void;
-        private doArea(area);
+        private doArea;
     }
 }
 declare namespace BlackCat {
@@ -2246,9 +2246,9 @@ declare namespace BlackCat {
         show(): void;
         toRefer(): void;
         key_esc(): void;
-        private doCancel();
-        private changeInputImg();
-        private doConfirm();
+        private doCancel;
+        private changeInputImg;
+        private doConfirm;
     }
 }
 declare namespace BlackCat {
@@ -2260,8 +2260,8 @@ declare namespace BlackCat {
         toRefer(): void;
         key_esc(): void;
         key_enter(): void;
-        private doCancel();
-        private doConfirm();
+        private doCancel;
+        private doConfirm;
     }
 }
 declare namespace BlackCat {
@@ -2273,10 +2273,10 @@ declare namespace BlackCat {
         private divLists;
         create(): void;
         toRefer(): void;
-        private showNodeInfo(type, clear?);
-        private doChange(type, nodelist, height);
-        private getNodeName(nodeInfo);
-        private getHeight(type, nodelist, element, li, currNodeInfo);
+        private showNodeInfo;
+        private doChange;
+        private getNodeName;
+        private getHeight;
     }
 }
 declare namespace BlackCat {
@@ -2288,8 +2288,8 @@ declare namespace BlackCat {
         show(): void;
         toRefer(): void;
         key_esc(): void;
-        private doCancel();
-        private doConfirm();
+        private doCancel;
+        private doConfirm;
     }
 }
 declare namespace BlackCat {
@@ -2298,7 +2298,7 @@ declare namespace BlackCat {
         private net_fee;
         create(): void;
         toRefer(): void;
-        private setSpeed();
+        private setSpeed;
     }
 }
 declare namespace BlackCat {
@@ -2320,13 +2320,13 @@ declare namespace BlackCat {
         constructor();
         create(): void;
         toRefer(): void;
-        private setItem(item);
-        private setPayway(payway);
-        private setActive(list, item);
+        private setItem;
+        private setPayway;
+        private setActive;
         static getPayAmount(pay_way: string, month: string): number;
         static getPayNnc(pay_way: string): string;
         static getPayTarget(): string;
-        private updatePayNum();
+        private updatePayNum;
         static pay(pay_way: string, month: string, invite: string, net_fee: string, trust?: string, callback?: any, isSDK?: boolean, sdkParams?: any): Promise<Result>;
         static checkUidFromApi(uid: string): Promise<boolean>;
     }
@@ -2342,17 +2342,17 @@ declare namespace BlackCat {
         show(): void;
         toRefer(): void;
         key_esc(): void;
-        private getImg();
-        private getName();
-        private getSex();
-        private getFee();
-        private getArea();
-        private modifyImg();
-        private modifyName();
-        private modifySex();
+        private getImg;
+        private getName;
+        private getSex;
+        private getFee;
+        private getArea;
+        private modifyImg;
+        private modifyName;
+        private modifySex;
         modifyFee(): void;
         modifyArea(): void;
-        private getNodeHeight(type);
+        private getNodeHeight;
         updateNodeInfo(): void;
     }
 }
@@ -2363,7 +2363,7 @@ declare namespace BlackCat {
         create(): void;
         reset(): void;
         toRefer(): void;
-        private getIframeUrl();
+        private getIframeUrl;
     }
 }
 declare namespace BlackCat {
@@ -2380,15 +2380,15 @@ declare namespace BlackCat {
         private s_getWalletLists;
         create(): void;
         toRefer(): void;
-        private doMakeTransfer();
-        private checkTransCount(count);
-        private getBalance();
-        private buy();
-        private getSpent(price, count, float?);
-        private getpayment(count, price, float?);
-        private getBuyContractHash();
-        private addGetWalletLists();
-        private showGetMore();
+        private doMakeTransfer;
+        private checkTransCount;
+        private getBalance;
+        private buy;
+        private getSpent;
+        private getpayment;
+        private getBuyContractHash;
+        private addGetWalletLists;
+        private showGetMore;
         updateBalance(): void;
     }
 }
@@ -2399,10 +2399,10 @@ declare namespace BlackCat {
         private s_getWalletLists;
         create(): void;
         toRefer(): void;
-        private doMakeTransfer();
-        private base64ToBlob(code);
-        private checkTransCount(count);
-        private addGetWalletLists();
+        private doMakeTransfer;
+        private base64ToBlob;
+        private checkTransCount;
+        private addGetWalletLists;
         updateBalance(): void;
     }
 }
@@ -2421,14 +2421,14 @@ declare namespace BlackCat {
         create(): void;
         reset(): void;
         toRefer(): void;
-        private getExchangeInfo(src_coin);
-        private showExchangeInfo();
-        private showCoinType();
-        private showBuy(clear?);
-        private showDetail(clear?);
-        private setExchangeCoinTypeInfo(type);
-        private getMarketLiImg(list);
-        private getCurr(size?);
+        private getExchangeInfo;
+        private showExchangeInfo;
+        private showCoinType;
+        private showBuy;
+        private showDetail;
+        private setExchangeCoinTypeInfo;
+        private getMarketLiImg;
+        private getCurr;
     }
 }
 declare namespace BlackCat {
@@ -2437,10 +2437,10 @@ declare namespace BlackCat {
         constructor();
         create(): void;
         toRefer(): void;
-        private getCnts();
-        private getTxid();
-        private getWallet();
-        private getParams();
+        private getCnts;
+        private getTxid;
+        private getWallet;
+        private getParams;
     }
 }
 declare namespace BlackCat {
@@ -2455,7 +2455,7 @@ declare namespace BlackCat {
         remove(): void;
         toRefer(): void;
         reset(): void;
-        private doGetWalletLists();
+        private doGetWalletLists;
     }
 }
 declare namespace BlackCat {
@@ -2463,7 +2463,7 @@ declare namespace BlackCat {
         private divAddress;
         create(): void;
         toRefer(): void;
-        private base64ToBlob(code);
+        private base64ToBlob;
     }
 }
 declare namespace BlackCat {
@@ -2499,11 +2499,11 @@ declare namespace BlackCat {
         start(): void;
         create(): void;
         toRefer(): void;
-        private getAddress();
-        private doinputchange();
+        private getAddress;
+        private doinputchange;
         gatSelect(): void;
-        private doTransfer();
-        private netFeeChange(net_fee);
+        private doTransfer;
+        private netFeeChange;
         updateBalance(): void;
     }
 }
@@ -2547,28 +2547,28 @@ declare namespace BlackCat {
         start(): void;
         create(): void;
         update(): void;
-        private clearTimeout();
+        private clearTimeout;
         doGetBalances(): Promise<void>;
-        private getNep5BalanceOld(coin);
-        private getNep5Balance(coin);
-        private doMakeRefundOld(id_old, type?);
-        private doExchangeGAS();
-        private doExchangeCNEO();
-        private doExchangeBCT();
-        private doExchangeBCP();
-        private doExchangeCGAS();
-        private doExchangeToken(coinType?);
-        private doExchangeNEO();
-        private doExchangeBTC();
-        private doExchangeETH();
+        private getNep5BalanceOld;
+        private getNep5Balance;
+        private doMakeRefundOld;
+        private doExchangeGAS;
+        private doExchangeCNEO;
+        private doExchangeBCT;
+        private doExchangeBCP;
+        private doExchangeCGAS;
+        private doExchangeToken;
+        private doExchangeNEO;
+        private doExchangeBTC;
+        private doExchangeETH;
         getWalletAddrOther(type: string): Promise<any>;
-        private _doExchangeOther(type);
-        private divLists_recreate();
+        private _doExchangeOther;
+        private divLists_recreate;
         doGetWalletLists(force?: number): Promise<void>;
-        private getCoinIcon(v, coin_type);
+        private getCoinIcon;
         getListImg(v: any): any;
         getListGameIcon(v: any): any;
-        private getAppName(v);
+        private getAppName;
         getListName(v: any): any;
         getListCtm(v: any): string;
         getListCtmMsg(v: any): string;
@@ -2578,16 +2578,16 @@ declare namespace BlackCat {
         getListCntsClass(v: any): "" | "pc_income" | "pc_expenditure";
         getListState(v: any): HTMLElement;
         getListBlockindex(v: any): any;
-        private wallet_detail();
-        private makeMintTokenTransaction(coinType?);
-        private makeRefundTransaction(id_ASSET?, coinType?);
-        private doMakeReceivables();
-        private doMakeTransfer();
-        private changeToken(type);
+        private wallet_detail;
+        private makeMintTokenTransaction;
+        private makeRefundTransaction;
+        private doMakeReceivables;
+        private doMakeTransfer;
+        private changeToken;
         flushListCtm(): void;
-        private getNetTypeName();
-        private showChangeNetType();
-        private getDivNetSelectType(type);
+        private getNetTypeName;
+        private showChangeNetType;
+        private getDivNetSelectType;
         checkTransCount(count: string): boolean;
         getHeight(type: string): Promise<void>;
         updateHeight(type: any, height: any): void;
@@ -2595,8 +2595,8 @@ declare namespace BlackCat {
             type: string;
             type_src: string;
         };
-        private my_asset();
-        private showGameAssets();
+        private my_asset;
+        private showGameAssets;
     }
 }
 declare namespace BlackCat {
@@ -2609,8 +2609,8 @@ declare namespace BlackCat {
         reset(): void;
         create(): void;
         toRefer(): void;
-        private getWalletInfo();
-        private exportWallet();
+        private getWalletInfo;
+        private exportWallet;
     }
 }
 declare namespace BlackCat {
@@ -2628,12 +2628,12 @@ declare namespace BlackCat {
         show(): void;
         toRefer(): void;
         key_esc(): void;
-        private getUid();
-        private getFee();
-        private doLogout();
-        private makeLogout();
+        private getUid;
+        private getFee;
+        private doLogout;
+        private makeLogout;
         modifyFee(): void;
-        private getNodeHeight(type);
+        private getNodeHeight;
         updateNodeInfo(): void;
         updateVip(): void;
     }
@@ -2659,19 +2659,19 @@ declare namespace BlackCat {
         start(): void;
         update(): void;
         reset(): void;
-        private empty(value);
-        private getPhone();
-        private checkAccountFromApi();
-        private checkUidFromApi();
-        private validateAccount(emptySkip?);
-        private validateUid(emptySkip?);
-        private validateCode();
-        private validatePass();
-        private validateVpass();
-        private doRegister();
-        private doRetryCount(type);
-        private _doRetryCount();
-        private doGetCode();
+        private empty;
+        private getPhone;
+        private checkAccountFromApi;
+        private checkUidFromApi;
+        private validateAccount;
+        private validateUid;
+        private validateCode;
+        private validatePass;
+        private validateVpass;
+        private doRegister;
+        private doRetryCount;
+        private _doRetryCount;
+        private doGetCode;
     }
 }
 declare namespace BlackCat {
@@ -2694,10 +2694,10 @@ declare namespace BlackCat {
         create(): void;
         remove(): void;
         reset(): void;
-        private doGetTrustLists();
-        private getListImg(v);
-        private getListNnc(v);
-        private doDelList(v);
+        private doGetTrustLists;
+        private getListImg;
+        private getListNnc;
+        private doDelList;
     }
 }
 declare namespace BlackCat {
@@ -2709,7 +2709,7 @@ declare namespace BlackCat {
         key_esc(): void;
         key_enter(): void;
         toRefer(): void;
-        private doConfirm();
+        private doConfirm;
     }
 }
 declare namespace BlackCat {
@@ -2717,8 +2717,8 @@ declare namespace BlackCat {
         static content: string;
         create(): void;
         toRefer(): void;
-        private doConfirm();
-        private doCancel();
+        private doConfirm;
+        private doCancel;
     }
 }
 declare namespace BlackCat {
@@ -2812,9 +2812,9 @@ declare namespace BlackCat {
         start(): void;
         create(): void;
         toRefer(): void;
-        private getCnts();
-        private getWallet();
-        private getParams();
+        private getCnts;
+        private getWallet;
+        private getParams;
     }
 }
 declare namespace BlackCat {
@@ -2827,9 +2827,9 @@ declare namespace BlackCat {
         start(): void;
         create(): void;
         toRefer(): void;
-        private getCnts();
-        private getWallet();
-        private getParams();
+        private getCnts;
+        private getWallet;
+        private getParams;
     }
 }
 declare namespace BlackCat {
@@ -2842,9 +2842,9 @@ declare namespace BlackCat {
         start(): void;
         create(): void;
         toRefer(): void;
-        private getCnts();
-        private getWallet();
-        private getParams();
+        private getCnts;
+        private getWallet;
+        private getParams;
     }
 }
 declare namespace BlackCat {
@@ -2870,17 +2870,17 @@ declare namespace BlackCat {
         start(): void;
         create(): void;
         toRefer(): void;
-        private doinputchange();
-        private doConfirm();
-        private netFeeChange(net_fee);
+        private doinputchange;
+        private doConfirm;
+        private netFeeChange;
         updateBalance(): void;
-        private getSelectOptions();
-        private getCoinBalance();
-        private getCoinBalanceLang();
-        private getCoinTypeLang();
-        private dotransfertype();
-        private configNetFee();
-        private checkBalance();
+        private getSelectOptions;
+        private getCoinBalance;
+        private getCoinBalanceLang;
+        private getCoinTypeLang;
+        private dotransfertype;
+        private configNetFee;
+        private checkBalance;
     }
 }
 declare namespace BlackCat {
@@ -2893,13 +2893,13 @@ declare namespace BlackCat {
         toRefer(): void;
         key_enter(): void;
         key_esc(): void;
-        private doConfirm();
-        private doCancel();
+        private doConfirm;
+        private doCancel;
         doReadWalletFile(): Promise<void>;
-        private doOpenWallet();
+        private doOpenWallet;
         static addTask(type: string, params: any): void;
         static removeTask(type: string): void;
-        private doOpenTasks();
+        private doOpenTasks;
     }
 }
 declare namespace BlackCat {
@@ -2910,10 +2910,10 @@ declare namespace BlackCat {
         constructor();
         create(): void;
         show(): void;
-        private createVerifyPwd();
-        private createVerifyVwd();
-        private doCreate();
-        private doBindWallet();
+        private createVerifyPwd;
+        private createVerifyVwd;
+        private doCreate;
+        private doBindWallet;
     }
 }
 declare namespace BlackCat.tools {
@@ -2951,7 +2951,7 @@ declare namespace BlackCat.tools {
     }
     enum AssetEnum {
         NEO = "0xc56f33fc6ecfcd0c225c4ab356fee59390af8560be0e930faebe74a6daff7c9b",
-        GAS = "0x602c79718b16e442de58778e148d0b1084e3b2dffd5de6b7b16cee7969282de7",
+        GAS = "0x602c79718b16e442de58778e148d0b1084e3b2dffd5de6b7b16cee7969282de7"
     }
     class NeoAsset {
         neo: number;
@@ -3100,8 +3100,8 @@ declare namespace BlackCat {
         private reader;
         constructor();
         create(): void;
-        private doBindWallet();
-        private bindWallet(walletStr);
+        private doBindWallet;
+        private bindWallet;
     }
 }
 declare namespace BlackCat {
@@ -3113,8 +3113,8 @@ declare namespace BlackCat {
     class ApiTool {
         static api_version: string;
         static base_url: string;
-        private static makeUrl(cmd);
-        private static common(cmd, post);
+        private static makeUrl;
+        private static common;
         static isLogined(uid: string, token: string): Promise<any>;
         static getPhoneCode(phone: string): Promise<any>;
         static getGameIndex(): Promise<any>;
@@ -3164,7 +3164,7 @@ declare namespace BlackCat {
     class User {
         info: UserInfo;
         cacheKey: string;
-        private _updateUserInfo(userinfo);
+        private _updateUserInfo;
         getInfo(): void;
         setInfo(key: any, value: any): void;
         isLogined(): Promise<boolean>;
