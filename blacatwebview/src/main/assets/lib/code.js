@@ -20,10 +20,12 @@ var BlackCat;
             Main.langMgr = new BlackCat.LangMgr();
             Main.randNumber = parseInt((Math.random() * 10000000).toString());
             Main.urlHead = Main.getUrlHead();
+            Main.apprefer = Main.getUrlParam('refer');
             Main.reset(0);
             Main.update_timeout_max = 5000;
             Main.update_timeout_min = 300;
             Main.isCreated = false;
+            Main.isStart = false;
             Neo.Cryptography.RandomNumberGenerator.startCollectors();
         }
         static reset(type = 0) {
@@ -113,14 +115,43 @@ var BlackCat;
                 return 0;
             });
         }
-        init(appid, appkey, callback, lang) {
+        init(appid, appkey, listener, lang) {
             Main.appid = appid;
             Main.appkey = appkey;
-            Main.callback = callback;
+            Main.callback = listener;
             Main.langMgr.setType(lang);
+        }
+        initex(params, callback = null) {
+            Main.appid = params.appid;
+            Main.appkey = params.appkey;
+            Main.callback = params.listener;
+            Main.langMgr.setType(params.lang);
+            Main.netMgr.setDefault(Number(params.default_net));
+            Main.viewMgr.mainView.createMask();
+            if (Main.isCreated == false) {
+                Main.netMgr.selectApi(() => {
+                    Main.netMgr.change(() => {
+                        Main.viewMgr.iconView.showSucc();
+                        Main.viewMgr.iconView.removeState();
+                        Main.viewMgr.mainView.changNetType();
+                        Main.update();
+                        Main.isCreated = true;
+                        if (Main.viewMgr.viewConnecting.isCreated)
+                            Main.viewMgr.viewConnecting.remove();
+                        var result = new BlackCat.Result();
+                        result.err = false;
+                        result.info = 'success';
+                        Main.listenerCallback("initexRes", result);
+                        if (callback)
+                            Main.loginFunctionCallback(result);
+                    });
+                });
+                return;
+            }
         }
         start(callback = null) {
             return __awaiter(this, void 0, void 0, function* () {
+                Main.isStart = true;
                 Main.loginFunctionCallback = callback;
                 Main.viewMgr.mainView.createMask();
                 if (Main.isCreated == false) {
@@ -354,11 +385,29 @@ var BlackCat;
                     callback(res);
                     return;
                 }
-                if (Main.viewMgr.payView && Main.viewMgr.payView.cgas < Number(params.count)) {
+                var coin_type = "cgas";
+                if (params.hasOwnProperty('type')) {
+                    if (Main.in_array(params.type, ["cgas", "cneo", "bcp", "bct", "btc", "eth"]) == false) {
+                        var res = new BlackCat.Result();
+                        res.err = true;
+                        res.info = "type_error";
+                        var callback_data = {
+                            params: params,
+                            res: res
+                        };
+                        Main.listenerCallback("makeRechargeRes", callback_data);
+                        callback(res);
+                        return;
+                    }
+                }
+                else {
+                    params['type'] = coin_type;
+                }
+                if (Main.viewMgr.payView && Main.viewMgr.payView[params['type']] < Number(params.count)) {
                     Main.showErrMsg('pay_not_enough_money');
                     var res = new BlackCat.Result();
                     res.err = true;
-                    res.info = "not_enough_cgas";
+                    res.info = "not_enough_" + params['type'];
                     var callback_data = {
                         params: params,
                         res: res
@@ -383,8 +432,9 @@ var BlackCat;
                     }
                     Main.transCallback = callback;
                     var list = new BlackCat.walletLists();
-                    if (!params.hasOwnProperty("nnc"))
-                        params['nnc'] = BlackCat.tools.CoinTool.id_CGAS;
+                    if (!params.hasOwnProperty("nnc")) {
+                        params['nnc'] = BlackCat.tools.CoinTool["id_" + params['type'].toUpperCase()];
+                    }
                     if (!params.hasOwnProperty("sbParamJson"))
                         params['sbParamJson'] = ["(address)" + Main.user.info.wallet, "(address)" + Main.app_recharge_addr, "(integer)" + params.count * 100000000];
                     if (!params.hasOwnProperty("sbPushString"))
@@ -396,16 +446,17 @@ var BlackCat;
                     list.ctm = Math.round(new Date().getTime() / 1000).toString();
                     list.cnts = params.count.toString();
                     list.type = "3";
+                    list.type_detail = BlackCat.PayTransferView.log_type_detail[params['type']];
                     BlackCat.ViewTransConfirm.isTrustFeeLess = false;
                     BlackCat.ViewTransConfirm.list = list;
                     BlackCat.ViewTransConfirm.refer = "";
                     BlackCat.ViewTransConfirm.callback_params = params;
-                    BlackCat.ViewTransConfirm.callback = (params) => __awaiter(this, void 0, void 0, function* () {
+                    BlackCat.ViewTransConfirm.callback = (params, trust, net_fee) => __awaiter(this, void 0, void 0, function* () {
                         console.log("[BlaCat]", '[main]', 'makeRecharge交易确认..');
                         Main.viewMgr.change("ViewLoading");
                         setTimeout(() => __awaiter(this, void 0, void 0, function* () {
                             try {
-                                var res = yield Main.wallet.makeRecharge(params);
+                                var res = yield Main.wallet.makeRecharge(params, trust, net_fee);
                             }
                             catch (e) {
                                 var res = new BlackCat.Result();
@@ -595,6 +646,132 @@ var BlackCat;
                             res: res
                         };
                         Main.listenerCallback("makeGasTransferRes", callback_data);
+                        callback(res);
+                    };
+                    Main.viewMgr.change("ViewWalletOpen");
+                }
+            });
+        }
+        makeNeoTransfer(params, callback = null) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (Main.viewMgr.mainView.isHidden()) {
+                    Main.viewMgr.mainView.show();
+                    Main.viewMgr.iconView.hidden();
+                }
+                if (Main.viewMgr.payView && Main.viewMgr.payView.neo < Number(params.count)) {
+                    Main.showErrMsg('pay_not_enough_money');
+                    var res = new BlackCat.Result();
+                    res.err = true;
+                    res.info = "not_enough_neo";
+                    var callback_data = {
+                        params: params,
+                        res: res
+                    };
+                    Main.listenerCallback("makeNeoTransferRes", callback_data);
+                    callback(res);
+                    return;
+                }
+                if (Main.isWalletOpen()) {
+                    if (Main.transNeoCallback) {
+                        Main.showErrMsg(("main_wait_for_last_tran"));
+                        var res = new BlackCat.Result();
+                        res.err = true;
+                        res.info = "wait_for_last_tran";
+                        var callback_data = {
+                            params: params,
+                            res: res
+                        };
+                        Main.listenerCallback("makeNeoTransferRes", callback_data);
+                        callback(res);
+                        return;
+                    }
+                    Main.transNeoCallback = callback;
+                    var list = new BlackCat.walletLists();
+                    list.params = JSON.stringify(params);
+                    list.wallet = Main.user.info.wallet;
+                    list.icon = Main.appicon;
+                    list.name = Main.appname;
+                    list.ctm = Math.round(new Date().getTime() / 1000).toString();
+                    list.cnts = params.count.toString();
+                    list.type = "6";
+                    list.type_detail = BlackCat.PayTransferView.log_type_detail['neo'];
+                    BlackCat.ViewTransConfirmNeo.list = list;
+                    BlackCat.ViewTransConfirmNeo.refer = "";
+                    BlackCat.ViewTransConfirmNeo.callback_params = params;
+                    BlackCat.ViewTransConfirmNeo.callback = (params, net_fee) => __awaiter(this, void 0, void 0, function* () {
+                        console.log("[BlaCat]", '[main]', 'makeNeoTransfer交易确认..');
+                        Main.viewMgr.change("ViewLoading");
+                        setTimeout(() => __awaiter(this, void 0, void 0, function* () {
+                            try {
+                                var res = yield BlackCat.tools.CoinTool.rawTransaction(params.toaddr, BlackCat.tools.CoinTool.id_NEO, params.count, Neo.Fixed8.fromNumber(Number(net_fee)));
+                                if (res.err == false) {
+                                    params.sbPushString = "transfer";
+                                    var logRes = yield BlackCat.ApiTool.addUserWalletLogs(Main.user.info.uid, Main.user.info.token, res.info, Main.appid, params.count.toString(), "6", JSON.stringify(params), Main.netMgr.type, "0", net_fee);
+                                    Main.appWalletLogId = logRes.data;
+                                    yield Main.viewMgr.payView.doGetWalletLists(1);
+                                }
+                            }
+                            catch (e) {
+                                var res = new BlackCat.Result();
+                                res.err = true;
+                                res.info = 'make trans err';
+                                res['ext'] = e.toString();
+                                console.log("[BlaCat]", '[main]', 'makeNeoTransfer, ViewTransConfirmNeo.callback error, params => ', params, 'e => ', e.toString());
+                            }
+                            Main.viewMgr.viewLoading.remove();
+                            var callback_data = {
+                                params: params,
+                                res: res
+                            };
+                            Main.listenerCallback("makeNeoTransferRes", callback_data);
+                            if (Main.transNeoCallback) {
+                                try {
+                                    Main.transNeoCallback(res);
+                                }
+                                catch (e) {
+                                    console.log("[BlaCat]", '[main]', 'makeNeoTransfer, app callback error! ViewTransConfirmNeo.callback error, params => ', params, 'e => ', e.toString());
+                                }
+                            }
+                            Main.transNeoCallback = null;
+                        }), 300);
+                    });
+                    BlackCat.ViewTransConfirmNeo.callback_cancel = () => {
+                        console.log("[BlaCat]", '[main]', 'makeNeoTransfer交易取消..');
+                        var res = new BlackCat.Result();
+                        res.err = true;
+                        res.info = 'cancel';
+                        var callback_data = {
+                            params: params,
+                            res: res
+                        };
+                        Main.listenerCallback("makeNeoTransferRes", callback_data);
+                        if (Main.transNeoCallback) {
+                            try {
+                                Main.transNeoCallback(res);
+                            }
+                            catch (e) {
+                            }
+                        }
+                        Main.transNeoCallback = null;
+                    };
+                    Main.viewMgr.change("ViewTransConfirmNeo");
+                }
+                else {
+                    BlackCat.ViewWalletOpen.refer = "";
+                    BlackCat.ViewWalletOpen.callback_params = params;
+                    BlackCat.ViewWalletOpen.callback_callback = callback;
+                    BlackCat.ViewWalletOpen.callback = (params, callback) => {
+                        this.makeNeoTransfer(params, callback);
+                    };
+                    BlackCat.ViewWalletOpen.callback_cancel = (params, callback) => {
+                        var res = new BlackCat.Result();
+                        res.err = true;
+                        res.info = 'cancel';
+                        var callback_data = {
+                            params: params,
+                            res: res
+                        };
+                        Main.listenerCallback("makeNeoTransferRes", callback_data);
                         callback(res);
                     };
                     Main.viewMgr.change("ViewWalletOpen");
@@ -1084,6 +1261,15 @@ var BlackCat;
                 }
                 if (appicon != {}) {
                     Main.appicon = JSON.stringify(appicon);
+                }
+            }
+            if (param.hasOwnProperty('coin')) {
+                var appcoin = {};
+                for (let icon in param.coin) {
+                    appcoin[icon] = param.coin[icon];
+                }
+                if (appcoin != {}) {
+                    Main.appcoin = JSON.stringify(appcoin);
                 }
             }
         }
@@ -1860,6 +2046,24 @@ var BlackCat;
             arr.splice(random, 1);
             return Main.randomSort(arr, newArr);
         }
+        static check() {
+            var dev = "";
+            if ((navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i))) {
+                dev = "mobile";
+            }
+            else {
+                dev = "pc";
+            }
+            return dev;
+        }
+        static in_array(search, array) {
+            for (let k = 0; k < array.length; k++) {
+                if (array[k] == search) {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
     Main.platName = "BlaCat";
     Main.platLoginType = 0;
@@ -1906,7 +2110,7 @@ var BlackCat;
                 this.net_fees = net_fees;
             }
             else {
-                this.net_fees = ["0.0001", "0.0002", "0.0004", "0.0006", "0.0008", "0.001"];
+                this.net_fees = ["0.001", "0.002", "0.004", "0.006", "0.008", "0.01"];
             }
             this.net_fee = "0";
             this.net_fee_show_rate = 1;
@@ -2312,6 +2516,8 @@ var BlackCat;
                 register_inputVpass: "再次输入密码",
                 register_inputVpass_err: "请再次输入密码",
                 register_inputVpass_inputPass_err: "密码输入不一致！",
+                register_inputinvite: "请输入邀请码",
+                register_inputinvite_err: "邀请码已使用或不存在",
                 register_getCodeSucc: "验证码已成功发送",
                 register_getCode: "获取验证码",
                 register_getCodecount: "重新获取(60)",
@@ -2367,6 +2573,7 @@ var BlackCat;
                 myinfo_modify: "修改",
                 myinfo_member: "会员",
                 myinfo_openmember: "开通会员",
+                myinfo_permanentmember: "永久会员",
                 myInfo: "我的信息",
                 myinfo_headImg: "头像",
                 myinfo_nickname: "昵称",
@@ -2924,6 +3131,8 @@ var BlackCat;
                 register_inputVpass: "Password again",
                 register_inputVpass_err: "Please input password again",
                 register_inputVpass_inputPass_err: "Inconsistent password!",
+                register_inputinvite: "请输入邀请码",
+                register_inputinvite_err: "邀请码已使用或不存在",
                 register_getCodeSucc: "Verification code was successfully sent",
                 register_getCode: "Get Code",
                 register_getCodecount: "Retry(60)",
@@ -2979,6 +3188,7 @@ var BlackCat;
                 myinfo_modify: "Modify",
                 myinfo_member: "Membership",
                 myinfo_openmember: "Upgrade to Membership",
+                myinfo_permanentmember: "永久会员",
                 myInfo: "my information",
                 myinfo_headImg: "Avatar",
                 myinfo_nickname: "Nickname",
@@ -3536,6 +3746,8 @@ var BlackCat;
                 register_inputVpass: "もう一度",
                 register_inputVpass_err: "もう一度パスワードを入力してください",
                 register_inputVpass_inputPass_err: "違うパスワード！",
+                register_inputinvite: "请输入邀请码",
+                register_inputinvite_err: "邀请码已使用或不存在",
                 register_getCodeSucc: "コードを送ります",
                 register_getCode: "コードを手に入れる",
                 register_getCodecount: "再び(60)",
@@ -3591,6 +3803,7 @@ var BlackCat;
                 myinfo_modify: "変更",
                 myinfo_member: "メンバー",
                 myinfo_openmember: "メンバー購入",
+                myinfo_permanentmember: "永久会员",
                 myInfo: "プロフィール",
                 myinfo_headImg: "プロフィール画像",
                 myinfo_nickname: "ニックネーム",
@@ -4011,7 +4224,8 @@ var BlackCat;
         constructor() {
             this.types = [1, 2];
             this.apis = [
-                ["CN", "https://blacat.9191wyx.com/apic/"],
+                ["CN", "//apip01.9191wyx.com/apic/"],
+                ["HK", "//api01.blacat.org/apic/"],
             ];
             this.nodes = {};
             this.nodes[1] = [
@@ -4180,7 +4394,7 @@ var BlackCat;
                 this.selectNode(() => {
                     this.type = 2;
                     BlackCat.tools.CoinTool.id_CGAS = "0x74f2dc36a68fdc4682034178eb2220729231db76";
-                    BlackCat.tools.CoinTool.id_CGAS_OLD = ["0x961e628cc93d61bf636dc0443cf0548947a50dbe"];
+                    BlackCat.tools.CoinTool.id_CGAS_OLD = [];
                     BlackCat.tools.WWW.api_cgas = 'https://apiwallet.nel.group/api/testnet';
                     BlackCat.tools.CoinTool.id_CNEO = "0xc074a05e9dcf0141cbe6b4b3475dd67baf4dcb60";
                     BlackCat.tools.CoinTool.id_CNEO_OLD = [];
@@ -4204,7 +4418,7 @@ var BlackCat;
                 this.selectNode(() => {
                     this.type = 1;
                     BlackCat.tools.CoinTool.id_CGAS = "0x74f2dc36a68fdc4682034178eb2220729231db76";
-                    BlackCat.tools.CoinTool.id_CGAS_OLD = ["0x961e628cc93d61bf636dc0443cf0548947a50dbe"];
+                    BlackCat.tools.CoinTool.id_CGAS_OLD = [];
                     BlackCat.tools.WWW.api_cgas = 'https://apiwallet.nel.group/api/mainnet';
                     BlackCat.tools.CoinTool.id_CNEO = "0xc074a05e9dcf0141cbe6b4b3475dd67baf4dcb60";
                     BlackCat.tools.CoinTool.id_CNEO_OLD = [];
@@ -4273,7 +4487,9 @@ var BlackCat;
         }
         create() { }
         toRefer() { }
-        reset() { { } }
+        reset() { }
+        key_esc() { }
+        key_enter() { }
         start() {
             if (this.isCreated === false) {
                 this.create();
@@ -4312,6 +4528,15 @@ var BlackCat;
         }
         show() {
             this.div.style.display = "";
+            this.div.onkeyup = (e) => {
+                var code = e.charCode || e.keyCode;
+                if (code == 13) {
+                    this.key_enter();
+                }
+                else if (code == 27) {
+                    this.key_esc();
+                }
+            };
         }
         isHidden() {
             if (this.div && this.div.style.display == "none") {
@@ -5521,6 +5746,9 @@ var BlackCat;
                         BlackCat.Main.viewMgr.payView.getHeight("clis");
                     }
                 }
+                if (BlackCat.Main.isStart == false) {
+                    BlackCat.SDK.login();
+                }
             };
             this.div.onmousemove = () => {
                 this.drag();
@@ -5679,12 +5907,6 @@ var BlackCat;
         create() {
             this.div = this.objCreate("div");
             this.div.classList.add("pc_bj", "pc_login");
-            this.div.onkeyup = (e) => {
-                var code = e.charCode || e.keyCode;
-                if (code == 13) {
-                    this.doLogin();
-                }
-            };
             var divLogo = this.objCreate("div");
             divLogo.classList.add("pc_login_logo", "iconfont", "icon-bc-blacat");
             this.ObjAppend(this.div, divLogo);
@@ -5834,6 +6056,9 @@ var BlackCat;
             super.start();
             this.inputAccount.focus();
         }
+        key_enter() {
+            this.doLogin();
+        }
         getPhone() {
             return BlackCat.Main.getPhone(this.selectArea.value, this.inputAccount.value);
         }
@@ -5917,6 +6142,18 @@ var BlackCat;
                 this.create();
                 this.isCreated = true;
                 this.bodyAppend(this.div);
+            }
+            if (/AppleWebKit.*mobile/i.test(navigator.userAgent) || (/MIDP|SymbianOS|NOKIA|SAMSUNG|LG|NEC|TCL|Alcatel|BIRD|DBTEL|Dopod|PHILIPS|HAIER|LENOVO|MOT-|Nokia|SonyEricsson|SIE-|Amoi|ZTE/.test(navigator.userAgent))) {
+                if (window.location.href.indexOf("?mobile") < 0) {
+                    try {
+                        if (/iPad/i.test(navigator.userAgent)) {
+                        }
+                        else {
+                            this.div.classList.add("pc_mobile");
+                        }
+                    }
+                    catch (e) { }
+                }
             }
         }
         create() {
@@ -6011,8 +6248,19 @@ var BlackCat;
                 this.ObjAppend(liArea, iArea);
             });
         }
+        show() {
+            super.show();
+            this.div.tabIndex = 0;
+            this.div.focus();
+        }
         toRefer() {
-            BlackCat.Main.viewMgr.myInfoView.show();
+            if (ModifyAreaView.refer) {
+                BlackCat.Main.viewMgr.change(ModifyAreaView.refer);
+                ModifyAreaView.refer = null;
+            }
+        }
+        key_esc() {
+            this.return();
         }
         doArea(area) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -6020,7 +6268,7 @@ var BlackCat;
                 if (res.r) {
                     BlackCat.Main.showToast("modifyArea_succ");
                     BlackCat.Main.user.setInfo('region', area.codename);
-                    BlackCat.Main.viewMgr.myInfoView.modifyFee();
+                    BlackCat.Main.viewMgr.myInfoView.modifyArea();
                     this.return();
                 }
                 else {
@@ -6070,7 +6318,7 @@ var BlackCat;
             popupClose.classList.add("pc_cancel");
             popupClose.textContent = BlackCat.Main.langMgr.get("cancel");
             popupClose.onclick = () => {
-                this.remove(300);
+                this.doCancel();
             };
             this.ObjAppend(popupbutbox, popupClose);
             var confirmObj = this.objCreate("button");
@@ -6080,10 +6328,26 @@ var BlackCat;
             };
             this.ObjAppend(popupbutbox, confirmObj);
         }
+        show() {
+            super.show();
+            this.div.tabIndex = 0;
+            this.div.focus();
+        }
         toRefer() {
             if (BlackCat.ModifySexView.refer) {
                 BlackCat.Main.viewMgr.change(BlackCat.ModifySexView.refer);
                 BlackCat.ModifySexView.refer = null;
+            }
+        }
+        key_esc() {
+            this.doCancel();
+        }
+        doCancel() {
+            this.remove(300);
+            if (ModifyImgView.callback_cancel) {
+                ModifyImgView.callback_cancel();
+                ModifyImgView.callback_cancel = null;
+                ModifyImgView.callback = null;
             }
         }
         changeInputImg() {
@@ -6161,6 +6425,7 @@ var BlackCat;
                         if (ModifyImgView.callback) {
                             ModifyImgView.callback();
                             ModifyImgView.callback = null;
+                            ModifyImgView.callback_cancel = null;
                         }
                     }
                     else {
@@ -6204,7 +6469,7 @@ var BlackCat;
             popupClose.classList.add("pc_cancel");
             popupClose.textContent = BlackCat.Main.langMgr.get("cancel");
             popupClose.onclick = () => {
-                this.remove(300);
+                this.doCancel();
             };
             this.ObjAppend(popupbutbox, popupClose);
             var confirmObj = this.objCreate("button");
@@ -6214,10 +6479,29 @@ var BlackCat;
             };
             this.ObjAppend(popupbutbox, confirmObj);
         }
+        show() {
+            super.show();
+            this.div.tabIndex = 0;
+            this.div.focus();
+        }
         toRefer() {
             if (ModifyNameView.refer) {
                 BlackCat.Main.viewMgr.change(ModifyNameView.refer);
                 ModifyNameView.refer = null;
+            }
+        }
+        key_esc() {
+            this.doCancel();
+        }
+        key_enter() {
+            this.doConfirm();
+        }
+        doCancel() {
+            this.remove(300);
+            if (ModifyNameView.callback_cancel) {
+                ModifyNameView.callback_cancel();
+                ModifyNameView.callback = null;
+                ModifyNameView.callback_cancel = null;
             }
         }
         doConfirm() {
@@ -6234,6 +6518,7 @@ var BlackCat;
                     if (ModifyNameView.callback) {
                         ModifyNameView.callback();
                         ModifyNameView.callback = null;
+                        ModifyNameView.callback_cancel = null;
                     }
                 }
                 else {
@@ -6439,7 +6724,7 @@ var BlackCat;
             popupClose.classList.add("pc_cancel");
             popupClose.textContent = BlackCat.Main.langMgr.get("cancel");
             popupClose.onclick = () => {
-                this.remove(300);
+                this.doCancel();
             };
             this.ObjAppend(popupbutbox, popupClose);
             var confirmObj = this.objCreate("button");
@@ -6449,10 +6734,26 @@ var BlackCat;
             };
             this.ObjAppend(popupbutbox, confirmObj);
         }
+        show() {
+            super.show();
+            this.div.tabIndex = 0;
+            this.div.focus();
+        }
         toRefer() {
             if (ModifySexView.refer) {
                 BlackCat.Main.viewMgr.change(ModifySexView.refer);
                 ModifySexView.refer = null;
+            }
+        }
+        key_esc() {
+            this.doCancel();
+        }
+        doCancel() {
+            this.remove(300);
+            if (ModifySexView.callback_cancel) {
+                ModifySexView.callback_cancel();
+                ModifySexView.callback_cancel = null;
+                ModifySexView.callback = null;
             }
         }
         doConfirm() {
@@ -6469,6 +6770,7 @@ var BlackCat;
                             if (ModifySexView.callback) {
                                 ModifySexView.callback();
                                 ModifySexView.callback = null;
+                                ModifySexView.callback_cancel = null;
                             }
                         }
                         else {
@@ -6943,6 +7245,7 @@ var BlackCat;
             liMyinfoArea.textContent = BlackCat.Main.langMgr.get("myinfo_area");
             liMyinfoArea.onclick = () => {
                 this.hidden();
+                BlackCat.ModifyAreaView.refer = "MyInfoView";
                 BlackCat.Main.viewMgr.change("ModifyAreaView");
             };
             this.ObjAppend(ulMyinfo, liMyinfoArea);
@@ -6954,20 +7257,25 @@ var BlackCat;
             this.ObjAppend(liMyinfoArea, this.myArea);
             this.ObjAppend(this.div, myinfo);
         }
+        show() {
+            super.show();
+            this.div.tabIndex = 0;
+            this.div.focus();
+        }
         toRefer() {
             if (MyInfoView.refer) {
                 BlackCat.Main.viewMgr.change(MyInfoView.refer);
                 MyInfoView.refer = null;
             }
         }
+        key_esc() {
+            this.return();
+        }
         getImg() {
             return BlackCat.Main.user.info.icon ? BlackCat.Main.user.info.icon : BlackCat.Main.resHost + "res/img/game0.png";
         }
         getName() {
             return BlackCat.Main.user.info.name;
-        }
-        getUid() {
-            return BlackCat.Main.user.info.uid;
         }
         getSex() {
             return BlackCat.Main.langMgr.get("myinfo_sex_" + BlackCat.Main.user.info.sex);
@@ -6983,24 +7291,14 @@ var BlackCat;
         getArea() {
             return BlackCat.Main.langMgr.get("area_code_" + BlackCat.Main.user.info.region) ? BlackCat.Main.langMgr.get("area_code_" + BlackCat.Main.user.info.region) : BlackCat.Main.langMgr.get("myinfo_area_empty");
         }
-        doLogout() {
-            BlackCat.ViewConfirm.callback = () => {
-                this.makeLogout();
-            };
-            BlackCat.Main.showConFirm("myinfo_logoutConfirm");
-        }
-        makeLogout() {
-            return __awaiter(this, void 0, void 0, function* () {
-                BlackCat.Main.user.logout();
-                BlackCat.Main.viewMgr.removeAll();
-                BlackCat.Main.viewMgr.change("LoginView");
-                BlackCat.Main.logoutCallback();
-            });
-        }
         modifyImg() {
             return __awaiter(this, void 0, void 0, function* () {
                 BlackCat.ModifyImgView.callback = () => {
                     this.myImg.src = this.getImg();
+                    this.div.focus();
+                };
+                BlackCat.ModifyImgView.callback_cancel = () => {
+                    this.div.focus();
                 };
                 BlackCat.Main.viewMgr.change("ModifyImgView");
             });
@@ -7009,7 +7307,10 @@ var BlackCat;
             return __awaiter(this, void 0, void 0, function* () {
                 BlackCat.ModifyNameView.callback = () => {
                     this.myName.textContent = this.getName();
-                    BlackCat.Main.viewMgr.payView.payMyWallet.textContent = this.getName();
+                    this.div.focus();
+                };
+                BlackCat.ModifyNameView.callback_cancel = () => {
+                    this.div.focus();
                 };
                 BlackCat.Main.viewMgr.change("ModifyNameView");
             });
@@ -7018,6 +7319,10 @@ var BlackCat;
             return __awaiter(this, void 0, void 0, function* () {
                 BlackCat.ModifySexView.callback = () => {
                     this.mySex.textContent = this.getSex();
+                    this.div.focus();
+                };
+                BlackCat.ModifySexView.callback_cancel = () => {
+                    this.div.focus();
                 };
                 BlackCat.Main.viewMgr.change("ModifySexView");
             });
@@ -7047,211 +7352,6 @@ var BlackCat;
 })(BlackCat || (BlackCat = {}));
 var BlackCat;
 (function (BlackCat) {
-    class PayExchangeBCPView extends BlackCat.ViewBase {
-        create() {
-            this.div = this.objCreate("div");
-            this.div.classList.add("pc_bj");
-            var header = this.objCreate("div");
-            header.classList.add("pc_header");
-            this.ObjAppend(this.div, header);
-            var returnA = this.objCreate("a");
-            returnA.classList.add("iconfont", "icon-bc-fanhui");
-            returnA.textContent = BlackCat.Main.langMgr.get("return");
-            returnA.onclick = () => {
-                this.return();
-            };
-            this.ObjAppend(header, returnA);
-            var headerH1 = this.objCreate("h1");
-            headerH1.textContent = BlackCat.Main.langMgr.get("pay_exchange_bcp");
-            this.ObjAppend(header, headerH1);
-            this.exchange_type_buy = this.objCreate("div");
-            this.exchange_type_buy.classList.add("pc_exchangetitle");
-            this.ObjAppend(this.div, this.exchange_type_buy);
-            this.exchange_detail = this.objCreate("div");
-            this.exchange_detail.classList.add("pc_exchangelist");
-            this.ObjAppend(this.div, this.exchange_detail);
-            this.getExchangeBCPInfo(0);
-        }
-        reset() {
-            this.exchange_type_buy = null;
-            this.exchange_typeObj = null;
-            this.exchange_buyObj = null;
-            this.exchange_detail = null;
-            this.exchange_detail_ul = null;
-            this.exchange_info = null;
-            this.exchange_coin_type = null;
-            this.exchange_coin_name = null;
-        }
-        toRefer() {
-            if (PayExchangeBCPView.refer) {
-                BlackCat.Main.viewMgr.change(PayExchangeBCPView.refer);
-                PayExchangeBCPView.refer = null;
-            }
-        }
-        getExchangeBCPInfo(src_coin) {
-            return __awaiter(this, void 0, void 0, function* () {
-                try {
-                    var res = yield BlackCat.ApiTool.getExchangeBCPInfo(BlackCat.Main.user.info.uid, BlackCat.Main.user.info.token, src_coin);
-                    if (res.r) {
-                        let data = res.data;
-                        console.log("[BlaCat]", '[PayExchangeBCPView]', 'getExchangeBCPInfo, data =>', data);
-                        if (data && data.hasOwnProperty("info") && data.hasOwnProperty("coin") && data.hasOwnProperty("jys")) {
-                            this.exchange_info = data;
-                            this.showExchangeBCPInfo();
-                        }
-                    }
-                    else {
-                        BlackCat.Main.showErrCode(res.errCode);
-                    }
-                }
-                catch (e) {
-                }
-            });
-        }
-        showExchangeBCPInfo() {
-            console.log("[BlaCat]", '[PayExchangeBCPView]', 'showExchangeBCPInfo ...');
-            this.exchange_coin_type = this.exchange_info.coin[0][0];
-            this.showCoinType();
-            this.showBuy();
-            this.showDetail();
-        }
-        showCoinType() {
-            this.exchange_typeObj = this.objCreate("ul");
-            this.ObjAppend(this.exchange_type_buy, this.exchange_typeObj);
-            this.exchange_info.coin.forEach(list => {
-                var coinType_li = this.objCreate("li");
-                coinType_li.textContent = list[1];
-                if (Number(list[0]) == this.exchange_coin_type) {
-                    coinType_li.classList.add("pc_active");
-                    this.exchange_coin_name = list[1];
-                }
-                coinType_li.onclick = () => {
-                    this.exchange_typeObj.getElementsByClassName("pc_active")[0].classList.remove("pc_active");
-                    coinType_li.classList.add("pc_active");
-                    this.setExchangeCoinTypeInfo(Number(list[0]));
-                    this.showBuy(1);
-                    this.showDetail(1);
-                };
-                this.ObjAppend(this.exchange_typeObj, coinType_li);
-            });
-        }
-        showBuy(clear = 0) {
-            if (this.exchange_buyObj && clear == 1) {
-                this.objRemove(this.exchange_type_buy, this.exchange_buyObj);
-            }
-            this.exchange_buyObj = this.objCreate("div");
-            this.exchange_buyObj.classList.add("pc_exchangelist");
-            this.ObjAppend(this.exchange_type_buy, this.exchange_buyObj);
-            var buyObj_name = this.objCreate("div");
-            buyObj_name.classList.add("pc_exchangename");
-            var buyObj_name_img = this.objCreate("img");
-            buyObj_name_img.src = BlackCat.Main.resHost + "res/img/game0.png";
-            this.ObjAppend(buyObj_name, buyObj_name_img);
-            var buyObj_name_content = this.objCreate("label");
-            buyObj_name_content.textContent = BlackCat.Main.platName;
-            this.ObjAppend(buyObj_name, buyObj_name_content);
-            var buyObj_name_type = this.objCreate("p");
-            buyObj_name_type.textContent = "BCP/" + this.exchange_coin_name;
-            this.ObjAppend(buyObj_name, buyObj_name_type);
-            this.ObjAppend(this.exchange_buyObj, buyObj_name);
-            var buyObj_price = this.objCreate("div");
-            buyObj_price.classList.add("pc_exchangeprice");
-            var buyObj_price_name = this.objCreate("label");
-            buyObj_price_name.textContent = BlackCat.Main.langMgr.get("pay_exchange_price");
-            this.ObjAppend(buyObj_price, buyObj_price_name);
-            var buyObj_price_price = this.objCreate("p");
-            buyObj_price_price.textContent = BlackCat.floatNum.addZero(this.getCurr(), 8);
-            this.ObjAppend(buyObj_price, buyObj_price_price);
-            this.ObjAppend(this.exchange_buyObj, buyObj_price);
-            var buyObj_buy = this.objCreate("div");
-            buyObj_buy.classList.add("pc_exchangerange");
-            var buyObj_buy_btn = this.objCreate("button");
-            buyObj_buy_btn.textContent = BlackCat.Main.langMgr.get("pay_exchange_purchase");
-            buyObj_buy_btn.onclick = () => {
-                this.hidden();
-                BlackCat.PayExchangeDetailView.refer = "PayExchangeBCPView";
-                BlackCat.Main.viewMgr.change("PayExchangeDetailView");
-            };
-            this.ObjAppend(buyObj_buy, buyObj_buy_btn);
-            this.ObjAppend(this.exchange_buyObj, buyObj_buy);
-        }
-        showDetail(clear = 0) {
-            if (this.exchange_detail_ul && clear == 1) {
-                this.objRemove(this.exchange_detail, this.exchange_detail_ul);
-            }
-            this.exchange_detail_ul = this.objCreate("ul");
-            this.ObjAppend(this.exchange_detail, this.exchange_detail_ul);
-            this.exchange_info.info.forEach(list => {
-                if (list.type == this.exchange_coin_type) {
-                    var detail_li = this.objCreate("li");
-                    this.ObjAppend(this.exchange_detail_ul, detail_li);
-                    var li_name = this.objCreate("div");
-                    li_name.classList.add("pc_exchangename");
-                    var li_name_img = this.objCreate("img");
-                    li_name_img.src = this.getMarketLiImg(list);
-                    this.ObjAppend(li_name, li_name_img);
-                    var li_name_content = this.objCreate("label");
-                    li_name_content.textContent = this.exchange_info["jys"][list.jys];
-                    this.ObjAppend(li_name, li_name_content);
-                    var li_name_coin = this.objCreate("p");
-                    li_name_coin.textContent = "BCP/" + this.exchange_coin_name;
-                    this.ObjAppend(li_name, li_name_coin);
-                    this.ObjAppend(detail_li, li_name);
-                    var li_price = this.objCreate("div");
-                    li_price.classList.add("pc_exchangeprice");
-                    var li_price_name = this.objCreate("label");
-                    li_price_name.textContent = BlackCat.Main.langMgr.get("pay_exchange_price");
-                    this.ObjAppend(li_price, li_price_name);
-                    var li_price_price = this.objCreate("p");
-                    li_price_price.textContent = BlackCat.floatNum.addZero(BlackCat.floatNum.round(Number(list["curr"]), 8), 8);
-                    this.ObjAppend(li_price, li_price_price);
-                    this.ObjAppend(detail_li, li_price);
-                    var li_range = this.objCreate("div");
-                    li_range.classList.add("pc_exchangerange");
-                    var li_range_name = this.objCreate("label");
-                    li_range_name.textContent = BlackCat.Main.langMgr.get("pay_exchange_range");
-                    this.ObjAppend(li_range, li_range_name);
-                    var li_range_value = this.objCreate("p");
-                    li_range_value.textContent = BlackCat.floatNum.addZero(BlackCat.floatNum.round(BlackCat.floatNum.times(Number(list["last24"]), 100), 2), 2).toString() + "%";
-                    this.ObjAppend(li_range, li_range_value);
-                    this.ObjAppend(detail_li, li_range);
-                }
-            });
-        }
-        setExchangeCoinTypeInfo(type) {
-            this.exchange_coin_type = type;
-            for (let i = 0; i < this.exchange_info.coin.length; i++) {
-                if (Number(this.exchange_info.coin[i][0]) == type) {
-                    this.exchange_coin_name = this.exchange_info.coin[i][1];
-                    break;
-                }
-            }
-        }
-        getMarketLiImg(list) {
-            if (this.exchange_info.hasOwnProperty("jys_icon")) {
-                if (this.exchange_info["jys_icon"].hasOwnProperty(list.jys)) {
-                    return this.exchange_info["jys_icon"][list.jys];
-                }
-            }
-            return BlackCat.Main.resHost + "res/img/jys_" + list.jys + ".png";
-        }
-        getCurr() {
-            let count = 0;
-            let curr = 0;
-            for (let i = 0; i < this.exchange_info.info.length; i++) {
-                let data = this.exchange_info.info[i];
-                if (data.type == this.exchange_coin_type) {
-                    count += 1;
-                    curr += Number(data.curr);
-                }
-            }
-            return count == 0 ? 0 : BlackCat.floatNum.round(curr / count, 8);
-        }
-    }
-    BlackCat.PayExchangeBCPView = PayExchangeBCPView;
-})(BlackCat || (BlackCat = {}));
-var BlackCat;
-(function (BlackCat) {
     class PayExchangeBCTView extends BlackCat.ViewBase {
         create() {
             this.div = this.objCreate("div");
@@ -7274,6 +7374,7 @@ var BlackCat;
             this.iframDivElement.style.marginTop = "50px";
             this.ObjAppend(this.div, this.iframDivElement);
             this.getIframeUrl();
+            this.dev = BlackCat.Main.check();
         }
         reset() {
         }
@@ -7288,14 +7389,21 @@ var BlackCat;
                 var res = yield BlackCat.ApiTool.getBctIframe(BlackCat.Main.user.info.uid, BlackCat.Main.user.info.token);
                 var nettype = BlackCat.Main.netMgr.type;
                 var net = "";
+                var dev = "";
                 if (nettype == 1) {
-                    net = "&m=" + nettype;
+                    net = "&t=" + nettype;
                 }
                 else if (nettype == 2) {
                     net = "&t=" + nettype;
                 }
+                if (this.dev == "pc") {
+                    dev = "&m=p";
+                }
+                else if (this.dev == "mobile") {
+                    dev = "&m=m";
+                }
                 if (res.r) {
-                    this.iframDivElement.innerHTML = '<iframe src=' + res.data + net + ' width="100%" height="100%" scrolling="no"></iframe>';
+                    this.iframDivElement.innerHTML = '<iframe src=' + res.data + net + dev + ' width="100%" height="100%" scrolling="no"></iframe>';
                 }
                 else {
                     BlackCat.Main.showErrCode(res.errCode);
@@ -7373,7 +7481,14 @@ var BlackCat;
                 labelconsume.textContent = BlackCat.Main.langMgr.get("pay_exchange_getmore", { type: PayExchangeDetailView.callback_params.type_src });
                 this.ObjAppend(divConsume, labelconsume);
                 labelconsume.onclick = () => __awaiter(this, void 0, void 0, function* () {
-                    this.showGetMore();
+                    if (PayExchangeDetailView.callback_params.type_src == 'BCT') {
+                        this.hidden();
+                        BlackCat.PayExchangeBCTView.refer = "PayExchangeDetailView";
+                        BlackCat.Main.viewMgr.change("PayExchangeBCTView");
+                    }
+                    else {
+                        this.showGetMore();
+                    }
                 });
             }
             var divGasObj = this.objCreate("div");
@@ -8205,6 +8320,12 @@ var BlackCat;
                         yield res.data.forEach(list => {
                             var listObj = this.objCreate("li");
                             listObj.onclick = () => {
+                                for (var i in this.listsDiv.children) {
+                                    if (this.listsDiv.children[i].className == "active") {
+                                        this.listsDiv.children[i].classList.remove('active');
+                                    }
+                                }
+                                listObj.classList.add("active");
                                 this.hidden();
                                 BlackCat.PayListDetailView.refer = "PayListMoreView";
                                 BlackCat.PayListDetailView.list = list;
@@ -8427,7 +8548,7 @@ var BlackCat;
             this.inputTransferAddr.onchange = () => {
                 this.divTransferAddr.classList.remove("pc_transfer_active");
                 this.inputTransferAddr.style.padding = "0 35px 0 5px";
-                this.inputTransferAddr.style.width = "230px";
+                this.inputTransferAddr.style.width = "85%";
             };
             this.ObjAppend(this.divTransferAddr, this.inputTransferAddr);
             var aAddresbook = this.objCreate("a");
@@ -8508,8 +8629,8 @@ var BlackCat;
             this.labelName.textContent = PayTransferView.contact.address_name + ":";
             this.inputTransferAddr.value = PayTransferView.contact.address_wallet;
             var labelNameW = this.labelName.clientWidth + 10;
-            var inputTransferAddrw = 270 - labelNameW - 35;
-            this.inputTransferAddr.style.width = inputTransferAddrw + "px";
+            var inputTransferAddrw = labelNameW + 35;
+            this.inputTransferAddr.style.width = "calc( 100% - " + inputTransferAddrw + "px";
             this.inputTransferAddr.style.padding = "0 35px 0 " + labelNameW + "px";
             if (this.labelName) {
                 this.inputTransferCount.focus();
@@ -8626,6 +8747,8 @@ var BlackCat;
         cneo: "4",
         bcp: "5",
         bct: "6",
+        btc: "7",
+        eth: "8",
     };
     PayTransferView.address = "";
     BlackCat.PayTransferView = PayTransferView;
@@ -8720,6 +8843,7 @@ var BlackCat;
             aReturnGame.onclick = () => {
                 BlackCat.SDK.showIcon();
             };
+            //this.ObjAppend(headerTitle, aReturnGame);
             var btnbox = this.objCreate("div");
             this.ObjAppend(this.div, btnbox);
             btnbox.classList.add("pc_btnbox");
@@ -8747,6 +8871,9 @@ var BlackCat;
                 this.wallet_btn.classList.remove("pc_active");
                 this.my_asset();
             };
+            this.game_assets_element = this.objCreate("div");
+            this.game_assets_element.classList.add("pc_assets");
+            this.ObjAppend(this.div, this.game_assets_element);
             var paycard = this.objCreate("div");
             paycard.classList.add("pc_card");
             this.ObjAppend(this.div, paycard);
@@ -8881,9 +9008,6 @@ var BlackCat;
                     }
                 });
             }
-            this.game_assets_element = this.objCreate("div");
-            this.game_assets_element.classList.add("pc_assets", "assetsdiv");
-            this.ObjAppend(this.div, this.game_assets_element);
             this.divLists = this.objCreate("ul");
             this.divLists.classList.add("pc_paylists");
             this.ObjAppend(this.div, this.divLists);
@@ -8912,7 +9036,6 @@ var BlackCat;
             if (BlackCat.tools.WWW.api_clis && BlackCat.tools.WWW.api_clis != "") {
                 this.getHeight("clis");
             }
-            this.my_asset();
         }
         update() {
             var isHidden = this.isHidden();
@@ -8960,7 +9083,6 @@ var BlackCat;
                         this.getNep5BalanceOld(coin.toUpperCase() + "_OLD");
                     });
                 }
-                yield this.my_asset();
             });
         }
         getNep5BalanceOld(coin) {
@@ -9423,14 +9545,15 @@ var BlackCat;
             }
             return v.icon;
         }
-        getAppName(name) {
+        getAppName(v) {
+            var name = v.name;
             try {
                 var nameObj = JSON.parse(name);
                 if (nameObj.hasOwnProperty(BlackCat.Main.langMgr.type)) {
                     return nameObj[BlackCat.Main.langMgr.type];
                 }
-                else if (nameObj.hasOwnProperty(BlackCat.Main.applang)) {
-                    return nameObj[BlackCat.Main.applang];
+                else if (nameObj.hasOwnProperty(v.lang)) {
+                    return nameObj[v.lang];
                 }
             }
             catch (e) {
@@ -9442,7 +9565,7 @@ var BlackCat;
             if (v.g_id == "0") {
                 return BlackCat.Main.platName;
             }
-            return this.getAppName(v.name);
+            return this.getAppName(v);
         }
         getListCtm(v) {
             return BlackCat.Main.getDate(v.ctm);
@@ -10042,6 +10165,7 @@ var BlackCat;
             return __awaiter(this, void 0, void 0, function* () {
                 var curr = Date.parse(new Date().toString());
                 if (!this.game_assets_ts || curr - this.game_assets_ts > this.game_assets_update) {
+                    BlackCat.Main.viewMgr.change("ViewLoading");
                     try {
                         var allNep5AssetsBalance = yield BlackCat.tools.WWW.api_getAllNep5AssetBalanceOfAddress(BlackCat.Main.user.info.wallet);
                         if (allNep5AssetsBalance) {
@@ -10050,7 +10174,7 @@ var BlackCat;
                                 game_assetids.push(allNep5AssetsBalance[k]['assetid']);
                                 this.allnep5_balance[allNep5AssetsBalance[k]['assetid']] = allNep5AssetsBalance[k];
                             }
-                            var res = yield BlackCat.ApiTool.getGameAssets(BlackCat.Main.user.info.uid, BlackCat.Main.user.info.token, [], BlackCat.Main.appid);
+                            var res = yield BlackCat.ApiTool.getGameAssets(BlackCat.Main.user.info.uid, BlackCat.Main.user.info.token, game_assetids);
                             console.log("[BlaCat]", '[PayView]', 'my_asset, getGameAssets res => ', res);
                             if (res.r) {
                                 if (res.data) {
@@ -10060,12 +10184,14 @@ var BlackCat;
                                 }
                             }
                             else {
+                                BlackCat.Main.viewMgr.viewLoading.remove();
                                 BlackCat.Main.showErrCode(res.errCode);
                                 return;
                             }
                         }
                     }
                     catch (e) { }
+                    BlackCat.Main.viewMgr.viewLoading.remove();
                 }
                 else {
                     console.log("[BlaCat]", '[PayView]', 'my_asset, tm not reach, last ', curr - this.game_assets_ts, ', this.game_assets_update: ', this.game_assets_update);
@@ -10082,6 +10208,10 @@ var BlackCat;
                         this.ObjAppend(this.game_assets_element, assets_ul);
                         var assets_li = this.objCreate("li");
                         this.ObjAppend(assets_ul, assets_li);
+                        var assets_title = this.objCreate("div");
+                        assets_title.textContent = this.getAppName(this.game_assets[k]);
+                        assets_title.classList.add("pc_assets_title");
+                        this.ObjAppend(assets_li, assets_title);
                         if (this.game_assets[k].hasOwnProperty('coins')) {
                             for (let m in this.game_assets[k]['coins']) {
                                 var assets_balance = this.objCreate("div");
@@ -10099,11 +10229,8 @@ var BlackCat;
                                 this.ObjAppend(assets_balance, balancename);
                                 var balance = this.objCreate("span");
                                 balance.classList.add("pc_balance");
-                                balance.textContent = "0";
+                                balance.textContent = BlackCat.Main.getStringNumber(this.allnep5_balance[this.game_assets[k]['coins'][m]['contract']]['balance']);
                                 this.ObjAppend(assets_balance, balance);
-                                if (this.allnep5_balance.hasOwnProperty(this.game_assets[k]['coins'][m]['contract'])) {
-                                    balance.textContent = BlackCat.Main.getStringNumber(this.allnep5_balance[this.game_assets[k]['coins'][m]['contract']]['balance']);
-                                }
                             }
                         }
                         if (this.game_assets[k].hasOwnProperty('nfts')) {
@@ -10283,20 +10410,6 @@ var BlackCat;
             this.myInfo = this.objCreate("span");
             this.myInfo.textContent = BlackCat.Main.langMgr.get("myinfo_modify");
             this.ObjAppend(liMyinfo, this.myInfo);
-            var liMyinfovip = this.objCreate("li");
-            liMyinfovip.textContent = BlackCat.Main.langMgr.get("myinfo_member");
-            liMyinfovip.onclick = () => {
-                this.hidden();
-                BlackCat.ModifyVipView.refer = "PersonalCenterView";
-                BlackCat.Main.viewMgr.change("ModifyVipView");
-            };
-            this.ObjAppend(ulMyinfo, liMyinfovip);
-            var iMyinfovip = this.objCreate("i");
-            iMyinfovip.classList.add("iconfont", "icon-bc-gengduo");
-            this.ObjAppend(liMyinfovip, iMyinfovip);
-            this.myVip = this.objCreate("span");
-            this.updateVip();
-            this.ObjAppend(liMyinfovip, this.myVip);
             var liMyinfofee = this.objCreate("li");
             liMyinfofee.textContent = BlackCat.Main.langMgr.get("myinfo_fee");
             liMyinfofee.onclick = () => {
@@ -10366,23 +10479,22 @@ var BlackCat;
             this.getNodeHeight("nodes");
             this.getNodeHeight("clis");
         }
+        show() {
+            super.show();
+            this.div.tabIndex = 0;
+            this.div.focus();
+        }
         toRefer() {
             if (PersonalCenterView.refer) {
                 BlackCat.Main.viewMgr.change(PersonalCenterView.refer);
                 PersonalCenterView.refer = null;
             }
         }
-        getImg() {
-            return BlackCat.Main.user.info.icon ? BlackCat.Main.user.info.icon : BlackCat.Main.resHost + "res/img/game0.png";
-        }
-        getName() {
-            return BlackCat.Main.user.info.name;
+        key_esc() {
+            this.return();
         }
         getUid() {
             return BlackCat.Main.user.info.uid;
-        }
-        getSex() {
-            return BlackCat.Main.langMgr.get("myinfo_sex_" + BlackCat.Main.user.info.sex);
         }
         getFee() {
             if (BlackCat.Main.user.info.service_charge) {
@@ -10391,9 +10503,6 @@ var BlackCat;
             else {
                 return BlackCat.Main.user.info.service_charge ? BlackCat.Main.user.info.service_charge : BlackCat.Main.langMgr.get("myinfo_fee_empty");
             }
-        }
-        getArea() {
-            return BlackCat.Main.langMgr.get("area_code_" + BlackCat.Main.user.info.region) ? BlackCat.Main.langMgr.get("area_code_" + BlackCat.Main.user.info.region) : BlackCat.Main.langMgr.get("myinfo_area_empty");
         }
         doLogout() {
             BlackCat.ViewConfirm.callback = () => {
@@ -10407,31 +10516,6 @@ var BlackCat;
                 BlackCat.Main.viewMgr.removeAll();
                 BlackCat.Main.viewMgr.change("LoginView");
                 BlackCat.Main.logoutCallback();
-            });
-        }
-        modifyImg() {
-            return __awaiter(this, void 0, void 0, function* () {
-                BlackCat.ModifyImgView.callback = () => {
-                    this.myImg.src = this.getImg();
-                };
-                BlackCat.Main.viewMgr.change("ModifyImgView");
-            });
-        }
-        modifyName() {
-            return __awaiter(this, void 0, void 0, function* () {
-                BlackCat.ModifyNameView.callback = () => {
-                    this.myName.textContent = this.getName();
-                    BlackCat.Main.viewMgr.payView.payMyWallet.textContent = this.getName();
-                };
-                BlackCat.Main.viewMgr.change("ModifyNameView");
-            });
-        }
-        modifySex() {
-            return __awaiter(this, void 0, void 0, function* () {
-                BlackCat.ModifySexView.callback = () => {
-                    this.mySex.textContent = this.getSex();
-                };
-                BlackCat.Main.viewMgr.change("ModifySexView");
             });
         }
         modifyFee() {
@@ -10455,8 +10539,15 @@ var BlackCat;
             if (BlackCat.Main.user.info.is_vip == "0") {
                 this.myVip.textContent = BlackCat.Main.langMgr.get("myinfo_openmember");
             }
-            else if (BlackCat.Main.user.info.is_vip == "1") {
+            else {
                 this.myVip.textContent = BlackCat.Main.getDate(BlackCat.Main.user.info.vip_end_time);
+            }
+            if (BlackCat.Main.user.info.is_forever_vip == "1") {
+                this.iMyinfovip.style.display = "none";
+                this.myVip.textContent = BlackCat.Main.langMgr.get("myinfo_permanentmember");
+                this.liMyinfovip.style.cursor = "default";
+                this.liMyinfovip.onclick = () => {
+                };
             }
         }
     }
@@ -10777,13 +10868,17 @@ var BlackCat;
                     });
                     return;
                 }
+                var refer = BlackCat.Main.appid;
+                if (BlackCat.Main.apprefer && BlackCat.Main.apprefer != "") {
+                    refer += "_" + BlackCat.Main.apprefer;
+                }
                 var res;
                 switch (this.accountType) {
                     case 'email':
-                        res = yield BlackCat.ApiTool.registerByEmail(this.inputAccount.value, this.inputCode.value, this.inputVpass.value, this.selectArea.value, this.inputUid.value, this.inputinvite.value);
+                        res = yield BlackCat.ApiTool.registerByEmail(this.inputAccount.value, this.inputCode.value, this.inputVpass.value, this.selectArea.value, this.inputUid.value, this.inputinvite.value, refer);
                         break;
                     case 'phone':
-                        res = yield BlackCat.ApiTool.registerByPhone(this.getPhone(), this.inputCode.value, this.inputVpass.value, this.selectArea.value, this.inputUid.value, this.inputinvite.value);
+                        res = yield BlackCat.ApiTool.registerByPhone(this.getPhone(), this.inputCode.value, this.inputVpass.value, this.selectArea.value, this.inputUid.value, this.inputinvite.value, refer);
                         break;
                     default:
                         return;
@@ -10808,7 +10903,13 @@ var BlackCat;
                     }
                 }
                 else {
-                    BlackCat.Main.showErrCode(res.errCode);
+                    switch (res.errCode) {
+                        case 100809:
+                            BlackCat.Main.showErrMsg(("register_inputinvite_err"));
+                            break;
+                        default:
+                            BlackCat.Main.showErrCode(res.errCode);
+                    }
                 }
             });
         }
@@ -11116,6 +11217,17 @@ var BlackCat;
                 this.doConfirm();
             };
             this.ObjAppend(popupbutbox, butConfirm);
+        }
+        show() {
+            super.show();
+            this.div.tabIndex = 0;
+            this.div.focus();
+        }
+        key_esc() {
+            this.doConfirm();
+        }
+        key_enter() {
+            this.doConfirm();
         }
         toRefer() {
             if (ViewAlert.refer) {
@@ -11490,6 +11602,14 @@ var BlackCat;
                     }
                     this.viewTransConfirmGas.start();
                     break;
+                case "ViewTransConfirmNeo":
+                    console.log("[BlaCat]", '[ViewMgr]', '显示Neo转账确认(' + type + ') ...');
+                    if (!this.viewTransConfirmNeo) {
+                        this.viewTransConfirmNeo = new BlackCat.ViewTransConfirmNeo();
+                        this.views[type] = this.viewTransConfirmNeo;
+                    }
+                    this.viewTransConfirmNeo.start();
+                    break;
                 case "RegisterView":
                     console.log("[BlaCat]", '[ViewMgr]', '注册(' + type + ') ...');
                     if (!this.registerView) {
@@ -11746,6 +11866,8 @@ var BlackCat;
                         ViewTransConfirm.callback_cancel();
                         ViewTransConfirm.callback_cancel = null;
                     }
+                    BlackCat.Main.viewMgr.mainView.hidden();
+                    BlackCat.Main.viewMgr.change("IconView");
                 };
                 this.ObjAppend(headerTitle, returnBtn);
                 var h1Obj = this.objCreate("h1");
@@ -11755,7 +11877,7 @@ var BlackCat;
                 var contentObj = this.objCreate("div");
                 contentObj.classList.add("pc_detail");
                 contentObj.style.paddingBottom = "210px";
-                if (ViewTransConfirm.isTrustFeeLess) {
+                if (ViewTransConfirm.isTrustFeeLess || ViewTransConfirm.list.type == "3") {
                     contentObj.style.paddingBottom = "160px";
                 }
                 contentObj.innerHTML
@@ -11784,7 +11906,7 @@ var BlackCat;
                 });
                 this.netFeeCom.setFeeDefault();
                 this.netFeeCom.createDiv();
-                if (ViewTransConfirm.isTrustFeeLess !== true) {
+                if (ViewTransConfirm.isTrustFeeLess !== true && ViewTransConfirm.list.type != "3") {
                     this.divTrust = this.objCreate("div");
                     this.divTrust.classList.add("pc_switchbox");
                     this.divTrust.textContent = BlackCat.Main.langMgr.get("pay_trust_tips");
@@ -11818,6 +11940,8 @@ var BlackCat;
                         ViewTransConfirm.callback_cancel = null;
                     }
                     this.remove();
+                    BlackCat.Main.viewMgr.mainView.hidden();
+                    BlackCat.Main.viewMgr.change("IconView");
                 };
                 this.ObjAppend(this.divConfirmSelect, cancelObj);
                 var confirmObj = this.objCreate("button");
@@ -11836,6 +11960,8 @@ var BlackCat;
                     ViewTransConfirm.callback(ViewTransConfirm.callback_params, this.trust, this.net_fee);
                     ViewTransConfirm.callback = null;
                     this.remove(300);
+                    BlackCat.Main.viewMgr.mainView.hidden();
+                    BlackCat.Main.viewMgr.change("IconView");
                 };
                 this.ObjAppend(this.divConfirmSelect, confirmObj);
             }
@@ -11915,6 +12041,8 @@ var BlackCat;
                         ViewTransConfirmGas.callback_cancel();
                         ViewTransConfirmGas.callback_cancel = null;
                     }
+                    BlackCat.Main.viewMgr.mainView.hidden();
+                    BlackCat.Main.viewMgr.change("IconView");
                 };
                 this.ObjAppend(headerTitle, returnBtn);
                 var h1Obj = this.objCreate("h1");
@@ -11960,6 +12088,8 @@ var BlackCat;
                         ViewTransConfirmGas.callback_cancel = null;
                     }
                     this.remove();
+                    BlackCat.Main.viewMgr.mainView.hidden();
+                    BlackCat.Main.viewMgr.change("IconView");
                 };
                 this.ObjAppend(this.divConfirmSelect, cancelObj);
                 var confirmObj = this.objCreate("button");
@@ -11974,6 +12104,8 @@ var BlackCat;
                     ViewTransConfirmGas.callback(ViewTransConfirmGas.callback_params, this.net_fee);
                     ViewTransConfirmGas.callback = null;
                     this.remove(300);
+                    BlackCat.Main.viewMgr.mainView.hidden();
+                    BlackCat.Main.viewMgr.change("IconView");
                 };
                 this.ObjAppend(this.divConfirmSelect, confirmObj);
             }
@@ -12017,6 +12149,149 @@ var BlackCat;
         }
     }
     BlackCat.ViewTransConfirmGas = ViewTransConfirmGas;
+})(BlackCat || (BlackCat = {}));
+var BlackCat;
+(function (BlackCat) {
+    class ViewTransConfirmNeo extends BlackCat.ViewBase {
+        constructor() {
+            super();
+            if (!ViewTransConfirmNeo.list) {
+                ViewTransConfirmNeo.list = new BlackCat.walletLists();
+            }
+        }
+        start() {
+            if (this.isCreated) {
+                this.remove();
+            }
+            super.start();
+            if (this.div.clientHeight < 667) {
+                this.divConfirmSelect.style.top = "auto";
+                this.divConfirmSelect.style.bottom = "0";
+            }
+        }
+        create() {
+            this.div = this.objCreate("div");
+            this.div.classList.add("pc_bj", "pc_listdetail", "pc_tradeconfirm");
+            if (ViewTransConfirmNeo.list && ViewTransConfirmNeo.list.hasOwnProperty("wallet")) {
+                var headerTitle = this.objCreate("div");
+                headerTitle.classList.add("pc_header");
+                var returnBtn = this.objCreate("a");
+                returnBtn.classList.add("iconfont", "icon-bc-fanhui");
+                returnBtn.textContent = BlackCat.Main.langMgr.get("return");
+                returnBtn.onclick = () => {
+                    this.return();
+                    if (ViewTransConfirmNeo.callback_cancel) {
+                        ViewTransConfirmNeo.callback_cancel();
+                        ViewTransConfirmNeo.callback_cancel = null;
+                    }
+                    BlackCat.Main.viewMgr.mainView.hidden();
+                    BlackCat.Main.viewMgr.change("IconView");
+                };
+                this.ObjAppend(headerTitle, returnBtn);
+                var h1Obj = this.objCreate("h1");
+                h1Obj.textContent = BlackCat.Main.platName;
+                this.ObjAppend(headerTitle, h1Obj);
+                this.ObjAppend(this.div, headerTitle);
+                var contentObj = this.objCreate("div");
+                contentObj.classList.add("pc_detail");
+                contentObj.style.paddingBottom = "160px";
+                contentObj.innerHTML
+                    = '<ul>'
+                        + '<li>'
+                        + '<div class="pc_listimg">'
+                        + '<img src="' + BlackCat.Main.viewMgr.payView.getListImg(ViewTransConfirmNeo.list) + '">'
+                        + '</div>'
+                        + '<div class="pc_liftinfo">'
+                        + '<div class="pc_listname">' + BlackCat.Main.viewMgr.payView.getListName(ViewTransConfirmNeo.list) + '</div>'
+                        + '<span class="pc_listdate">' + BlackCat.Main.viewMgr.payView.getListCtm(ViewTransConfirmNeo.list) + '</span>'
+                        + '</div>'
+                        + '<div class="pc_cnts ' + BlackCat.Main.viewMgr.payView.getListCntsClass(ViewTransConfirmNeo.list) + ' ">'
+                        + this.getCnts()
+                        + '</div>'
+                        + '</li>'
+                        + '<li><label>' + BlackCat.Main.langMgr.get("paylist_wallet") + '</label><p>' + this.getWallet() + '</p></li>'
+                        + this.getParams()
+                        + '</ul>';
+                this.ObjAppend(this.div, contentObj);
+                this.divConfirmSelect = this.objCreate("div");
+                this.divConfirmSelect.classList.add("pc_tradeconfirmbut");
+                this.ObjAppend(this.div, this.divConfirmSelect);
+                this.netFeeCom = new BlackCat.NetFeeComponent(this.divConfirmSelect, (net_fee) => {
+                    this.net_fee = net_fee;
+                });
+                this.netFeeCom.setFeeDefault();
+                this.netFeeCom.createDiv();
+                var cancelObj = this.objCreate("button");
+                cancelObj.classList.add("pc_cancel");
+                cancelObj.textContent = BlackCat.Main.langMgr.get("cancel");
+                cancelObj.onclick = () => {
+                    console.log("[BlaCat]", '[ViewTransConfirmNeo]', 'PayTransfer交易取消..');
+                    if (ViewTransConfirmNeo.callback_cancel) {
+                        ViewTransConfirmNeo.callback_cancel(ViewTransConfirmNeo.callback_params);
+                        ViewTransConfirmNeo.callback_cancel = null;
+                    }
+                    this.remove();
+                    BlackCat.Main.viewMgr.mainView.hidden();
+                    BlackCat.Main.viewMgr.change("IconView");
+                };
+                this.ObjAppend(this.divConfirmSelect, cancelObj);
+                var confirmObj = this.objCreate("button");
+                if (ViewTransConfirmNeo.list.type == "3") {
+                    confirmObj.textContent = BlackCat.Main.langMgr.get("pay_makeRecharge");
+                }
+                else {
+                    confirmObj.textContent = BlackCat.Main.langMgr.get("ok");
+                }
+                confirmObj.onclick = () => {
+                    console.log("[BlaCat]", '[ViewTransConfirmNeo]', 'PayTransfer交易确认..');
+                    ViewTransConfirmNeo.callback(ViewTransConfirmNeo.callback_params, this.net_fee);
+                    ViewTransConfirmNeo.callback = null;
+                    this.remove(300);
+                    BlackCat.Main.viewMgr.mainView.hidden();
+                    BlackCat.Main.viewMgr.change("IconView");
+                };
+                this.ObjAppend(this.divConfirmSelect, confirmObj);
+            }
+        }
+        toRefer() {
+            if (ViewTransConfirmNeo.refer) {
+                BlackCat.Main.viewMgr.change(ViewTransConfirmNeo.refer);
+                ViewTransConfirmNeo.refer = null;
+            }
+        }
+        getCnts() {
+            return ViewTransConfirmNeo.list.cnts != '0' ? ViewTransConfirmNeo.list.cnts : "";
+        }
+        getWallet() {
+            return ViewTransConfirmNeo.list.wallet;
+        }
+        getParams() {
+            var html = "";
+            var params = ViewTransConfirmNeo.list.params;
+            console.log("[BlaCat]", '[ViewTransConfirmNeo]', 'getParams, params => ', params);
+            if (params) {
+                try {
+                    params = JSON.parse(params);
+                    if (params.hasOwnProperty("toaddr")) {
+                        params = [params];
+                    }
+                    if (params instanceof Array) {
+                        for (let k in params) {
+                            html += '<li class="pc_contractAddress">'
+                                + '<div><label>' + BlackCat.Main.langMgr.get("pay_transferNeo_toaddr") + '</label><p>' + params[k].toaddr + '</p></div>'
+                                + '<div><label>' + BlackCat.Main.langMgr.get("pay_transferNeo_count") + '</label><p>' + params[k].count + '</p></div>'
+                                + '</li>';
+                        }
+                    }
+                }
+                catch (e) {
+                    console.log("[BlaCat]", '[ViewTransConfirmNeo]', 'getParams error => ', e.toString());
+                }
+            }
+            return html;
+        }
+    }
+    BlackCat.ViewTransConfirmNeo = ViewTransConfirmNeo;
 })(BlackCat || (BlackCat = {}));
 var BlackCat;
 (function (BlackCat) {
@@ -12483,18 +12758,7 @@ var BlackCat;
             popupClose.classList.add("pc_cancel");
             popupClose.textContent = BlackCat.Main.langMgr.get("cancel");
             popupClose.onclick = () => {
-                this.remove(300);
-                if (ViewWalletOpen.callback_cancel) {
-                    if (ViewWalletOpen.callback_callback) {
-                        ViewWalletOpen.callback_cancel(ViewWalletOpen.callback_params, ViewWalletOpen.callback_callback);
-                    }
-                    else {
-                        ViewWalletOpen.callback_cancel(ViewWalletOpen.callback_params);
-                    }
-                }
-                ViewWalletOpen.callback_cancel = null;
-                ViewWalletOpen.callback_params = null;
-                ViewWalletOpen.callback_callback = null;
+                this.doCancel();
             };
             this.ObjAppend(popupbutbox, popupClose);
             var confirmObj = this.objCreate("button");
@@ -12510,6 +12774,12 @@ var BlackCat;
                 ViewWalletOpen.refer = null;
             }
         }
+        key_enter() {
+            this.doConfirm();
+        }
+        key_esc() {
+            this.doCancel();
+        }
         doConfirm() {
             if (!this.inputPassword.value) {
                 BlackCat.Main.showErrMsg('pay_walletOpen_inputPassword_err', () => {
@@ -12518,6 +12788,20 @@ var BlackCat;
                 return;
             }
             this.doOpenWallet();
+        }
+        doCancel() {
+            this.remove(300);
+            if (ViewWalletOpen.callback_cancel) {
+                if (ViewWalletOpen.callback_callback) {
+                    ViewWalletOpen.callback_cancel(ViewWalletOpen.callback_params, ViewWalletOpen.callback_callback);
+                }
+                else {
+                    ViewWalletOpen.callback_cancel(ViewWalletOpen.callback_params);
+                }
+            }
+            ViewWalletOpen.callback_cancel = null;
+            ViewWalletOpen.callback_params = null;
+            ViewWalletOpen.callback_callback = null;
         }
         doReadWalletFile() {
             return __awaiter(this, void 0, void 0, function* () {
@@ -13305,9 +13589,9 @@ var BlackCat;
                 return this.common('user.get_enter_params', { uid: uid, token: token, g_id: g_id });
             });
         }
-        static registerByPhone(phone, code, pwd, region, uid, invite_code) {
+        static registerByPhone(phone, code, pwd, region, uid, invite_code, refer = "0") {
             return __awaiter(this, void 0, void 0, function* () {
-                return this.common('user_phone.register_pass', { phone: phone, code: code, pwd: pwd, region: region, uid: uid, invite_code: invite_code });
+                return this.common('user_phone.register_pass', { phone: phone, code: code, pwd: pwd, region: region, uid: uid, invite_code: invite_code, refer: refer });
             });
         }
         static validPhone(phone) {
@@ -13325,9 +13609,9 @@ var BlackCat;
                 return this.common('user.valid_register', { invite_code: invite_code });
             });
         }
-        static registerByEmail(email, code, pwd, region, uid, invite_code) {
+        static registerByEmail(email, code, pwd, region, uid, invite_code, refer = "0") {
             return __awaiter(this, void 0, void 0, function* () {
-                return this.common('user_email.register_pass', { email: email, code: code, pwd: pwd, region: region, uid: uid, invite_code: invite_code });
+                return this.common('user_email.register_pass', { email: email, code: code, pwd: pwd, region: region, uid: uid, invite_code: invite_code, refer: refer });
             });
         }
         static validEmail(email) {
@@ -14757,6 +15041,7 @@ var BlackCat;
             this.lv = "";
             this.is_vip = "";
             this.vip_end_time = "";
+            this.is_forever_vip = "";
         }
     }
     BlackCat.UserInfo = UserInfo;
@@ -14826,6 +15111,14 @@ var BlackCat;
             if (SDK.is_init === false) {
                 SDK.main = new BlackCat.Main();
                 SDK.main.init(appid, appkey, listener, lang);
+            }
+            SDK.is_init = true;
+        }
+        static initex(params, callback = null) {
+            console.log("[BlaCat]", '[SDK]', 'initex ...');
+            if (SDK.is_init === false) {
+                SDK.main = new BlackCat.Main();
+                SDK.main.initex(params, callback);
             }
             SDK.is_init = true;
         }
@@ -14968,6 +15261,20 @@ var BlackCat;
                     return;
                 }
                 var res = yield SDK.main.makeGasTransfer(params, callback);
+            });
+        }
+        static makeNeoTransfer(params, callback = null) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (SDK.is_init === false) {
+                    console.log("[BlaCat]", '[SDK]', '请先初始化init');
+                    return;
+                }
+                if (!SDK.main.isLogined()) {
+                    console.log("[BlaCat]", '[SDK]', '请先登录');
+                    this.showMain();
+                    return;
+                }
+                var res = yield SDK.main.makeNeoTransfer(params, callback);
             });
         }
         static makeGasTransferMulti(params, callback = null) {
@@ -15366,15 +15673,16 @@ var BlackCat;
                     return res;
                 });
             }
-            makeRecharge(params) {
+            makeRecharge(params, trust, net_fee) {
                 return __awaiter(this, void 0, void 0, function* () {
+                    trust = "0";
                     var res = new tools.Result();
                     try {
                         var t_addr = tools.LoginInfo.getCurrentAddress();
                         var t_taaddr = BlackCat.Main.app_recharge_addr;
-                        var t_asset = tools.CoinTool.id_CGAS;
+                        var t_asset = params.nnc;
                         var t_amount = params.count.toString();
-                        var tranRes = yield tools.CoinTool.nep5Transaction(t_addr, t_taaddr, t_asset, t_amount);
+                        var tranRes = yield tools.CoinTool.nep5Transaction(t_addr, t_taaddr, t_asset, t_amount, net_fee);
                     }
                     catch (e) {
                         console.log("[BlaCat]", "[wallet]", "makeRecharge error => ", e.toString());
@@ -15386,7 +15694,7 @@ var BlackCat;
                         if (tranRes.info) {
                             res.err = false;
                             res.info = { txid: tranRes.info };
-                            var logRes = yield BlackCat.ApiTool.addUserWalletLogs(BlackCat.Main.user.info.uid, BlackCat.Main.user.info.token, tranRes.info, BlackCat.Main.appid, params.count.toString(), "3", JSON.stringify(params), BlackCat.Main.netMgr.type);
+                            var logRes = yield BlackCat.ApiTool.addUserWalletLogs(BlackCat.Main.user.info.uid, BlackCat.Main.user.info.token, tranRes.info, BlackCat.Main.appid, params.count.toString(), "3", JSON.stringify(params), BlackCat.Main.netMgr.type, trust, net_fee, BlackCat.PayTransferView.log_type_detail[params.type.toLowerCase()]);
                             BlackCat.Main.appWalletLogId = logRes.data;
                         }
                         else {

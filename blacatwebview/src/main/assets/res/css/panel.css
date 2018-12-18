@@ -20,9 +20,9 @@
 .pc_window *{margin: 0;padding: 0;border: 0;word-wrap:break-word;}
 
 
-@-webkit-keyframes pc_window{0%{-webkit-transform: translate(367px)}100%{-webkit-transform: translate(0)}}
-@keyframes pc_window{0%{transform: translate(367px)}100%{transform: translate(0)}}
-.pc_windowhide{-webkit-transform: translate(367px);transform: translate(367px)}
+@-webkit-keyframes pc_window{0%{-webkit-transform: translate(375px)}100%{-webkit-transform: translate(0)}}
+@keyframes pc_window{0%{transform: translate(375px)}100%{transform: translate(0)}}
+.pc_windowhide{-webkit-transform: translate(375px);transform: translate(375px)}
 /* base公共样式 */
 .mainbox{padding: 10px 20px;}
 .firstdiv{margin-top: 45px; }
@@ -51,7 +51,7 @@
 .pc_windowtest2 .pc_addressbooklist li.pc_addressbooktitle,.pc_windowtest2 .pc_search input,.pc_windowtest2 .pc_addresstitle{background-color: #2a3736;}
 
 /*所有页面的宽高及滚动条*/
-.pc_bj{position: relative;width: 367px;height: 100vh;background-color: #343643; overflow-x: auto;z-index: 2;max-height: 667px;}
+.pc_bj{position: relative;width: 375px;height: 100vh;background-color: #343643; overflow-x: auto;z-index: 2;max-height: 667px;}
 .pc_bj::-webkit-scrollbar {width: 4px;}
 .pc_bj::-webkit-scrollbar-thumb{border-radius: 5px;-webkit-box-shadow: inset 0 0 5px rgba(255,255,255, 0.3);background: rgba(0, 0, 0, 0.2);}
 
@@ -115,7 +115,7 @@ a.pc_areaa{font-size: 20px;color: #9c9ead;position: absolute;top: 10px;right: 5p
 
 
 /*创建钱包和导入钱包和所以弹窗*/
-.pc_popup,.pc_alter,.pc_loading{width: 367px;height: 100vh;max-height:667px;background-color: rgba(0, 0, 0,0.9);position: fixed;top: 0;right: 0;z-index: 9;-webkit-animation: fadeIn 0.3s;animation: fadeIn 0.3s;}
+.pc_popup,.pc_alter,.pc_loading{width: 375px;height: 100vh;max-height:667px;background-color: rgba(0, 0, 0,0.9);position: fixed;top: 0;right: 0;z-index: 9;-webkit-animation: fadeIn 0.3s;animation: fadeIn 0.3s;}
 .pc_popupbox,.pc_alterbox{width: 85%;background-color: #33353e;margin: auto;position: absolute;left: 0;right: 0;top: 30%; -webkit-animation: fadeInNarrow 0.3s;animation: fadeInNarrow 0.3s;}
 .pc_popup_title,.pc_altertitle{font-size: 18px;text-align: center;color: #a4a8c2;height: 40px;line-height: 40px;border-bottom: 1px solid #222335;position: relative;background-color: #2f323b}
 .pc_popupbox input{width: 70%;margin: 20px auto;height: 25px;background-color: #c3c4c9;color: #30313b;border: 1px solid #9c9ead;display: block;font-size: 14px;text-align: center}
@@ -149,10 +149,10 @@ button.pc_cancel{background-color: #3b3d4a !important;color: #b2b2b2 !important;
 .pc_toast .pc_alterbox{padding-bottom: 10px;}
 
 /*转账弹窗 GAS提取 兑换*/
-.pc_transfertype{width: 270px;height: 25px;font-size: 14px;line-height: 25px;margin: 0 auto;padding: 10px 0; color: #9c9ead;position: relative;}
+.pc_transfertype{width: 85%;height: 25px;font-size: 14px;line-height: 25px;margin: 0 auto;padding: 10px 0; color: #9c9ead;position: relative;}
 .pc_transfertypes{width: 64px;height: 20px;font-size: 14px;line-height: 25px;margin: 0 auto;color: #9c9ead;position: relative;}
-.pc_transfer .pc_transferbox input{width: 230px;height: 25px;margin:auto auto;text-align: left;padding: 0 35px 0 5px;text-align: center}
-.pc_transfer .pc_transaddress{padding: 0 35px 0 5px;width: 230px;}
+.pc_transfer .pc_transferbox input{width: 85%;height: 25px;margin:auto auto;text-align: left;padding: 0 35px 0 5px;text-align: center}
+/* .pc_transfer .pc_transaddress{padding: 0 35px 0 5px;width: 230px;} */
 .pc_transfer .pc_transferaddressbook{position: absolute;top: 14px;right: 3px;line-height: 1;font-size: 20px;color: #30313b;cursor: pointer;}
 .pc_transfername{position: absolute;top:10px;left: 5px;color: #30313b;display: none}
 .pc_transfer_active .pc_transfername{display: inline-block;}
@@ -229,7 +229,7 @@ button.pc_cancel{background-color: #3b3d4a !important;color: #b2b2b2 !important;
 
 
 /* 我的钱包 */
-.pc_header{position: fixed;right: 0;top: 0;z-index: 8; width: 367px; height: 45px;line-height: 45px;background-color: #343643; box-shadow: 1px 2px 2px #262837;}
+.pc_header{position: fixed;right: 0;top: 0;z-index: 8; width: 375px; height: 45px;line-height: 45px;background-color: #343643; box-shadow: 1px 2px 2px #262837;}
 .pc_header a{font-size: 28px;color: #dbdde9;position: absolute;padding: 0 12px;cursor: pointer;}
 .pc_header .icon-bc-fanhui{font-size: 16px;padding: 0 10px;}
 .pc_payheighet{position: absolute;left: 50px;color: #9c9ead;line-height: 47px;cursor: pointer;}
@@ -242,7 +242,7 @@ button.pc_cancel{background-color: #3b3d4a !important;color: #b2b2b2 !important;
 .pc_returngame{position: absolute;left: auto;right: 10px;font-size: 28px;color: #fff;top: 0;padding: 0 8px;cursor: pointer;}
 .pc_returngame.icon-bc-fanhui1{font-size: 20px}
 .pc_btnbox{width: 100%;margin: 65px auto 0 auto;text-align: center}
-.pc_card{ position: relative;width: 320px;height: 204px;padding: 12px; background: url(../img/card.png) no-repeat;background-size: 100% 100%;margin:20px auto;border-radius: 5px;box-shadow: 0 7px 14px rgba(0, 0, 0, 0.6);color: #fff}
+.pc_card{ position: relative;width:85%;height: 204px;padding: 12px; background: url(../img/card.png) no-repeat;background-size: 100% 100%;margin:20px auto;border-radius: 5px;box-shadow: 0 7px 14px rgba(0, 0, 0, 0.6);color: #fff}
 .pc_card .pc_mydetail{font-size: 20px;color: #e7e7e7;border: 1px solid #666;padding: 2px 5px;border-radius: 3px;float: left;cursor: pointer;}
 .pc_card .pc_mydetail.icon-bc-tongxunlu{float: right;}
 .pc_cardcon{color: #c8ab73;font-size: 40px;line-height: 1; position: absolute;top: 60px;left: 0; margin:auto;text-align: center}
@@ -311,13 +311,14 @@ button.pc_cancel{background-color: #3b3d4a !important;color: #b2b2b2 !important;
 
 /*交易详情*/
 .pc_tradeconfirm{background-color: #343643; position: fixed;top: 0;right: 0;z-index: 9;}
-.pc_tradeconfirmbut{text-align: center;position: fixed;right: 0;top: 517px;width: 367px;height: 150px; background:#343643;box-shadow: 2px -2px 1px #000}
+.pc_tradeconfirmbut{text-align: center;position: fixed;right: 0;top: 517px;width: 375px;height: 150px; background:#343643;box-shadow: 2px -2px 1px #000}
 .pc_tradeconfirmbut button{width: 30%;height: 40px;background-color: #c8ab73;font-size: 20px;color: #5f491f;margin: auto 25px;border-radius: 5px;margin-top: 15px;box-shadow: inset 0 -5px 30px rgba(50, 0, 0, 0.45);}
 
 
 /*钱包交易列表*/
 .pc_paylist ul{margin-top: 45px;}
 .pc_paylist li{height: 40px;padding: 10px 0; border-bottom: 1px solid #424453;margin: 0 20px;position: relative; cursor: pointer;box-sizing: content-box;}
+
 li.pc_payrecord{font-size: 16px;color: #dbdde9;line-height: 20px;padding: 0;cursor: auto;height: 30px;}
 .pc_listimg{width: 40px;height: 40px;float: left;border-radius:10px;overflow:hidden}
 .pc_liftinfo{float: left;margin-left:10px;font-size: 14px;color: #a7a8ba;max-width: 43%;}
@@ -599,7 +600,20 @@ div.pc_modifysex_active{background-color: #f3ce87;color: #33353e;border-color: #
 .pc_jptype .pc_speed input[type=radio]{left: 80px;}
 .pc_jptype .pc_speed .pc_ellipsis{left:95px;}
 .pc_jptype .pc_speed input[type=range] {width: 50%}
-/* 简化版样式 */
+
+
+
+/*手机移动端 自适应*/
+.pc_window.pc_mobile,.pc_mobile .pc_bj{width: 100vw;height: 100vh;max-height: inherit;}  /*整体和背景块*/
+.pc_mobile .pc_header,.pc_mobile .pc_tradeconfirmbut{width: 100vw;}   /*导航栏块*/
+.pc_mobile .pc_popup, .pc_mobile .pc_alter, .pc_mobile .pc_loading{width: 100vw;max-height: inherit} /*弹窗提示加载块*/
+.pc_mobile .pc_tradeconfirmbut{top: auto;bottom: 0}    /*交易时底部确认块*/
+.pc_mobile .pc_login_logo{padding: 12vh 0 5vh;}    /*登录logo*/
+.pc_mobile .pc_wallet_title{height: 35vh;background-size: 100%}    /*创建钱包的背景图*/
+.pc_mobile .pc_transfertype{max-width: 85%;overflow: hidden;}  /*转账修改*/
+@media screen and (max-width:374px){
+    .pc_mobile .pc_listdate,.pc_mobile .pc_cnts .pc_payheighet,.pc_mobile .pc_cnts{font-size: 12px}  /*交易订单块，时间、高度、和价格的字体大小*/
+}/* 简化版样式 */
 .pc_btnbox{display: none}
 .pc_card{width: 100%;margin: 55px auto;background: none;box-shadow: none;padding: 0;height: 20px;}
 .pc_card .pc_mydetail{border: none}
