@@ -128,8 +128,8 @@ public class MyWebView extends WebView{
         //webSettings.setPluginState(WebSettings.PluginState.ON);
 
 //        //设置自适应屏幕，两者合用
-//        webSettings.setUseWideViewPort(true); //将图片调整到适合webview的大小
-//        webSettings.setLoadWithOverviewMode(true); // 缩放至屏幕的大小
+        webSettings.setUseWideViewPort(true); //将图片调整到适合webview的大小
+        webSettings.setLoadWithOverviewMode(true); // 缩放至屏幕的大小
 
         webSettings.setDomStorageEnabled(true);//支持HTML5 DOM Storage
         webSettings.setDefaultTextEncodingName("utf-8");//设置编码格式
