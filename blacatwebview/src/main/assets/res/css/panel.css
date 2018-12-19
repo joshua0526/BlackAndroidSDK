@@ -119,9 +119,9 @@ a.pc_areaa{font-size: 20px;color: #9c9ead;position: absolute;top: 10px;right: 5p
 .pc_popupbox,.pc_alterbox{width: 85%;background-color: #33353e;margin: auto;position: absolute;left: 0;right: 0;top: 30%; -webkit-animation: fadeInNarrow 0.3s;animation: fadeInNarrow 0.3s;}
 .pc_popup_title,.pc_altertitle{font-size: 18px;text-align: center;color: #a4a8c2;height: 40px;line-height: 40px;border-bottom: 1px solid #222335;position: relative;background-color: #2f323b}
 .pc_popupbox input{width: 70%;margin: 20px auto;height: 25px;background-color: #c3c4c9;color: #30313b;border: 1px solid #9c9ead;display: block;font-size: 14px;text-align: center}
-.pc_popupbutbox{width: 70%;text-align: center;margin: 0 auto;padding: 20px 0;}
+.pc_popupbutbox{width: 85%;text-align: center;margin: 0 auto;padding: 20px 0;}
 .pc_popupbox button,.pc_alterbox button,.pc_connecting button{width: 70px; height: 30px;font-size: 14px;background-color: #caad76;color: #5f491f;border-radius: 5px;box-shadow: inset 0 -5px 30px rgba(50, 0, 0, 0.45)}
-button.pc_cancel{background-color: #3b3d4a !important;color: #b2b2b2 !important;margin-right: 40px;box-shadow: inset 0 -5px 30px rgba(0, 0, 0, 0.45) !important}
+button.pc_cancel{background-color: #3b3d4a !important;color: #b2b2b2 !important;margin-right: 15%;box-shadow: inset 0 -5px 30px rgba(0, 0, 0, 0.45) !important}
 
 /*创建钱包弹窗*/
 .pc_prompt{font-size: 12px;color: #c8ab73;text-align: center}
@@ -166,7 +166,7 @@ button.pc_cancel{background-color: #3b3d4a !important;color: #b2b2b2 !important;
 .pc_transfertypes input:-moz-placeholder {color:#9b9ca0;}
 .pc_transfertypes input::-moz-placeholder { color:#9b9ca0;}
 .pc_transfertypes input:-ms-input-placeholder {color:#9b9ca0;}
-.pc_token select{width: 100%;height: 25px; border: 1px solid #9c9ead;background-color: #c3c4c9;display: block;color: #2f323b;font-size: 14px;cursor: pointer;}
+.pc_token select{width: 100%;height: 25px; border: 1px solid #9c9ead;background-color: #c3c4c9;display: block;color: #2f323b;font-size: 14px;cursor: pointer;text-align-last: center;text-align: center}
 .pc_token{width: 80%;font-size: 16px;text-align: center;color: #ccc;margin: 30px auto 20px;padding: 0;}
 .pc_token label{position: absolute;user-select: none;top: -2px}
 .pc_token label:first-child{right:160px;}
@@ -192,9 +192,9 @@ button.pc_cancel{background-color: #3b3d4a !important;color: #b2b2b2 !important;
 .pc_speed input{width: auto;margin: auto;display: inline-block; background-color: #1f2228;border: none;outline: none;cursor: pointer;-webkit-appearance: none;position: absolute}
 .pc_speed input[type=radio]{-webkit-appearance:none;width: 20px;height: 20px;border-radius: 50%;left: 65px;font-size: 18px;line-height: 20px;}
 .pc_speed input[type=range]{height: 5px;width: 55%;margin-top: 8px;right: 0;}
-.pc_speed input[type=range]::-webkit-slider-thumb {-webkit-appearance: none;height: 20px;width: 20px;margin-top: -2px;background: #1f2228;border-radius: 50%;border: solid 2px #1f2228;}
-.pc_speed input[type=radio]::before{display: none;color: #666b7b;margin-left: -1px }
-.pc_speed input[type=radio]:checked::before{display: block;}
+.pc_speed input[type=range]::-webkit-slider-thumb {-webkit-appearance: none;height: 20px;width: 20px;margin-top: -2px;background: #1f2228;border-radius: 50%;border: solid 1px #1f2228;}
+/* .pc_speed input[type=radio]::before{display: none;color: #666b7b;margin-left: -1px } */
+.pc_speed input[type=radio]:checked{background:#1f2228 url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAABS2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS42LWMxMzggNzkuMTU5ODI0LCAyMDE2LzA5LzE0LTAxOjA5OjAxICAgICAgICAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIi8+CiA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgo8P3hwYWNrZXQgZW5kPSJyIj8+IEmuOgAAAdtJREFUOI191E9LVFEYBvDfHMcZlcRqKEqd0VBIW8TowqY2mtKilZuwdS2E6CP0QVq2qU20aZsURQTSpqBFFkSlMkE2ymhZ/hlsMXcGvc74wOGe8z7P+9z3vPecm5i9e08DTOJm9MxFsUW8wGM8jyckY+sh3MdEA/PBaMziJe5goUaGfcJxvG1iEsdEpB2PVzSEp+iMZ3z+9EGptALa2zrkRws1qjPKKWAhIIEH6Iqb7O7sWPz+xXp5zXp5zcnMqbikK8pNBExFrodQLC6qVCoglUrr6e1vJCtgKmCmEQvLS1/r877+QS0tLc2kM0H1Ex9CubxqY6MMkslWudxAMxOYTCLbuJpv9XkIwft386C7J6e7py8uzwZsxaOVyq4fxaX6ent7S6n0025l15mzDd8roHgoGFqMX73u0uWJeiydbpMfKQghxOWwHFQP1gEkEgmtral6j0II8iMFbW3tDavBm4BHzdi10i8wfCHv+IlMMxk8DHiG+Ubs6uqKXG5Ab/bcUSbzmAvYwy2U97Obf37r6Djm/PDFo0zKuI29WucWMI2NmuLvv0350abNFWmn8ZGDt/8VxqJSZTKnpVLpo7YzFuXg8P9oAVdwDTdU72EW21jCazzBnGpL6vgPloV3T27lLnYAAAAASUVORK5CYII=) no-repeat center center }
 .pc_speed input[type=range].pc_active::-webkit-slider-thumb{background:#1f2228 url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAABS2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS42LWMxMzggNzkuMTU5ODI0LCAyMDE2LzA5LzE0LTAxOjA5OjAxICAgICAgICAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIi8+CiA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgo8P3hwYWNrZXQgZW5kPSJyIj8+IEmuOgAAAdtJREFUOI191E9LVFEYBvDfHMcZlcRqKEqd0VBIW8TowqY2mtKilZuwdS2E6CP0QVq2qU20aZsURQTSpqBFFkSlMkE2ymhZ/hlsMXcGvc74wOGe8z7P+9z3vPecm5i9e08DTOJm9MxFsUW8wGM8jyckY+sh3MdEA/PBaMziJe5goUaGfcJxvG1iEsdEpB2PVzSEp+iMZ3z+9EGptALa2zrkRws1qjPKKWAhIIEH6Iqb7O7sWPz+xXp5zXp5zcnMqbikK8pNBExFrodQLC6qVCoglUrr6e1vJCtgKmCmEQvLS1/r877+QS0tLc2kM0H1Ex9CubxqY6MMkslWudxAMxOYTCLbuJpv9XkIwft386C7J6e7py8uzwZsxaOVyq4fxaX6ent7S6n0025l15mzDd8roHgoGFqMX73u0uWJeiydbpMfKQghxOWwHFQP1gEkEgmtral6j0II8iMFbW3tDavBm4BHzdi10i8wfCHv+IlMMxk8DHiG+Ubs6uqKXG5Ab/bcUSbzmAvYwy2U97Obf37r6Djm/PDFo0zKuI29WucWMI2NmuLvv0350abNFWmn8ZGDt/8VxqJSZTKnpVLpo7YzFuXg8P9oAVdwDTdU72EW21jCazzBnGpL6vgPloV3T27lLnYAAAAASUVORK5CYII=) no-repeat center center }
 .pc_speed .pc_ellipsis{position: absolute;left: 84px;top: -2px}
 .pc_speed .pc_ellipsis label{width: 5px;height: 5px;display: inline-block;background-color: #1f2228;margin-left: 3px}
@@ -259,8 +259,8 @@ button.pc_cancel{background-color: #3b3d4a !important;color: #b2b2b2 !important;
 .pc_currencynumber .active{color: #dbdde9 !important;border-bottom: 1px solid #bca172;}
 .pc_currency .pc_currencynumber button{width: auto;right: 20px;left: auto;padding: 1px 5px;}
 .pc_currency label{cursor: pointer;margin-left: 10px;color: #ff4242}
-.pc_currency label:hover .pc_cgascon{display: block;}
-.pc_coincon{display: block; position: absolute;max-width: 85%; background-color: rgba(0, 0, 0, 0.8);color: #c8ab73;font-size: 12px;font-family: none; line-height: 1.5; padding:10px; border-radius: 5px;display: none;margin-top: -70px;z-index: 1;}
+.pc_currency label:hover .pc_coincon{display: block;}
+.pc_coincon{position: absolute;max-width: 85%; background-color: rgba(0, 0, 0, 0.8);color: #c8ab73;font-size: 12px;font-family: none; line-height: 1.5; padding:10px; border-radius: 5px;display: none;margin-top: -70px;z-index: 1;}
 .pc_currency div i{float: right;margin-left: 5px}
 .pc_currencylist{margin-bottom: 15px;}
 .pc_currencylist .coinlogo{float: left;width: 20px;position: relative;top: 10px;margin-right: 5px}
@@ -613,13 +613,14 @@ div.pc_modifysex_active{background-color: #f3ce87;color: #33353e;border-color: #
 .pc_mobile .pc_transfertype{max-width: 85%;overflow: hidden;}  /*转账修改*/
 @media screen and (max-width:374px){
     .pc_mobile .pc_listdate,.pc_mobile .pc_cnts .pc_payheighet,.pc_mobile .pc_cnts{font-size: 12px}  /*交易订单块，时间、高度、和价格的字体大小*/
-}/* 简化版样式 */
+}
+/* 简化版样式 */
 .pc_btnbox{display: none}
-.pc_card{width: 100%;margin: 55px auto;background: none;box-shadow: none;padding: 0;height: 20px;}
+.pc_card{width: 90%;margin: 60px 20px;background: none;box-shadow: none;padding: 0;height: 20px;}
 .pc_card .pc_mydetail{border: none}
-.pc_cardcon{font-size: 20px;top: 30px;text-align: left;margin-left: 7px}
+.pc_cardcon{font-size: 20px;top: 35px;text-align: left;}
 .pc_cardrefresh{top: 0;left: 35px;text-align: left;display: inline-block;}
-.pc_cardtransaction {position: absolute;right: 10px;top:30px; height: 30px; border-top: none;text-align: center;}
+.pc_cardtransaction {position: absolute;right: 10px;top:33px; height: 30px; border-top: none;text-align: center;}
 .pc_cardtransaction button{margin: 0}
 .pc_cardtransaction button:last-child {margin-left: 10px;}
 .pc_currency .pc_currencynumber {color: #dbdde9;border: none;padding: 0 20px;margin: 0}

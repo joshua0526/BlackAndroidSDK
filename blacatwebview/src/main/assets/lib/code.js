@@ -2149,7 +2149,6 @@ var BlackCat;
             spanspeed.textContent = BlackCat.Main.langMgr.get("pay_transCount_speed");
             this.ObjAppend(this.mainDiv, divSpeedSelect);
             this.inputFree = this.objCreate("input");
-            this.inputFree.classList.add("iconfont", "icon-bc-shandian");
             this.inputFree.type = "radio";
             this.inputFree.onclick = () => {
                 this.dofree();
@@ -2793,7 +2792,7 @@ var BlackCat;
                 pay_transCountTips_fast: "快",
                 pay_transCount_speed: "交易速度",
                 pay_transCount_cost: "手续费：",
-                pay_transCount_tips: "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;选择您要兑换的代币",
+                pay_transCount_tips: "选择您要兑换的代币",
                 pay_transCount_tips_err: "选择您要兑换的代币",
                 pay_walletOpen_password: "密码",
                 pay_walletOpen_inputPassword: "请输入钱包密码",
@@ -4023,7 +4022,7 @@ var BlackCat;
                 pay_transCountTips_fast: "早い",
                 pay_transCount_speed: "商売\nスピード",
                 pay_transCount_cost: "手数料：",
-                pay_transCount_tips: "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;トークンを選んでください",
+                pay_transCount_tips: "トークンを選んでください",
                 pay_transCount_tips_err: "トークンを選んでください",
                 pay_walletOpen_password: "パスワード",
                 pay_walletOpen_inputPassword: "パスワード",
@@ -4488,7 +4487,9 @@ var BlackCat;
         create() { }
         toRefer() { }
         reset() { }
-        key_esc() { }
+        key_esc() {
+            this.return();
+        }
         key_enter() { }
         start() {
             if (this.isCreated === false) {
@@ -4537,6 +4538,8 @@ var BlackCat;
                     this.key_esc();
                 }
             };
+            this.div.tabIndex = 0;
+            this.div.focus();
         }
         isHidden() {
             if (this.div && this.div.style.display == "none") {
@@ -4879,14 +4882,7 @@ var BlackCat;
             headerReturn.classList.add("iconfont", "icon-bc-fanhui");
             headerReturn.textContent = BlackCat.Main.langMgr.get("return");
             headerReturn.onclick = () => {
-                if (AddressbookView.select) {
-                    this.remove();
-                    BlackCat.Main.viewMgr.payView.show();
-                    BlackCat.Main.viewMgr.payTransferView.show();
-                }
-                else {
-                    this.return();
-                }
+                this.doCancel();
             };
             this.ObjAppend(header, headerReturn);
             var headerTitle = this.objCreate("h1");
@@ -4922,6 +4918,19 @@ var BlackCat;
             if (AddressbookView.refer) {
                 BlackCat.Main.viewMgr.change(AddressbookView.refer);
                 AddressbookView.refer = null;
+            }
+        }
+        key_esc() {
+            this.doCancel();
+        }
+        doCancel() {
+            if (AddressbookView.select) {
+                this.remove();
+                BlackCat.Main.viewMgr.payView.show();
+                BlackCat.Main.viewMgr.payTransferView.show();
+            }
+            else {
+                this.return();
             }
         }
         getAddressbook() {
@@ -5349,7 +5358,10 @@ var BlackCat;
             });
         }
         toRefer() {
-            BlackCat.Main.viewMgr.securityCenterView.show();
+            if (AutoLogoutWalletView.refer) {
+                BlackCat.Main.viewMgr.change(AutoLogoutWalletView.refer);
+                AutoLogoutWalletView.refer = null;
+            }
         }
     }
     BlackCat.AutoLogoutWalletView = AutoLogoutWalletView;
@@ -5513,6 +5525,8 @@ var BlackCat;
                 BlackCat.Main.viewMgr.change("LoginView");
             };
             this.ObjAppend(divInput, doLogin);
+        }
+        key_esc() {
         }
         start() {
             super.start();
@@ -5720,6 +5734,9 @@ var BlackCat;
                 this.onResize();
             }
             this.show();
+        }
+        show() {
+            this.div.style.display = "";
         }
         reset() {
             this.doDragMove = false;
@@ -6056,6 +6073,8 @@ var BlackCat;
             super.start();
             this.inputAccount.focus();
         }
+        key_esc() {
+        }
         key_enter() {
             this.doLogin();
         }
@@ -6248,19 +6267,11 @@ var BlackCat;
                 this.ObjAppend(liArea, iArea);
             });
         }
-        show() {
-            super.show();
-            this.div.tabIndex = 0;
-            this.div.focus();
-        }
         toRefer() {
             if (ModifyAreaView.refer) {
                 BlackCat.Main.viewMgr.change(ModifyAreaView.refer);
                 ModifyAreaView.refer = null;
             }
-        }
-        key_esc() {
-            this.return();
         }
         doArea(area) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -6327,11 +6338,6 @@ var BlackCat;
                 this.doConfirm();
             };
             this.ObjAppend(popupbutbox, confirmObj);
-        }
-        show() {
-            super.show();
-            this.div.tabIndex = 0;
-            this.div.focus();
         }
         toRefer() {
             if (BlackCat.ModifySexView.refer) {
@@ -6478,11 +6484,6 @@ var BlackCat;
                 this.doConfirm();
             };
             this.ObjAppend(popupbutbox, confirmObj);
-        }
-        show() {
-            super.show();
-            this.div.tabIndex = 0;
-            this.div.focus();
         }
         toRefer() {
             if (ModifyNameView.refer) {
@@ -6733,11 +6734,6 @@ var BlackCat;
                 this.doConfirm();
             };
             this.ObjAppend(popupbutbox, confirmObj);
-        }
-        show() {
-            super.show();
-            this.div.tabIndex = 0;
-            this.div.focus();
         }
         toRefer() {
             if (ModifySexView.refer) {
@@ -7257,19 +7253,11 @@ var BlackCat;
             this.ObjAppend(liMyinfoArea, this.myArea);
             this.ObjAppend(this.div, myinfo);
         }
-        show() {
-            super.show();
-            this.div.tabIndex = 0;
-            this.div.focus();
-        }
         toRefer() {
             if (MyInfoView.refer) {
                 BlackCat.Main.viewMgr.change(MyInfoView.refer);
                 MyInfoView.refer = null;
             }
-        }
-        key_esc() {
-            this.return();
         }
         getImg() {
             return BlackCat.Main.user.info.icon ? BlackCat.Main.user.info.icon : BlackCat.Main.resHost + "res/img/game0.png";
@@ -7431,8 +7419,7 @@ var BlackCat;
             returnA.classList.add("iconfont", "icon-bc-fanhui");
             returnA.textContent = BlackCat.Main.langMgr.get("return");
             returnA.onclick = () => {
-                this.addGetWalletLists();
-                this.return();
+                this.doCancel();
             };
             this.ObjAppend(header, returnA);
             var headerH1 = this.objCreate("h1");
@@ -7555,6 +7542,13 @@ var BlackCat;
                 BlackCat.Main.viewMgr.change(PayExchangeDetailView.refer);
                 PayExchangeDetailView.refer = null;
             }
+        }
+        key_esc() {
+            this.doCancel();
+        }
+        doCancel() {
+            this.addGetWalletLists();
+            this.return();
         }
         doMakeTransfer() {
             return __awaiter(this, void 0, void 0, function* () {
@@ -7731,8 +7725,7 @@ var BlackCat;
             returnA.classList.add("iconfont", "icon-bc-fanhui");
             returnA.textContent = BlackCat.Main.langMgr.get("return");
             returnA.onclick = () => {
-                this.addGetWalletLists();
-                this.return();
+                this.doCancel();
             };
             this.ObjAppend(header, returnA);
             var headerH1 = this.objCreate("h1");
@@ -7811,6 +7804,13 @@ var BlackCat;
                 BlackCat.Main.viewMgr.change(PayExchangeShowWalletView.refer);
                 PayExchangeShowWalletView.refer = null;
             }
+        }
+        key_esc() {
+            this.doCancel();
+        }
+        doCancel() {
+            this.addGetWalletLists();
+            this.return();
         }
         doMakeTransfer() {
             return __awaiter(this, void 0, void 0, function* () {
@@ -8290,12 +8290,11 @@ var BlackCat;
             this.ObjAppend(this.div, this.getMoreDiv);
             this.doGetWalletLists();
         }
-        remove() {
-            super.remove();
-            this.reset();
-        }
         toRefer() {
-            BlackCat.Main.viewMgr.change("PayView");
+            if (PayListMoreView.refer) {
+                BlackCat.Main.viewMgr.change(PayListMoreView.refer);
+                PayListMoreView.refer = null;
+            }
         }
         reset() {
             this.page = 1;
@@ -8603,6 +8602,8 @@ var BlackCat;
                 PayTransferView.refer = null;
             }
         }
+        key_esc() {
+        }
         getAddress() {
             if (PayTransferView.address) {
                 this.toaddress = PayTransferView.address;
@@ -8843,7 +8844,9 @@ var BlackCat;
             aReturnGame.onclick = () => {
                 BlackCat.SDK.showIcon();
             };
-            //this.ObjAppend(headerTitle, aReturnGame);
+            if (!window.hasOwnProperty("BC_androidSDK")) {
+                this.ObjAppend(headerTitle, aReturnGame);
+            }
             var btnbox = this.objCreate("div");
             this.ObjAppend(this.div, btnbox);
             btnbox.classList.add("pc_btnbox");
@@ -10457,6 +10460,7 @@ var BlackCat;
             liMyinfoTrust.textContent = BlackCat.Main.langMgr.get("myinfo_security");
             liMyinfoTrust.onclick = () => {
                 this.hidden();
+                BlackCat.SecurityCenterView.refer = "PersonalCenterView";
                 BlackCat.Main.viewMgr.change("SecurityCenterView");
             };
             this.ObjAppend(ulMyinfo, liMyinfoTrust);
@@ -10476,19 +10480,11 @@ var BlackCat;
             this.getNodeHeight("nodes");
             this.getNodeHeight("clis");
         }
-        show() {
-            super.show();
-            this.div.tabIndex = 0;
-            this.div.focus();
-        }
         toRefer() {
             if (PersonalCenterView.refer) {
                 BlackCat.Main.viewMgr.change(PersonalCenterView.refer);
                 PersonalCenterView.refer = null;
             }
-        }
-        key_esc() {
-            this.return();
         }
         getUid() {
             return BlackCat.Main.user.info.uid;
@@ -10748,6 +10744,8 @@ var BlackCat;
             if (this.s_getCodeCountRetry)
                 clearInterval(this.s_getCodeCountRetry);
             this.accountType = "phone";
+        }
+        key_esc() {
         }
         empty(value) {
             if (value.toString().length == 0) {
@@ -11015,6 +11013,7 @@ var BlackCat;
             liTrust.textContent = BlackCat.Main.langMgr.get("security_trust");
             liTrust.onclick = () => {
                 this.hidden();
+                BlackCat.TrustContractView.refer = "SecurityCenterView";
                 BlackCat.Main.viewMgr.change("TrustContractView");
             };
             this.ObjAppend(ulSecurity, liTrust);
@@ -11029,6 +11028,7 @@ var BlackCat;
             liSignOut.textContent = BlackCat.Main.langMgr.get("security_walletOut");
             liSignOut.onclick = () => {
                 this.hidden();
+                BlackCat.AutoLogoutWalletView.refer = "SecurityCenterView";
                 BlackCat.Main.viewMgr.change("AutoLogoutWalletView");
             };
             this.ObjAppend(ulSecurity, liSignOut);
@@ -11044,7 +11044,10 @@ var BlackCat;
             this.ObjAppend(liSignOut, divwalletOutTips);
         }
         toRefer() {
-            BlackCat.Main.viewMgr.personalCenterView.show();
+            if (SecurityCenterView.refer) {
+                BlackCat.Main.viewMgr.change(SecurityCenterView.refer);
+                SecurityCenterView.refer = null;
+            }
         }
         getWalletOutTimeMaxMsg(liveTimeMax) {
             if (liveTimeMax >= (60 * 60 * 1000)) {
@@ -11082,7 +11085,6 @@ var BlackCat;
             returnA.textContent = BlackCat.Main.langMgr.get("return");
             returnA.onclick = () => {
                 this.return();
-                BlackCat.Main.viewMgr.securityCenterView.show();
             };
             this.ObjAppend(header, returnA);
             var headerH1 = this.objCreate("h1");
@@ -11098,9 +11100,11 @@ var BlackCat;
             this.ObjAppend(this.div, this.getMoreDiv);
             this.doGetTrustLists();
         }
-        remove() {
-            super.remove();
-            this.reset();
+        toRefer() {
+            if (TrustContractView.refer) {
+                BlackCat.Main.viewMgr.change(TrustContractView.refer);
+                TrustContractView.refer = null;
+            }
         }
         reset() {
             this.offset = 0;
@@ -11215,11 +11219,6 @@ var BlackCat;
             };
             this.ObjAppend(popupbutbox, butConfirm);
         }
-        show() {
-            super.show();
-            this.div.tabIndex = 0;
-            this.div.focus();
-        }
         key_esc() {
             this.doConfirm();
         }
@@ -11286,6 +11285,9 @@ var BlackCat;
                 ViewConfirm.refer = null;
             }
         }
+        key_esc() {
+            this.doCancel();
+        }
         doConfirm() {
             this.remove(300);
             ViewConfirm.callback(ViewConfirm.callback_params);
@@ -11317,6 +11319,8 @@ var BlackCat;
             else if (this.showType == "retry") {
                 this.showRetry(this.showReturn);
             }
+        }
+        key_esc() {
         }
         showConnecting() {
             this.showType = "connecting";
@@ -11401,6 +11405,8 @@ var BlackCat;
                     + "<div class='pc_loading12'></div>"
                     + "<p id='pc_loadingtext'>" + lang_content + "</p>";
             this.ObjAppend(this.div, divLoading);
+        }
+        key_esc() {
         }
     }
     ViewLoading.content = "";
@@ -11820,6 +11826,8 @@ var BlackCat;
             super.show();
             this.remove(ViewToast.showTime, null);
         }
+        key_esc() {
+        }
     }
     ViewToast.showTime = 2500;
     BlackCat.ViewToast = ViewToast;
@@ -11969,6 +11977,8 @@ var BlackCat;
                 ViewTransConfirm.refer = null;
             }
         }
+        key_esc() {
+        }
         getCnts() {
             return ViewTransConfirm.list.cnts != '0' ? ViewTransConfirm.list.cnts : "";
         }
@@ -12113,6 +12123,8 @@ var BlackCat;
                 ViewTransConfirmGas.refer = null;
             }
         }
+        key_esc() {
+        }
         getCnts() {
             return ViewTransConfirmGas.list.cnts != '0' ? ViewTransConfirmGas.list.cnts : "";
         }
@@ -12256,6 +12268,8 @@ var BlackCat;
                 ViewTransConfirmNeo.refer = null;
             }
         }
+        key_esc() {
+        }
         getCnts() {
             return ViewTransConfirmNeo.list.cnts != '0' ? ViewTransConfirmNeo.list.cnts : "";
         }
@@ -12394,6 +12408,8 @@ var BlackCat;
                 ViewTransCount.refer = null;
             }
         }
+        key_esc() {
+        }
         doinputchange() {
             if (ViewTransCount.coinType == "CNEO") {
                 var neo_int = parseInt(this.inputCount.value);
@@ -12527,9 +12543,9 @@ var BlackCat;
             }
             for (let i = 0; i < options.length; i++) {
                 var option_ele = this.objCreate("option");
+                option_ele.classList.add("iconfont");
                 option_ele.value = options[i][0];
-                option_ele.innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
-                    + BlackCat.Main.langMgr.get(options[i][1]) + "&#xbc635;" + BlackCat.Main.langMgr.get(options[i][2]);
+                option_ele.innerHTML = BlackCat.Main.langMgr.get(options[i][1]) + "&#xbc635;" + BlackCat.Main.langMgr.get(options[i][2]);
                 this.ObjAppend(this.selectTransfertype, option_ele);
             }
         }
@@ -12920,6 +12936,8 @@ var BlackCat;
         show() {
             super.show();
             this.inputPwd.focus();
+        }
+        key_esc() {
         }
         createVerifyPwd() {
             var pwd = this.inputPwd.value;
@@ -13418,6 +13436,8 @@ var BlackCat;
             };
             this.ObjAppend(popupbutbox, bindobj);
         }
+        key_esc() {
+        }
         doBindWallet() {
             return __awaiter(this, void 0, void 0, function* () {
                 if (!this.filename) {
@@ -13491,6 +13511,8 @@ var BlackCat;
             var iImportWallet = this.objCreate("i");
             iImportWallet.classList.add("iconfont", "icon-bc-daoru1");
             this.ObjAppend(importWallet, iImportWallet);
+        }
+        key_esc() {
         }
     }
     BlackCat.WalletView = WalletView;
