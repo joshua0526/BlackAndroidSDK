@@ -12543,9 +12543,8 @@ var BlackCat;
             }
             for (let i = 0; i < options.length; i++) {
                 var option_ele = this.objCreate("option");
-                option_ele.classList.add("iconfont");
                 option_ele.value = options[i][0];
-                option_ele.innerHTML = BlackCat.Main.langMgr.get(options[i][1]) + "&#xbc635;" + BlackCat.Main.langMgr.get(options[i][2]);
+                option_ele.innerHTML = BlackCat.Main.langMgr.get(options[i][1]) + " &#8594; " + BlackCat.Main.langMgr.get(options[i][2]);
                 this.ObjAppend(this.selectTransfertype, option_ele);
             }
         }
