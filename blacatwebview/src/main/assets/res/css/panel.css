@@ -154,7 +154,7 @@ button.pc_cancel{background-color: #3b3d4a !important;color: #b2b2b2 !important;
 .pc_transfer .pc_transferbox input{width: 85%;height: 25px;margin:auto auto;text-align: left;padding: 0 35px 0 5px;text-align: center}
 /* .pc_transfer .pc_transaddress{padding: 0 35px 0 5px;width: 230px;} */
 .pc_transfer .pc_transferaddressbook{position: absolute;top: 14px;right: 3px;line-height: 1;font-size: 20px;color: #30313b;cursor: pointer;}
-.pc_transfername{position: absolute;top:10px;left: 5px;color: #30313b;display: none}
+.pc_transfername{position: absolute;top:11px;left: 5px;color: #30313b;display: none}
 .pc_transfer_active .pc_transfername{display: inline-block;}
 .pc_transfer_active .pc_transaddress{color: #808080;}
 .pc_gasbalancespan{float:right;}
@@ -626,8 +626,12 @@ div.pc_modifysex_active{background-color: #f3ce87;color: #33353e;border-color: #
 .pc_currency .pc_currencynumber {color: #dbdde9;border: none;padding: 0 20px;margin: 0}
 .pc_currencynumber .active {color: #dbdde9 !important;border-top: 1px solid #bca172!important;border-left:1px solid #3a3c4a;border-right: 1px solid #3a3c4a;padding-bottom: 11px!important; border-bottom: none}
 .pc_currency .pc_currencynumber div {color: #9a9fbf;display: inline;padding: 7px 15px 10px 15px;font-size: 16px;cursor: pointer;margin: 0;background: #343643}
-.pc_currencylist div {padding: 0 15px;margin: 0 20px;border: 1px solid #3a3c4a;border-top: none}
-.pc_currencylist div:first-child{border-top: 1px solid #3a3c4a;}
+.pc_currencylist .coinli{padding: 0 15px;margin: 0 20px;border: 1px solid #3a3c4a;border-top: none}
+.pc_currencylist .coinli:first-child{border-top: 1px solid #3a3c4a;}
 .pc_windowtest2 .pc_currency .pc_currencynumber div{background: #344241}
-.pc_windowtest2 .pc_currencynumber .active,.pc_windowtest2 .pc_currencylist div{border-color:#2a3736 }
+.pc_windowtest2 .pc_currencynumber .active,.pc_windowtest2 .pc_currencylist div,.pc_windowtest2 .pc_currencylist .coinli:first-child{border-color:#2a3736 }
 .assetsdiv .pc_balance,.assetsdiv .pc_balancename{color: #a7a8ba;}
+/* 简化版虚拟资产代币 */
+.pc_currencylist .game_assets{margin: 0 20px;padding: 0;border-left:1px solid #344241;border-right:1px solid #344241}
+.pc_currencylist .mini_asset{border-bottom: none;padding: 0 15px}
+.pc_currencylist .mini_asset img{width: 20px;position: relative;top: 10px; float: left; margin-right: 5px;}

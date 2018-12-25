@@ -8944,6 +8944,7 @@ var BlackCat;
                 for (let k = 0; k < PayView.tokens_coin[i].length; k++) {
                     let coin = PayView.tokens_coin[i][k];
                     let coinElement = this.objCreate("div");
+                    coinElement.classList.add("coinli");
                     coinElement.innerHTML = BlackCat.Main.langMgr.get(coin);
                     this.ObjAppend(this["token_list_" + token], coinElement);
                     let logoElement = this.objCreate("img");
@@ -9009,8 +9010,7 @@ var BlackCat;
                 });
             }
             this.game_assets_element = this.objCreate("div");
-            this.game_assets_element.classList.add("pc_assets", "assetsdiv");
-            this.ObjAppend(this.div, this.game_assets_element);
+            this.ObjAppend(this["token_list_" + PayView.tokens[0]], this.game_assets_element);
             this.divLists = this.objCreate("ul");
             this.divLists.classList.add("pc_paylists");
             this.ObjAppend(this.div, this.divLists);
@@ -9025,6 +9025,7 @@ var BlackCat;
             this.divListsMore.textContent = BlackCat.Main.langMgr.get("pay_more");
             this.divListsMore.onclick = () => {
                 this.hidden();
+                BlackCat.PayListMoreView.refer = "PayView";
                 BlackCat.Main.viewMgr.change("PayListMoreView");
             };
             this.ObjAppend(liRecord, this.divListsMore);
@@ -10170,26 +10171,26 @@ var BlackCat;
                 var curr = Date.parse(new Date().toString());
                 if (!this.game_assets_ts || curr - this.game_assets_ts > this.game_assets_update) {
                     try {
+                        var game_assetids = [];
                         var allNep5AssetsBalance = yield BlackCat.tools.WWW.api_getAllNep5AssetBalanceOfAddress(BlackCat.Main.user.info.wallet);
                         if (allNep5AssetsBalance) {
-                            var game_assetids = [];
                             for (let k in allNep5AssetsBalance) {
                                 game_assetids.push(allNep5AssetsBalance[k]['assetid']);
                                 this.allnep5_balance[allNep5AssetsBalance[k]['assetid']] = allNep5AssetsBalance[k];
                             }
-                            var res = yield BlackCat.ApiTool.getGameAssets(BlackCat.Main.user.info.uid, BlackCat.Main.user.info.token, [], BlackCat.Main.appid);
-                            console.log("[BlaCat]", '[PayView]', 'my_asset, getGameAssets res => ', res);
-                            if (res.r) {
-                                if (res.data) {
-                                    this.game_assets = res.data;
-                                    this.game_assets_ts = curr;
-                                    this.showGameAssets();
-                                }
+                        }
+                        var res = yield BlackCat.ApiTool.getGameAssets(BlackCat.Main.user.info.uid, BlackCat.Main.user.info.token, [], BlackCat.Main.appid);
+                        console.log("[BlaCat]", '[PayView]', 'my_asset, getGameAssets res => ', res);
+                        if (res.r) {
+                            if (res.data) {
+                                this.game_assets = res.data;
+                                this.game_assets_ts = curr;
+                                this.showGameAssets();
                             }
-                            else {
-                                BlackCat.Main.showErrCode(res.errCode);
-                                return;
-                            }
+                        }
+                        else {
+                            BlackCat.Main.showErrCode(res.errCode);
+                            return;
                         }
                     }
                     catch (e) { }
@@ -10203,29 +10204,21 @@ var BlackCat;
             return __awaiter(this, void 0, void 0, function* () {
                 if (this.game_assets) {
                     this.game_assets_element.innerHTML = "";
+                    this.game_assets_element.classList.add("game_assets");
                     for (let k in this.game_assets) {
-                        var assets_ul = this.objCreate("ul");
-                        assets_ul.classList.add("pc_assetsul");
-                        this.ObjAppend(this.game_assets_element, assets_ul);
-                        var assets_li = this.objCreate("li");
-                        this.ObjAppend(assets_ul, assets_li);
                         if (this.game_assets[k].hasOwnProperty('coins')) {
                             for (let m in this.game_assets[k]['coins']) {
                                 var assets_balance = this.objCreate("div");
-                                assets_balance.classList.add("pc_assets_balance");
-                                this.ObjAppend(assets_li, assets_balance);
-                                var balanceimg = this.objCreate("div");
-                                balanceimg.classList.add("pc_balanceimg");
-                                this.ObjAppend(assets_balance, balanceimg);
+                                assets_balance.classList.add("mini_asset");
+                                assets_balance.textContent = this.game_assets[k]['coins'][m]['symbol'] ? this.game_assets[k]['coins'][m]['symbol'] : this.allnep5_balance[this.game_assets[k]['coins'][m]['contract']]['symbol'];
+                                this.ObjAppend(this.game_assets_element, assets_balance);
                                 var img = this.objCreate("img");
                                 img.src = this.game_assets[k]['coins'][m]['icon'];
-                                this.ObjAppend(balanceimg, img);
-                                var balancename = this.objCreate("span");
-                                balancename.classList.add("pc_balancename");
-                                balancename.textContent = this.game_assets[k]['coins'][m]['symbol'] ? this.game_assets[k]['coins'][m]['symbol'] : this.allnep5_balance[this.game_assets[k]['coins'][m]['contract']]['symbol'];
-                                this.ObjAppend(assets_balance, balancename);
+                                this.ObjAppend(assets_balance, img);
+                                var asseticon = this.objCreate("i");
+                                asseticon.classList.add("iconfont", "icon-bc-gengduo");
+                                this.ObjAppend(assets_balance, asseticon);
                                 var balance = this.objCreate("span");
-                                balance.classList.add("pc_balance");
                                 balance.textContent = "0";
                                 this.ObjAppend(assets_balance, balance);
                                 if (this.allnep5_balance.hasOwnProperty(this.game_assets[k]['coins'][m]['contract'])) {
@@ -10236,7 +10229,7 @@ var BlackCat;
                         if (this.game_assets[k].hasOwnProperty('nfts')) {
                             var assets_prop = this.objCreate("div");
                             assets_prop.classList.add("pc_assetsprop");
-                            this.ObjAppend(assets_li, assets_prop);
+                            this.ObjAppend(this.game_assets_element, assets_prop);
                             for (var i = 0; i < 5; i++) {
                                 var prop = this.objCreate("a");
                                 prop.classList.add("pc_prop");
@@ -10250,7 +10243,7 @@ var BlackCat;
                             }
                             var assets_more = this.objCreate("div");
                             assets_more.classList.add("pc_assetsmore");
-                            this.ObjAppend(assets_li, assets_more);
+                            this.ObjAppend(this.game_assets_element, assets_more);
                             var more_btn = this.objCreate("button");
                             more_btn.classList.add("pc_assetsmorebtn", "iconfont", "icon-bc-gengduo1");
                             this.ObjAppend(assets_more, more_btn);
